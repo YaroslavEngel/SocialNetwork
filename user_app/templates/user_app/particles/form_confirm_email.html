@@ -1,0 +1,32 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'user_static/user_index.css' %}">
+<div class="auth-card confirm-card">
+    <h2 class="confirm-title">Підтвердження пошти</h2>
+
+    <p class="confirm-text">
+        Ми надіслали 6-значний код на вашу пошту
+        (you@example.com). Введіть його нижче, щоб підтвердити акаунт
+    </p>
+
+    
+    <form method="post" action="#" class="confirm-form">
+        {% csrf_token %}
+
+        <label class="confirm-label">Код підтвердження</label>
+
+        <div class="confirm-inputs">
+            <input maxlength="1" type="text">
+            <input maxlength="1" type="text">
+            <input maxlength="1" type="text">
+            <input maxlength="1" type="text">
+            <input maxlength="1" type="text">
+            <input maxlength="1" type="text">
+        </div>
+
+        <button type="submit" class="confirm-btn">Підтвердити</button>
+
+        <button type="button" class="back-btn" data-url="{% url 'form-register' %}">
+            Назад
+        </button>
+    </form>
+</div>

@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Реєстрація</title>
+
+    {% block link %}
+        <link rel="stylesheet" href="{% static 'user_static/user_index.css' %}">
+    {% endblock %}
+</head>
+<body>
+    <div class="auth-page">
+        <header class="auth-header">
+            <a href="/" class="auth-logo">
+                <img src="{% static 'user_static/images/wia.svg' %}" alt="World IT">
+            </a>
+        </header>
+
+        <main class="auth-main">
+            <div class="auth-content">
+                <div class="auth-card">
+                    <div class="auth-tabs">
+                        <a href="#" class="tab active" data-url="{% url 'form-register' %}">Реєстрація</a>
+                        <a href="#" class="tab" data-url="{% url 'form-login' %}">Авторизація</a>
+                    </div>
+
+                    <h2 class="auth-title">Приєднуйся до World IT</h2>
+
+                    <form method="post" action="{% url 'register' %}" class="auth-form">
+                        {% csrf_token %}
+                        {{ register_form.as_p }}
+                        <button type="submit">Створити акаунт</button>
+                    </form>
+                </div>
+
+                <div class="auth-image">
+                    <img src="{% static 'user_static/images/Container.svg' %}" alt="Preview">
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="{% static 'user_static/user_index.js' %}"></script>
+</body>
+</html>

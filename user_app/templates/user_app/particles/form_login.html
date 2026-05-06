@@ -1,0 +1,14 @@
+<div class="auth-card">
+    <div class="auth-tabs">
+        <a href="#" class="tab" data-url="{% url 'form-register' %}">Реєстрація</a>
+        <a href="#" class="tab active" data-url="{% url 'form-login' %}">Авторизація</a>
+    </div>
+
+    <h2 class="auth-title">Раді тебе знову бачити!</h2>
+
+    <form method="post" action="{% url 'login' %}" class="auth-form">
+        {% csrf_token %}
+        {{ login_form.as_p }}
+        <button type="submit">Увійти</button>
+    </form>
+</div>

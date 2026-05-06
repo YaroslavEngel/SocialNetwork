@@ -1,0 +1,17 @@
+/* 
+header {
+    width: 59px;
+    height: 18px;
+
+    font-family: "GT Walsheim Pro", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.01em; /* -1% от размера шрифта */
+    text-align: center;
+
+    background-color: #070A1C;
+    opacity: 1;
+
+    transform: rotate(0deg);
+}  */*

@@ -1,0 +1,84 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    {% block meta %}{% endblock %}
+    <title>{% block title %}Мой сайт{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block links %}{% endblock %}
+</head>
+<body>
+{% block header %}
+    <header class="header">
+        <div class="container">
+            <img src="{% static 'images/wia.svg' %}" alt="wia" class="logo">
+
+            <div class="navitems">
+                <a href="/">
+                    <img src="{% static 'images/frame1000002425.svg' %}" alt="Головна">
+                </a>
+
+                <a href="/post">
+                    <img src="{% static 'images/Frame 1000002427.svg' %}" alt="Мої публікації">
+                </a>
+
+                <a href="/friends">
+                    <img src="{% static 'images/Frame 1000002426.svg' %}" alt="Друзі">
+                </a>
+
+                <a href="/">
+                    <img src="{% static 'images/Frame 1000002428.svg' %}" alt="Чати">
+                </a>
+
+                <a href="/">
+                    <img src="{% static 'images/Frame 1000002429.svg' %}" alt="Налаштування">
+                </a>
+            </div>
+
+            <a class="exit-knop" href="{% url 'logout' %}">
+                <img src="{% static 'images/Button.svg' %}" alt="Вихід">
+            </a>
+        </div>
+
+        <div class="profile-container">
+            <div class="frame1">
+                <img src="{% static 'images/Frame.svg' %}" alt="Профіль">
+            </div>
+
+            {% block frame2 %}
+            <div class="frame2">
+                <div class="request-container">
+                    <div class="request-icon-container">
+                        <img src="{% static 'images/peoples_frame.svg' %}" alt="">
+                        <h1>Запити</h1>
+                    </div>
+                    <button class="frame-btn">Дивитись всі</button>
+                </div>
+            </div>
+            {% endblock %}
+
+            {% block frame3 %}
+            <div class="frame3">
+                <div class="alert-container">
+                    <div class="alert-icon-container">
+                        <img src="{% static 'images/chat_frame.svg' %}" alt="">
+                        <h1>Повідомлення</h1>
+                    </div>
+                    <button class="alert-btn">Дивитись всі</button>
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+    </header>
+{% endblock %}
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
