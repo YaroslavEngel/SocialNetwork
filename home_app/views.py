@@ -1,5 +1,6 @@
 from django.shortcuts import render
+from post_app.forms import PostForm
 
-# Create your views here.
 def render_home(request):
-    return render(request, 'home_app/home.html')
+    form = PostForm()
+    return render(request, 'home_app/home.html', {'post_form': form})

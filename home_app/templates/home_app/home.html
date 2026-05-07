@@ -1,9 +1,112 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}
-
+{% block links %}
+<link rel="stylesheet" href="{% static 'post_static/post_index.css' %}">
 {% endblock %}
 
-{% block content %}
+{% block title %}Головна{% endblock %}
 
+{% block content %}
+<section class="post-section">
+  <div class="post-create-container">
+    <textarea class="create-post-input" placeholder="Текст публікації"></textarea>
+    <div class="create-post-footer">
+      <button class="post-emoji-btn">
+        <img src="{% static 'images/Component 4.svg' %}" alt="">
+      </button>
+      <button class="open-post-modal-btn">
+        <img src="{% static 'images/Button (1).svg' %}" alt="">
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="modal-overlay">
+  <div class="create-post-modal">
+    <button type="button" class="close-post-modal">
+      <img src="{% static 'images/Component 5.svg' %}" alt="">
+    </button>
+
+    <h1 class="post-modal-title">Створення публікації</h1>
+
+    <form method="POST" action="/post/" enctype="multipart/form-data" class="post-form">
+      {% csrf_token %}
+
+      <div class="post-inputs-container">
+        <label>Назва публікації</label>
+        {{ post_form.title }}
+      </div>
+
+      <div class="post-inputs-container">
+        <label>Тема публікації</label>
+        {{ post_form.topic }}
+      </div>
+
+      <div class="tags-container">
+        {% for tag in post_form.tags %}
+          <label class="tag-label">
+            {{ tag.tag }}
+            <span class="tag">#{{ tag.data.label }}</span>
+          </label>
+        {% endfor %}
+        <button type="button" class="add-tag-btn">
+          <img src="{% static 'images/Component 5 (1).svg' %}" alt="">
+        </button>
+      </div>
+
+      <div class="textarea-container">
+        {{ post_form.content }}
+        <div class="custom-scrollbar"></div>
+      </div>
+
+      <div class="post-inputs-container">
+        <label>Посилання</label>
+        <div class="post-link-container">
+          <input type="text" class="post-input" name="links">
+          <button type="button" class="add-link-btn">
+            <img src="{% static 'images/Component 5 (1).svg' %}" alt="">
+          </button>
+        </div>
+      </div>
+
+      <div class="image-input-container">
+        {{ post_form.image }}
+      </div>
+
+      <div class="post-modal-footer">
+        <div class="post-footer-icons">
+          <button type="button" class="image-btn">
+            <img src="{% static 'images/Component 3.svg' %}" alt="">
+          </button>
+          <button type="button" class="emoji-btn">
+            <img src="{% static 'images/Component 4.svg' %}" alt="">
+          </button>
+        </div>
+        <button type="submit" class="publish-post-btn">
+          <img src="{% static 'images/Button_Go.svg' %}" alt="">
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="tag-modal-overlay">
+    <div class="tag-modal">
+      <button type="button" class="close-tag-modal">
+        <img src="{% static 'images/Component 5.svg' %}" alt="">
+      </button>
+      <h2 class="tag-modal-title">Додати хештег</h2>
+      <div class="tag-modal-field">
+        <label>Назва</label>
+        <input type="text" id="new-tag-input" placeholder="#|" class="tag-modal-input">
+      </div>
+      <div class="tag-modal-footer">
+        <button type="button" class="tag-cancel-btn">Скасувати</button>
+        <button type="button" class="tag-save-btn">Зберегти</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'post_static/post_index.js' %}"></script>
 {% endblock %}
