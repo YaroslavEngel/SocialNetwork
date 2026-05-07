@@ -42,11 +42,13 @@
                 <img src="{% static 'images/Button.svg' %}" alt="Вихід">
             </a>
         </div>
-
+        
         <div class="profile-container">
+            {% block frame1 %}
             <div class="frame1">
                 <img src="{% static 'images/Frame.svg' %}" alt="Профіль">
             </div>
+            {% endblock %}
 
             {% block frame2 %}
             <div class="frame2">
@@ -79,6 +81,34 @@
     {% block content %}{% endblock %}
 </main>
 
-<script src="{% static 'js/script.js' %}"></script>
+{% if user.is_authenticated and not user.username %}
+<div id="first-login-modal" style="display:flex; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:1000; align-items:center; justify-content:center;">
+  <div class="fl-card">
+    <button class="fl-close" id="fl-close-btn" aria-label="Закрити">✕</button>
+
+    <h2 class="fl-title">Додай деталі про себе</h2>
+
+    <div id="fl-error" class="fl-error" style="display:none;"></div>
+
+    <div class="fl-field">
+      <label>Псевдонім автора</label>
+      <input type="text" id="fl-pseudonym" placeholder="Введіть Псевдонім автора" autocomplete="off"/>
+    </div>
+
+    <div class="fl-field">
+      <label>Ім'я користувача</label>
+      <div class="fl-username-wrap">
+        <span class="fl-at">@</span>
+        <input type="text" id="fl-username" autocomplete="off"/>
+      </div>
+    </div>
+
+    <div class="fl-footer">
+      <button id="fl-save-btn" class="fl-btn">Продовжити</button>
+    </div>
+  </div>
+</div>
+{% endif %}
+<script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>

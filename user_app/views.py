@@ -13,7 +13,9 @@ import json
 
 from .forms import RegistrationForm, LoginForm
 
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 class RegisterPageView(TemplateView):
     template_name = 'user_app/auth.html'
 
@@ -62,7 +64,7 @@ class LoginView(View):
 class LogoutView(View):
     def get(self, request):
         logout(request)
-        return redirect('auth-form')  # вот сюда
+        return redirect('auth-form')
 
 
 class RegisterFormView(View):
