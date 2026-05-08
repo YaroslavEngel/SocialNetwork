@@ -5,7 +5,7 @@ from django.conf import settings
 class Post(models.Model):
     title = models.CharField(max_length=250)
     topic = models.CharField(max_length=250, blank= True, null=True)
-    content= models.CharField(max_length=250)
+    content= models.CharField(max_length=700)
     created_at= models.DateField(auto_now_add=True)
     updated_at= models.DateField(auto_now=True)
     author= models.ForeignKey(to= 'user_app.User', on_delete= models.CASCADE, related_name = 'user')

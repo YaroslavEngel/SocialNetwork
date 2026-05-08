@@ -51,13 +51,12 @@
           </label>
         {% endfor %}
         <button type="button" class="add-tag-btn">
-          <img src="{% static 'images/Component 5 (1).svg' %}" alt="">
+          <img src="{% static 'images/Inputs Tag.svg' %}" alt="">
         </button>
       </div>
 
       <div class="textarea-container">
         {{ post_form.content }}
-        <div class="custom-scrollbar"></div>
       </div>
 
       <div class="post-inputs-container">
@@ -65,7 +64,7 @@
         <div class="post-link-container">
           <input type="text" class="post-input" name="links">
           <button type="button" class="add-link-btn">
-            <img src="{% static 'images/Component 5 (1).svg' %}" alt="">
+            <img src="{% static 'images/Inputs Tag.svg' %}" alt="">
           </button>
         </div>
       </div>
@@ -107,6 +106,7 @@
     </div>
   </div>
 </div>
-
+{% block scripts %}
 <script src="{% static 'post_static/post_index.js' %}"></script>
+{% endblock %}
 {% endblock %}

@@ -37,9 +37,9 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'topic', 'content']
         widgets = {
-            'title' : forms.TextInput(attrs= {'placeholder' : 'title'}),
-            'topic' : forms.TextInput(attrs= {'placeholder' : 'topic'}),
-            'content' : forms.Textarea(attrs= {"rows": 5,'placeholder' : 'title'})
+            'title' : forms.TextInput(attrs= {'placeholder' : 'Напишіть заголовок публікації'}),
+            'topic' : forms.TextInput(attrs= {'placeholder' : 'Напишіть тему публікації'}),
+            'content' : forms.Textarea(attrs= {"rows": 5,'placeholder' : 'Опис публікації'}),
         }
     def __init__(self, *args, links=None, images=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -63,23 +63,23 @@ class PostForm(forms.ModelForm):
             try:
                 url_field.clean(link)
             except: 
-                self.add_error("links", "Некоректне посилання")
+                raise forms.ValidationError("Некоректне посилання")
         for image in self.image_list:
             try:
                 image_field.clean(image)
             except: 
-                self.add_error("images", "Некоректне зображення")
+                raise forms.ValidationError("Некоректне зображення")
         return clean_data
-    def save(self, author, commmit=True):
+    def save(self, author, commit=True):
         post = super().save(commit=False)
         post.author = author 
-        if commmit:
+        if commit:
             post.save()
             post.tags.set(self.cleaned_data["tags"])
             for link in self.links_list:
                 PostLink.objects.create(post=post, url=link)
             for image in self.image_list:
-                PostImage.objects.all(
+                PostImage.objects.create(
                     post=post,
                     original_image=image, 
                     compressed_image=self.compress_image(image)
@@ -105,7 +105,7 @@ class PostForm(forms.ModelForm):
                         break
                     width = int(width * 0.9)
                     height = int(height * 0.9)
-                    pil_image.resize((width, height), Image.Resampling.LANCZOS)
+                    pil_image =pil_image.resize((width, height), Image.Resampling.LANCZOS)
         image.seek(0)
         compressed_name = f"compressed_{image.name.rsplit('.', 1)[0]}.jpg"
         return ContentFile(buffer.getvalue(), name=compressed_name)

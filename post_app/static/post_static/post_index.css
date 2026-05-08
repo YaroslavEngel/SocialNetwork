@@ -1,67 +1,67 @@
 .post-section {
     width: 100vw;
     min-height: 100vh;
-
+ 
     background: #F6F3F8;
-
+ 
     padding: 1.5vh 1.3vw 2.2vh 1.3vw;
-
+ 
     display: flex;
     justify-content: center;
     align-items: flex-start;
 }
-
+ 
 .post-create-container{
     width: 48vw;
     height: 13vh;
-
+ 
     background: #FFFFFF;
-
+ 
     border: 0.05vw solid #DDD6E4;
     border-radius: 0.8vw;
-
+ 
     padding: 1.5vh 1vw;
-
+ 
     position: relative;
 }
-
+ 
 .create-post-input{
     width: 100%;
     height: 100%;
-
+ 
     border: none;
     outline: none;
-
+ 
     background: transparent;
-
+ 
     resize: none;
-
+ 
     font-size: 1vw;
     font-weight: 400;
-
+ 
     color: #16151C;
-
+ 
     padding: 0;
-
+ 
     cursor: text;
 }
-
+ 
 .create-post-input::placeholder{
     color: #8D8593;
 }
-
+ 
 .create-post-footer{
     position: absolute;
-
+ 
     right: 1vw;
     bottom: 1.5vh;
-
+ 
     display: flex;
     align-items: center;
-
+ 
     gap: 0.8vw;
 }
-
+ 
 .post-emoji-btn {
     width: 40px;
     height: 40px;
@@ -74,54 +74,54 @@
     cursor: pointer;
     padding: 0;
 }
-
+ 
 .post-emoji-btn img {
     width: 40px;
     height: 40px;
     object-fit: contain;
 }
-
+ 
 .open-post-modal-btn{
     width: 11.2vw;
     height: 4vh;
-
+ 
     border: none;
-
+ 
     background: transparent;
-
+ 
     padding: 0;
-
+ 
     cursor: pointer;
-
+ 
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
+ 
 .open-post-modal-btn img{
     width: 11.2vw;
     height: 4vh;
-
+ 
     object-fit: contain;
 }
-
+ 
 .modal-overlay{
     width: 100vw;
     height: 100vh;
-
+ 
     position: fixed;
-
+ 
     inset: 0;
-
+ 
     background: rgba(0,0,0,0.45);
-
+ 
     display: none;
     justify-content: center;
     align-items: center;
-
+ 
     z-index: 1000;
 }
-
+ 
 .create-post-modal {
     width: 773px;
     background: white;
@@ -133,55 +133,55 @@
     overflow-y: auto;
     box-sizing: border-box;
 }
-
+ 
 .close-post-modal{
     position: absolute;
-
+ 
     top: 2.2vh;
     right: 1.3vw;
-
+ 
     border: none;
     background: transparent;
-
+ 
     cursor: pointer;
 }
-
+ 
 .close-post-modal img{
     width: 1vw;
     height: 1vw;
 }
-
+ 
 .post-modal-title{
     width: 35vw;
-
+ 
     font-size: 2.7vw;
     font-weight: 700;
-
+ 
     color: #16151C;
-
+ 
     margin-bottom: 2.2vh;
 }
-
+ 
 .post-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
-
+ 
 .post-inputs-container {
     display: flex;
     flex-direction: column;
     gap: 0.5vh;
     width: 100%;        
 }
-
+ 
 .post-inputs-container label{
     font-size: 0.75vw;
     font-weight: 500;
-
+ 
     color: #16151C;
 }
-
+ 
 #id_title,
 #id_topic {
     width: 100%;          
@@ -194,12 +194,12 @@
     color: #16151C;
     box-sizing: border-box;
 }
-
+ 
 #id_title::placeholder,
 #id_topic::placeholder {
     color: #8D8593;
 }
-
+ 
 .tags-container {
     width: 100%;        
     display: flex;
@@ -207,54 +207,54 @@
     gap: 0.5vw;
     align-items: center;
 }
-
+ 
 .tag-label input{
     display: none;
 }
-
+ 
 .tag{
     padding:
         0.5vh
         0.5vw;
-
+ 
     background: #F1EBF3;
-
+ 
     border-radius: 0.4vw;
-
+ 
     color: #543C52;
-
+ 
     font-size: 0.75vw;
-
+ 
     cursor: pointer;
+ 
+    transition: background 0.2s, color 0.2s;
 }
-
+ 
+/* Выбранный тег */
+.tag-selected .tag {
+    background: #543C52;
+    color: #ffffff;
+}
+ 
 .add-tag-btn{
     width: 1.5vw;
     height: 1.5vw;
-
+ 
     border: none;
     background: transparent;
-
+ 
     cursor: pointer;
 }
-
+ 
 .add-tag-btn img{
-    width: 0.8vw;
-    height: 0.8vw;
+    width: 1.2vw;
+    height: 1.2vw;
 }
-
-.textarea-container {
-    width: 100%;
-    height: 14vh;
-    position: relative;
-    border-radius: 0.5vw;
-}
-
-
+ 
 #id_content {
-    width: 100%;        /* было 35vw */
-    height: 14vh;
-    border: 0.05vw solid #C8C1CF;
+    width: 100%;
+    height: 200px;      /* ← фиксированная большая высота */
+    border: none;
     border-radius: 0.5vw;
     padding: 1vh 1.5vw 1vh 0.8vw;
     resize: none;
@@ -262,76 +262,73 @@
     font-size: 0.85vw;
     color: #16151C;
     box-sizing: border-box;
-
+    overflow: hidden;    /* ← скролл убираем с textarea */
 }
 
-.custom-scrollbar{
-    width: 0.4vw;
-    height: 10vh;
-
-    background: #543C52;
-
-    border-radius: 999vw;
-
-    position: absolute;
-
-    top: 0.5vh;
-    right: 0.3vw;
+.textarea-container {
+    width: 100%;
+    height: 14vh;
+    position: relative;
+    border-radius: 0.5vw;
+    border: 0.05vw solid #C8C1CF;
+    overflow-y: scroll;  /* ← скролл на контейнере */
+    box-sizing: border-box;
 }
-
+ 
+ 
 .post-link-container{
     display: flex;
     align-items: center;
-
+ 
     gap: 0.5vw;
 }
-
+ 
 .post-input{
     width: 18vw;
     height: 4.2vh;
-
+ 
     border: 0.05vw solid #C8C1CF;
     border-radius: 0.5vw;
-
+ 
     padding-left: 0.8vw;
-
+ 
     outline: none;
 }
-
+ 
 .add-link-btn{
     width: 1.5vw;
     height: 1.5vw;
-
+ 
     border: none;
     background: transparent;
-
+ 
     cursor: pointer;
 }
-
+ 
 .add-link-btn img{
-    width: 0.8vw;
-    height: 0.8vw;
+    width: 1.2vw;
+    height: 1.2vw;
 }
-
+ 
 .image-input-container{
     display: none;
 }
-
+ 
 .post-modal-footer {
     width: 100%;
     display: flex;
-    justify-content: flex-end;  /* всё вправо */
+    justify-content: flex-end;
     align-items: center;
     gap: 12px;
 }
-
+ 
 .post-footer-icons{
     display: flex;
     align-items: center;
-
+ 
     gap: 0.7vw;
 }
-
+ 
 .post-footer-icons button {
     width: 40px;
     height: 40px;
@@ -342,16 +339,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0;  /* убрать padding */
+    padding: 0;
     box-sizing: border-box;
 }
-
+ 
 .post-footer-icons button img {
     width: 40px;
     height: 40px;
     object-fit: contain;
 }
-
+ 
 .publish-post-btn {
     height: 40px;
     padding: 10px 16px;
@@ -368,7 +365,7 @@
     cursor: pointer;
     white-space: nowrap;
 }
-
+ 
 .tag-modal-overlay {
     width: 100%;
     height: 100vh;
@@ -380,7 +377,7 @@
     align-items: center;
     z-index: 1100;
 }
-
+ 
 .tag-modal {
     width: 340px;
     background: #fff;
@@ -391,7 +388,7 @@
     flex-direction: column;
     gap: 20px;
 }
-
+ 
 .close-tag-modal {
     position: absolute;
     top: 16px;
@@ -400,28 +397,28 @@
     background: transparent;
     cursor: pointer;
 }
-
+ 
 .close-tag-modal img { width: 20px; height: 20px; }
-
+ 
 .tag-modal-title {
     font-size: 28px;
     font-weight: 700;
     color: #16151C;
     margin: 0;
 }
-
+ 
 .tag-modal-field {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
-
+ 
 .tag-modal-field label {
     font-size: 14px;
     font-weight: 500;
     color: #16151C;
 }
-
+ 
 .tag-modal-input {
     width: 100%;
     height: 44px;
@@ -432,13 +429,13 @@
     box-sizing: border-box;
     font-size: 14px;
 }
-
+ 
 .tag-modal-footer {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
 }
-
+ 
 .tag-cancel-btn {
     height: 40px;
     padding: 0 20px;
@@ -449,7 +446,7 @@
     font-size: 14px;
     cursor: pointer;
 }
-
+ 
 .tag-save-btn {
     height: 40px;
     padding: 0 20px;
@@ -459,4 +456,43 @@
     color: #fff;
     font-size: 14px;
     cursor: pointer;
+}
+#id_content::-webkit-scrollbar {
+    width: 0.4vw;
+}
+
+#id_content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#id_content::-webkit-scrollbar-thumb {
+    background: #543C52;
+    border-radius: 999vw;
+}
+ 
+.custom-scrollbar{
+    width: 0.4vw;
+    height: 10vh;
+
+    background: #543C52;
+
+    border-radius: 999vw;
+
+    position: absolute;
+
+    top: 0.5vh;
+    right: 0.3vw;
+}
+.textarea-container::-webkit-scrollbar {
+    width: 0.4vw;
+}
+
+.textarea-container::-webkit-scrollbar-track {
+    background: #E8E4EC;
+    border-radius: 999px;
+}
+
+.textarea-container::-webkit-scrollbar-thumb {
+    background: #543C52;
+    border-radius: 999px;
 }
