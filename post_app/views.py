@@ -23,8 +23,19 @@ class PostPageView(View):
             images=images
         )
         if form.is_valid():
-            form.save(author=request.user)
-            return JsonResponse({'message': 'Created'})
+            post = form.save(author=request.user)
+            return JsonResponse({
+                'message': 'Created',
+                'post': {
+                    'title': post.title,
+                    'content': post.content,
+                    'author': post.author.username,
+                    'avatar': post.author.avatar.url if hasattr(post.author, 'avatar') and post.author.avatar else '',
+                    'tags': [tag.name for tag in post.tags.all()],
+                    'links': [link.url for link in post.urls.all()],
+                    'images': [img.compressed_image.url for img in post.images.all()],
+                }
+            })
 
         return JsonResponse({'error': form.errors}, status=400)
 
