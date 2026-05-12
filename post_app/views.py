@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views import View
+from django.views.generic import ListView
 from .forms import PostForm
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from .models import Tag
+from .models import Post, Tag
 from django.http import JsonResponse
+from django.core.paginator import Paginator
+from django.template.loader import render_to_string
 
 
 class PostPageView(View):
@@ -15,7 +16,7 @@ class PostPageView(View):
     def post(self, request):
         links = request.POST.getlist('links')
         images = request.FILES.getlist('image')
-        
+
         form = PostForm(
             request.POST,
             request.FILES,
@@ -39,14 +40,50 @@ class PostPageView(View):
 
         return JsonResponse({'error': form.errors}, status=400)
 
+
+class PostListView(ListView):
+    model = Post
+    context_object_name = 'posts'
+    template_name = 'post_app/post.html'
+    paginate_by = 3
+
+    def get_queryset(self):
+        return Post.objects.all().order_by('-created_at').prefetch_related('images', 'tags', 'urls', 'likes', 'hearts', 'views')
+
+    def get(self, request, *args, **kwargs):
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            queryset = self.get_queryset()
+            paginate = Paginator(queryset, self.paginate_by)
+            page_number = request.GET.get('page')
+            posts = paginate.get_page(page_number)
+
+            if int(page_number) > paginate.num_pages:
+                return JsonResponse({'success': False})
+
+            return JsonResponse({
+                'success': True,
+                'html': render_to_string(
+                    template_name='post_app/posts.html',
+                    context={'posts': posts}
+                )
+            })
+
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post_form'] = PostForm()
+        return context
+
+
 class CreateTagView(View):
     def post(self, request):
         import json
         data = json.loads(request.body)
         name = data.get('name', '').strip().lstrip('#')
-        
+
         if not name:
             return JsonResponse({'error': 'Назва обовязкова'}, status=400)
-        
+
         tag, created = Tag.objects.get_or_create(name=name)
         return JsonResponse({'id': tag.id, 'name': tag.name})

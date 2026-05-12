@@ -112,7 +112,7 @@ if (postForm) {
       const oldPreview = document.querySelector('.image-preview-container');
       if (oldPreview) oldPreview.remove();
 
-      const feed = document.querySelector('.posts-feed');
+      const feed = document.getElementById('post-list');
       if (feed && result.post) {
         const card = createPostCard(result.post);
         feed.insertBefore(card, feed.firstChild);
@@ -162,11 +162,11 @@ function createPostCard(post) {
     </div>
     <div class="post-card-footer">
       <span class="post-card-stat">
-        <img src="/static/images/Component_5__2_.svg" alt="">
+        <img src="/static/images/Component 5 (2).svg" alt="">
         0 Вподобань
       </span>
       <span class="post-card-stat">
-        <img src="/static/images/Component_5__3_.svg" alt="">
+        <img src="/static/images/Component 5 (3).svg" alt="">
         0 Вподобань
       </span>
       <span class="post-card-stat">
@@ -254,4 +254,31 @@ function syncFilesToInput() {
   const dt = new DataTransfer();
   selectedFiles.forEach(file => dt.items.add(file));
   imageInput.files = dt.files;
+}
+
+// Infinite scroll
+const postList = document.getElementById("post-list");
+const entryDiv = document.getElementById("entry-div");
+let currentPage = 1;
+
+const observer = new IntersectionObserver(async (entry) => {
+  if (entry[0].isIntersecting) {
+    currentPage++;
+    const result = await fetch(`/post/posts?page=${currentPage}`, {
+      method: "GET",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    });
+    const data = await result.json();
+    if (data.success) {
+      entryDiv.insertAdjacentHTML("beforebegin", data.html);
+    } else {
+      observer.disconnect();
+    }
+  }
+});
+
+if (entryDiv) {
+  observer.observe(entryDiv);
 }

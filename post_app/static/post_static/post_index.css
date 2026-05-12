@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Sacramento&display=swap');
 .post-section {
     width: 100vw;
     min-height: auto;
@@ -7,6 +9,8 @@
     justify-content: center;
     align-items: flex-start;
 }
+
+
 
 .post-create-container{
     width: 48vw;
@@ -490,6 +494,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 12px;
+    margin-left: -24px;
+    margin-right: -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    border-bottom: 1px solid #DDD6E4;
 }
 
 .post-card-author {
@@ -506,16 +516,22 @@
 }
 
 .post-author-name {
-    font-size: 14px;
-    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.084px;
     color: #16151C;
 }
+
 
 .post-card-body {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
+
+
 
 .post-card-title {
     font-size: 16px;
@@ -595,3 +611,12 @@
     height: 18px;
 }
 
+.post-author-signature {
+    font-family: 'Sacramento', cursive;
+    font-size: 36px;
+    color: #16151C;
+    opacity: 0.7;
+    margin-left: auto;
+    padding-right: 4px;
+    line-height: 1;
+}

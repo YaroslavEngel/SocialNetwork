@@ -1,0 +1,50 @@
+{% load static %}
+{% for post in posts %}
+  <div class="post-card">
+    <div class="post-card-header">
+      <div class="post-card-author">
+        <span class="post-author-name">{{ post.author.username }}</span>
+      </div>
+      <span class="post-author-signature">{{ post.author.username }}</span>
+    </div>
+    <div class="post-card-body">
+      <h2 class="post-card-title">{{ post.title }}</h2>
+      <p class="post-card-content">{{ post.content }}</p>
+      {% if post.tags.all %}
+        <div class="post-card-tags">
+          {% for tag in post.tags.all %}
+            <span class="post-card-tag">#{{ tag.name }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if post.urls.all %}
+        <div class="post-card-links">
+          {% for link in post.urls.all %}
+            <a href="{{ link.url }}" class="post-card-link" target="_blank">{{ link.url }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if post.images.all %}
+        <div class="post-card-images images-{{ post.images.count }}">
+          {% for image in post.images.all %}
+            <img src="{{ image.compressed_image.url }}" class="post-card-image" alt="">
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    <div class="post-card-footer">
+      <span class="post-card-stat">
+        <img src="{% static 'images/Component 5 (2).svg' %}" alt="">
+        {{ post.likes.count }} Вподобань
+      </span>
+      <span class="post-card-stat">
+        <img src="{% static 'images/Component 5 (3).svg' %}" alt="">
+        {{ post.hearts.count }} Вподобань
+      </span>
+      <span class="post-card-stat">
+        <img src="{% static 'images/eye.svg' %}" alt="">
+        {{ post.views.count }} Переглядів
+      </span>
+    </div>
+  </div>
+{% endfor %}
