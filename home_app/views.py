@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from post_app.forms import PostForm
 from post_app.models import Post
 from django.http import JsonResponse
@@ -7,7 +8,7 @@ from django.core.paginator import Paginator
 from django.template.loader import render_to_string
 
 
-class HomeListView(ListView):
+class HomeListView(LoginRequiredMixin, ListView):
     model = Post
     context_object_name = 'posts'
     template_name = 'home_app/home.html'

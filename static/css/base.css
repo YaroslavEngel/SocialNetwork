@@ -18,6 +18,8 @@ button {
     width: 100%;
     position: relative;
     background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
@@ -347,6 +349,8 @@ button {
 
 .fl-username-wrap {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .fl-at {

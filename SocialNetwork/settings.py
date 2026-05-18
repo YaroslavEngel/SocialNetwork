@@ -135,3 +135,5 @@ EMAIL_HOST_PASSWORD = 'dlnj uytj bslq iemh'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_URL = '/user/auth-form/'

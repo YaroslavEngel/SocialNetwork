@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import PostForm
 from .models import Post, Tag
 from django.http import JsonResponse
@@ -8,7 +9,7 @@ from django.core.paginator import Paginator
 from django.template.loader import render_to_string
 
 
-class PostPageView(View):
+class PostPageView(LoginRequiredMixin, View):
     def get(self, request):
         form = PostForm()
         return render(request, 'post_app/post.html', {'post_form': form})
@@ -41,7 +42,7 @@ class PostPageView(View):
         return JsonResponse({'error': form.errors}, status=400)
 
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin, ListView):
     model = Post
     context_object_name = 'posts'
     template_name = 'post_app/post.html'
@@ -76,7 +77,7 @@ class PostListView(ListView):
         return context
 
 
-class CreateTagView(View):
+class CreateTagView(LoginRequiredMixin, View):
     def post(self, request):
         import json
         data = json.loads(request.body)

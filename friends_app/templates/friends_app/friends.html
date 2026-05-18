@@ -1,12 +1,76 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Friends{% endblock %}
+{% block title %}Друзі{% endblock %}
 
 {% block frame1 %}{% endblock %}
 {% block frame2 %}{% endblock %}
 {% block frame3 %}{% endblock %}
 
+{% block links %}
+<link rel="stylesheet" href="{% static 'friends_static/friends_index.css' %}">
+<style>
+  @font-face {
+    font-family: 'GT Walsheim Pro';
+    src: url("{% static 'fonts/GTWalsheimPro-Regular.ttf' %}") format('truetype');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: 'GT Walsheim Pro';
+    src: url("{% static 'fonts/GTWalsheimPro-Bold.ttf' %}") format('truetype');
+    font-weight: 700;
+  }
+  @font-face {
+    font-family: 'GT Walsheim Pro';
+    src: url("{% static 'fonts/GTWalsheimPro-Medium.ttf' %}") format('truetype');
+    font-weight: 500;
+  }
+</style>
+{% endblock %}
 {% block content %}
+<div class="friends-page">
 
+    <aside class="friends-sidebar">
+        <nav class="friends-nav">
+            <a href="#" class="friends-nav-link active">Головна</a>
+            <a href="#" class="friends-nav-link">Запити</a>
+            <a href="#" class="friends-nav-link">Рекомендації</a>
+            <a href="#" class="friends-nav-link">Всі друзі</a>
+        </nav>
+    </aside>
+
+    <main class="friends-main">
+
+        <section class="friends-section" id="section-requests">
+            <div class="friends-section-header">
+                <h2 class="friends-section-title">Запити</h2>
+                <a href="#" class="friends-section-link">Дивитись всі</a>
+            </div>
+            <div class="friends-grid friends-grid--2">
+                <!-- Запити будуть тут -->
+            </div>
+        </section>
+
+        <section class="friends-section" id="section-recommendations">
+            <div class="friends-section-header">
+                <h2 class="friends-section-title">Рекомендації</h2>
+                <a href="#" class="friends-section-link">Дивитись всі</a>
+            </div>
+            <div class="friends-grid friends-grid--3">
+                <!-- Рекомендації будуть тут -->
+            </div>
+        </section>
+
+        <section class="friends-section" id="section-all">
+            <div class="friends-section-header">
+                <h2 class="friends-section-title">Всі друзі</h2>
+                <a href="#" class="friends-section-link">Дивитись всі</a>
+            </div>
+            <div class="friends-grid friends-grid--3">
+                <!-- Всі друзі будуть тут -->
+            </div>
+        </section>
+
+    </main>
+</div>
 {% endblock %}
