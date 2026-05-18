@@ -4,12 +4,12 @@
     box-sizing: border-box;
 }
 
-/* общие стили страницы */
 body {
-    background: #ffffff;
+    font-family: 'Inter', sans-serif;
+    background: #FAF8FF;
 }
 
-/* шапка */
+/* ===== AUTH ===== */
 .auth-header {
     width: 100vw;
     height: 10vh;
@@ -18,42 +18,34 @@ body {
     align-items: center;
 }
 
-/* логотип */
 .auth-logo img {
     width: 10vw;
 }
 
-/* основной блок */
 .auth-main {
     width: 100vw;
     height: 90vh;
     background-color: #E9E5EE;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     position: relative;
     overflow: hidden;
 }
 
-/* контейнер с формой */
 .auth-content {
     width: 70vw;
     display: flex;
-
     position: relative;
     z-index: 2;
 }
 
-/* КАРТИНКА (задний план) */
 .auth-image {
     position: absolute;
     right: 4vw;
     top: 50%;
     transform: translateY(-50%);
     z-index: 1;
-
     pointer-events: none;
 }
 
@@ -63,78 +55,21 @@ body {
     display: block;
 }
 
-/* карточка формы */
 .auth-card {
     position: relative;
     z-index: 3;
-
     width: 487px;
     background: #ffffff;
     border-radius: 20px;
     padding: 44px;
 }
 
-/* переключатели */
 .auth-tabs {
     display: flex;
     gap: 2vw;
     margin-bottom: 3vh;
     justify-content: center;
     align-items: center;
-
-}
-
-.tab {
-    font-size: 1.5vw;
-    font-weight: bold;
-    color: #A6A0AE;
-    cursor: pointer;
-}
-
-/* заголовок */
-.auth-title {
-    text-align: center;
-    font-size: 1.5vw;
-    font-weight: bold;
-    margin-bottom: 3vh;
-}
-
-/* форма */
-.auth-form p {
-    margin-bottom: 2vh;
-}
-
-/* подписи */
-.auth-form label {
-    display: block;
-    margin-bottom: 0.5vh;
-    font-size: 1vw;
-}
-
-/* инпуты */
-.auth-form input {
-    width: 100%;
-    height: 5vh;
-    border: 0.1vw solid #D9D4DD;
-    border-radius: 1vw;
-    padding: 0 1vw;
-}
-
-/* кнопка */
-.auth-form button {
-    width: 100%;
-    height: 6vh;
-    margin-top: 1vh;
-    border: none;
-    border-radius: 3vw;
-    background: #6C4A68;
-    color: white;
-    font-size: 1.2vw;
-    cursor: pointer;
-}
-
-.auth-form button:hover {
-    opacity: 0.9;
 }
 
 .tab {
@@ -146,12 +81,10 @@ body {
     position: relative;
 }
 
-/* активный */
 .tab.active {
     color: #1F1B24;
 }
 
-/* линия под активным */
 .tab.active::after {
     content: "";
     position: absolute;
@@ -160,6 +93,47 @@ body {
     width: 100%;
     height: 2px;
     background-color: #1F1B24;
+}
+
+.auth-title {
+    text-align: center;
+    font-size: 1.5vw;
+    font-weight: bold;
+    margin-bottom: 3vh;
+}
+
+.auth-form p {
+    margin-bottom: 2vh;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 0.5vh;
+    font-size: 1vw;
+}
+
+.auth-form input {
+    width: 100%;
+    height: 5vh;
+    border: 1px solid #D9D4DD;
+    border-radius: 8px;
+    padding: 0 12px;
+}
+
+.auth-form button {
+    width: 100%;
+    height: 6vh;
+    margin-top: 1vh;
+    border: none;
+    border-radius: 50px;
+    background: #6C4A68;
+    color: white;
+    font-size: 1.2vw;
+    cursor: pointer;
+}
+
+.auth-form button:hover {
+    opacity: 0.9;
 }
 
 .confirm-card {
@@ -181,13 +155,10 @@ body {
     width: 100%;
     text-align: center;
     font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 32px;
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 14px;
     font-weight: 500;
     color: #1F1B24;
     line-height: 1.5;
+    margin-bottom: 32px;
 }
 
 .confirm-label {
@@ -231,4 +202,239 @@ body {
     color: #6C4A68;
     font-size: 16px;
     cursor: pointer;
+}
+
+/* ===== FRIENDS PAGE ===== */
+
+.friends-layout {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    width: 100vw;
+}
+
+.friends-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 254px;
+    min-height: calc(100vh - 10vh);  /* вся высота минус хедер */
+    background: #FFFFFF;
+    border-right: 1px solid #E9E5EE;
+    padding-top: 24px;      /* было 104px — убираем */
+    padding-left: 32px;     /* было 80px — убираем лишнее */
+    padding-right: 20px;
+    padding-bottom: 24px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.friends-sidebar-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1F1B24;
+}
+
+.friends-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.friends-nav button {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: #1F1B24;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+}
+
+.friends-nav button:hover,
+.friends-nav button.active {
+    color: #6C4A68;
+    font-weight: 600;
+}
+
+.friends-page {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+    padding: 24px 5vw 24px 24px;
+    box-sizing: border-box;
+    min-height: calc(100vh - 10vh);
+}
+
+.friends-block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #E9E5EE;
+    padding: 16px 20px;
+    box-sizing: border-box;
+}
+
+.friends-block-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.friends-block-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1F1B24;
+}
+
+.friends-block-header button {
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: #7A5AF8;
+    cursor: pointer;
+    padding: 0;
+}
+
+.friends-cards-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.friend-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 289px;
+    min-width: 289px;
+    max-width: 289px;
+    background: #FFFFFF;
+    border: 1px solid #CDCED2;
+    border-radius: 10px;
+    padding: 16px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.friend-card-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #E9E5EE;
+    flex-shrink: 0;
+}
+
+.friend-card-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1F1B24;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.friend-card-username {
+    font-size: 13px;
+    color: #A6A0AE;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: -10px;
+}
+
+.friend-card-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    justify-content: center;
+}
+
+.friends-empty {
+    font-size: 14px;
+    color: #A6A0AE;
+    padding: 4px 0;
+}
+
+.friends-section-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+#friends-back-home {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: #7A5AF8;
+    cursor: pointer;
+    padding: 0;
+}
+
+#friends-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1F1B24;
+}
+
+#friends-section-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+@media (max-width: 640px) {
+    .friends-layout {
+        flex-direction: column;
+    }
+
+    .friends-sidebar {
+        width: 100vw;
+        min-height: auto;
+        flex-direction: row;
+        align-items: center;
+        padding: 12px 16px;
+        border-right: none;
+        border-bottom: 1px solid #E9E5EE;
+        gap: 16px;
+    }
+
+    .friends-nav {
+        flex-direction: row;
+        gap: 12px;
+    }
+
+    .friends-page {
+        padding: 16px;
+    }
+
+    .friend-card {
+        width: 100%;
+    }
 }

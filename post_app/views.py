@@ -49,7 +49,8 @@ class PostListView(LoginRequiredMixin, ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return Post.objects.all().order_by('-created_at').prefetch_related('images', 'tags', 'urls', 'likes', 'hearts', 'views')
+        return Post.objects.filter(author=self.request.user).order_by('-created_at').prefetch_related('images', 'tags', 'urls', 'likes', 'hearts', 'views')
+
 
     def get(self, request, *args, **kwargs):
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':

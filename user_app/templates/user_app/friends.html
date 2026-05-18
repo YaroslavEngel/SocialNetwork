@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block meta %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
+{% endblock %}
+
+{% block title %}Друзі{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'user_static/user_index.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="friends-layout">
+        <aside class="friends-sidebar">
+            <div class="friends-sidebar-title">Головна</div>
+            {% include "user_app/particles/friends/friends_nav.html" %}
+        </aside>
+        {% include "user_app/particles/friends/friends_home.html" %}
+        {% include "user_app/particles/friends/friends_section.html" %}
+    </div>
+{% endblock %}
+
+{% block frame1 %}{% endblock %}
+{% block frame2 %}{% endblock %}
+{% block frame3 %}{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'user_static/friends_sections.js' %}"></script>
+{% endblock %}

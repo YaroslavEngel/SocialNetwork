@@ -508,21 +508,7 @@
     gap: 10px;
 }
 
-.post-author-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
 
-.post-author-name {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
-    letter-spacing: -0.084px;
-    color: #16151C;
-}
 
 
 .post-card-body {
@@ -619,4 +605,19 @@
     margin-left: auto;
     padding-right: 4px;
     line-height: 1;
+}
+.post-author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.post-author-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.084px;
+    color: #16151C;
 }

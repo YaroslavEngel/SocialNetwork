@@ -14,8 +14,12 @@ import json
 from .forms import RegistrationForm, LoginForm
 
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
+from django.template.loader import render_to_string
+from .utils import get_users_by_section, friend_request, friend_reject, friend_accept, friend_delete
 
 User = get_user_model()
+
 class RegisterPageView(TemplateView):
     template_name = 'user_app/auth.html'
 
@@ -101,7 +105,7 @@ class SendConfirmCodeView(View):
             request.session['confirm_email'] = email
 
             send_mail(
-                'Код подтверждения',
+                'Код підтвердження',
                 f'Ваш код: {code}',
                 None,
                 [email],
@@ -132,7 +136,8 @@ class VerifyCodeView(View):
 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
-        
+
+
 class FirstLoginView(View):
     def post(self, request):
         user = request.user
@@ -148,3 +153,49 @@ class FirstLoginView(View):
         user.save()
 
         return JsonResponse({"message": "Saved"})
+
+
+class FriendsView(TemplateView):
+    template_name = 'user_app/friends.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sections'] = {
+            'requests': {'title': 'Запити', 'users': get_users_by_section(self.request.user, 'requests')[:3]},
+            'recommendations': {'title': 'Рекомендації', 'users': get_users_by_section(self.request.user, 'recommendations')[:3]},
+            'friends': {'title': 'Друзі', 'users': get_users_by_section(self.request.user, 'friends')[:3]}
+        }
+        return context
+
+
+class FriendsSectionView(View):
+    def get(self, request, section):
+        users = get_users_by_section(request.user, section)
+        paginate = Paginator(users, 6).get_page(request.GET.get("page", 1))
+        html = render_to_string(
+            'user_app/particles/friends/friend_cards.html',
+            {'users': paginate.object_list, 'section': section},
+            request=request
+        )
+        return JsonResponse({
+            'html': html,
+            'has_next': paginate.has_next()
+        })
+
+
+class FriendActionView(View):
+    actions = {
+        'request': friend_request,
+        'reject': friend_reject,
+        'accept': friend_accept,
+        'delete': friend_delete,
+    }
+
+    def post(self, request, action):
+        data = json.loads(request.body)
+        other_user = User.objects.get(id=data.get('user_id'))
+        fn = self.actions.get(action)
+        if not fn:
+            return JsonResponse({'error': 'Unknown action'}, status=400)
+        result = fn(request.user, other_user)
+        return JsonResponse(result)

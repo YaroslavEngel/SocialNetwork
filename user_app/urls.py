@@ -9,7 +9,10 @@ from .views import (
     ConfirmEmailFormView,
     SendConfirmCodeView,
     VerifyCodeView,
-    FirstLoginView
+    FirstLoginView,
+    FriendsView,
+    FriendsSectionView,
+    FriendActionView,
 )
 
 urlpatterns = [
@@ -25,5 +28,9 @@ urlpatterns = [
 
     path('send-code/', SendConfirmCodeView.as_view(), name='send-code'),
     path('verify-code/', VerifyCodeView.as_view(), name='verify-code'),
-    path('first-login/', FirstLoginView.as_view(), name='first-login')
+    path('first-login/', FirstLoginView.as_view(), name='first-login'),
+
+    path('', FriendsView.as_view(), name='friends'),
+    path('section/<str:section>/', FriendsSectionView.as_view(), name='friends-section'),
+    path('action/<str:action>/', FriendActionView.as_view(), name='friend-action'),
 ]

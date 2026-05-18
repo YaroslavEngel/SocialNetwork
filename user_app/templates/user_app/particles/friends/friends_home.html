@@ -1,0 +1,13 @@
+<main id="friends-home" class="friends-page">
+    {% for key, section in sections.items %}
+        <div class="friends-block">
+            <div class="friends-block-header">
+                <h2>{{ section.title }}</h2>
+                <button type="button" data-section-link="{{ key }}">Дивитись всі</button>
+            </div>
+            <div class="friends-cards-grid" data-home-section="{{ key }}">
+                {% include "user_app/particles/friends/friend_cards.html" with users=section.users section=key %}
+            </div>
+        </div>
+    {% endfor %}
+</main>

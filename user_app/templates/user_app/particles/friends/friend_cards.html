@@ -1,0 +1,22 @@
+{% load static %}
+{% for person in users %}
+    <article class="friend-card" data-person-id="{{ person.id }}">
+        <div class="friend-card-avatar"></div>
+        <div class="friend-card-name">{% firstof person.username person.email %}</div>
+        <div class="friend-card-username">@{{ person.username }}</div>
+        <div class="friend-card-actions">
+            {% if section == "requests" %}
+                <img src="{% static 'images/AcceptButton.svg' %}" alt="Підтвердити" data-action="accept" style="cursor:pointer;">
+                <img src="{% static 'images/DeleteButton.svg' %}" alt="Відхилити" data-action="reject" style="cursor:pointer;">
+            {% elif section == "recommendations" %}
+                <img src="{% static 'images/AddButton.svg' %}" alt="Додати" data-action="request" style="cursor:pointer;">
+                <img src="{% static 'images/DeleteButton.svg' %}" alt="Видалити" data-action="delete" style="cursor:pointer;">
+            {% else %}
+                <img src="{% static 'images/MessageButton.svg' %}" alt="Повідомлення" data-action="message" style="cursor:pointer;">
+                <img src="{% static 'images/DeleteButton.svg' %}" alt="Видалити" data-action="delete" style="cursor:pointer;">
+            {% endif %}
+        </div>
+    </article>
+{% empty %}
+    <p class="friends-empty">Порожньо</p>
+{% endfor %}
