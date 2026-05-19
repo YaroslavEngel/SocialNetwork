@@ -92,3 +92,11 @@ class CreateTagView(LoginRequiredMixin, View):
 
         tag, created = Tag.objects.get_or_create(name=name)
         return JsonResponse({'id': tag.id, 'name': tag.name})
+    
+class DeletePostView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        post = Post.objects.filter(pk=pk, author=request.user).first()
+        if not post:
+            return JsonResponse({'error': 'Не знайдено'}, status=404)
+        post.delete()
+        return JsonResponse({'message': 'Deleted'})
