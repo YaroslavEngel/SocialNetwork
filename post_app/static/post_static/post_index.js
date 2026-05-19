@@ -97,7 +97,7 @@ if (postForm) {
       if (input.value.trim()) formData.append('links', input.value.trim());
     });
 
-    const res = await fetch('/post/', {
+    const res = await fetch('/post/create/', {
       method: 'POST',
       headers: { 'X-CSRFToken': getCookie('csrftoken') },
       body: formData
@@ -264,7 +264,7 @@ let currentPage = 1;
 const observer = new IntersectionObserver(async (entry) => {
   if (entry[0].isIntersecting) {
     currentPage++;
-    const result = await fetch(`/post/posts?page=${currentPage}`, {
+    const result = await fetch(`/post/?page=${currentPage}`, {
       method: "GET",
       headers: {
         "X-Requested-With": "XMLHttpRequest",

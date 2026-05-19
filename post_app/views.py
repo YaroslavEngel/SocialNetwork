@@ -1,3 +1,5 @@
+from urllib import request
+
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import ListView
@@ -56,11 +58,12 @@ class PostListView(LoginRequiredMixin, ListView):
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             queryset = self.get_queryset()
             paginate = Paginator(queryset, self.paginate_by)
-            page_number = request.GET.get('page')
-            posts = paginate.get_page(page_number)
+            page_number = request.GET.get('page', 1)  # ← добавь default=1
 
             if int(page_number) > paginate.num_pages:
                 return JsonResponse({'success': False})
+
+            posts = paginate.get_page(page_number)
 
             return JsonResponse({
                 'success': True,
