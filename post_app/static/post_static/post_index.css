@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Sacramento&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
 .post-section {
     width: 100vw;
     min-height: auto;
     background: #F6F3F8;
-    padding: 1.5vh 1.3vw 0 1.3vw;
+    padding: 1.9vh 1.3vw 0 calc(clamp(100px, 9.1vw, 200px) + 0.0001vw);
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -13,12 +15,12 @@
 
 
 .post-create-container{
-    width: 60vw;
+    width: 69vw;
     height: 11vh;
     background: #FFFFFF;
     border: 0.05vw solid #DDD6E4;
     border-radius: 0.8vw;
-    padding: 1.5vh 1vw;
+    padding: 1.5vh 1.3vw;
     position: relative;
 }
 
@@ -125,11 +127,12 @@
 }
 
 .post-modal-title{
-    width: 35vw;
+    width: 30vw;
     font-size: 2.7vw;
     font-weight: 700;
     color: #16151C;
     margin-bottom: 2.2vh;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .post-form {
@@ -143,12 +146,14 @@
     flex-direction: column;
     gap: 0.5vh;
     width: 100%;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .post-inputs-container label{
     font-size: 0.75vw;
     font-weight: 500;
     color: #16151C;
+    font-family: 'DM Sans', sans-serif;
 }
 
 #id_title,
@@ -474,11 +479,11 @@
     flex-direction: column;
     align-items: center;
     gap: 1.5vh;
-    padding: 1.5vh 0 2.2vh 0;
+    padding: 1.5vh 0 2.2vh calc(clamp(150px, 7vw, 200px) + 1.5vw);
 }
 
 .post-card {
-    width: 48vw;
+    width: 71.5vw;
     background: #FFFFFF;
     border: 0.05vw solid #DDD6E4;
     border-radius: 12px;
@@ -494,7 +499,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 12px;
+    padding-bottom: 17px;
     margin-left: -24px;
     margin-right: -24px;
     padding-left: 24px;
@@ -620,4 +625,9 @@
     line-height: 20px;
     letter-spacing: -0.084px;
     color: #16151C;
+}
+#id_title::placeholder,
+#id_topic::placeholder,
+#id_content::placeholder {
+    font-family: 'GT Walsheim Pro', sans-serif;
 }

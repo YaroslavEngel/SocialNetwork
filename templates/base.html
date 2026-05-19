@@ -59,7 +59,10 @@
                         <img src="{% static 'images/peoples_frame.svg' %}" alt="">
                         <h1>Запити</h1>
                     </div>
-                    <button class="frame-btn">Дивитись всі</button>
+                    <img src="{% static 'images/see_all.svg' %}" 
+                    alt="Дивитись всі" 
+                    data-section-link="{{ key }}" 
+                    style="cursor:pointer;">
                 </div>
             </div>
             {% endblock %}
@@ -71,7 +74,10 @@
                         <img src="{% static 'images/chat_frame.svg' %}" alt="">
                         <h1>Повідомлення</h1>
                     </div>
-                    <button class="alert-btn">Дивитись всі</button>
+                    <img src="{% static 'images/see_all.svg' %}" 
+                    alt="Дивитись всі" 
+                    data-section-link="{{ key }}" 
+                    style="cursor:pointer;">
                 </div>
             </div>
             {% endblock %}

@@ -16,9 +16,20 @@ let pageNumber = 1;
 let hasNext = false;
 let isLoading = false;
 
-// При загрузке — показываем home, скрываем section
 friendsSection.style.display = "none";
 friendsHome.style.display = "block";
+
+// Обновляет превью одной секции на главной
+async function refreshHomeSection(section) {
+    const response = await fetch(`/friends/section/${section}/?page=1`, {
+        headers: {"X-Requested-With": "XMLHttpRequest"}
+    });
+    const data = await response.json();
+    const grid = document.querySelector(`[data-home-section="${section}"]`);
+    if (grid) {
+        grid.innerHTML = data.html;
+    }
+}
 
 async function loadSectionPage(section, page) {
     isLoading = true;
@@ -48,6 +59,34 @@ async function friendAction(action, userId, card) {
     if (data.label) {
         card.querySelector('[data-action]').textContent = data.label;
     }
+
+    // Обновляем нужные секции в зависимости от действия
+    if (action === 'accept') {
+        // Принял запрос — обновить Запити и Друзі
+        await refreshHomeSection('requests');
+        await refreshHomeSection('friends');
+    } else if (action === 'reject') {
+        // Отклонил запрос — обновить Запити и Рекомендації
+        await refreshHomeSection('requests');
+        await refreshHomeSection('recommendations');
+    } else if (action === 'request') {
+        // Отправил запрос из рекомендаций — обновить Рекомендації
+        await refreshHomeSection('recommendations');
+    } else if (action === 'delete') {
+        // Удалил друга — обновить Друзі и Рекомендації
+        await refreshHomeSection('friends');
+        await refreshHomeSection('recommendations');
+    } else if (action === 'hide') {
+        // Скрыл из рекомендаций — обновить Рекомендації
+        await refreshHomeSection('recommendations');
+    }
+
+    // Если мы в секции — обновляем и её тоже
+    if (currentSection) {
+        friendsSectionList.innerHTML = "";
+        pageNumber = 1;
+        await loadSectionPage(currentSection, pageNumber);
+    }
 }
 
 // Кнопки nav — открывают секцию
@@ -64,7 +103,7 @@ document.querySelectorAll("[data-section-link]").forEach(btn => {
     });
 });
 
-// Кнопка "Повернутись на головну" — показывает превью
+// Кнопка "Повернутись на головну"
 friendsBackHome.addEventListener("click", () => {
     friendsSection.style.display = "none";
     friendsHome.style.display = "block";
@@ -90,3 +129,20 @@ const observer = new IntersectionObserver(async (entries) => {
     }
 });
 observer.observe(friendsLoad);
+
+async function pollAll() {
+    if (!currentSection) {
+        await refreshHomeSection('requests');
+        await refreshHomeSection('recommendations');
+        await refreshHomeSection('friends');
+    }
+}
+
+setInterval(pollAll, 5000);
+
+document.querySelector('#friends-nav-home').addEventListener('click', () => {
+    friendsSection.style.display = "none";
+    friendsHome.style.display = "block";
+    currentSection = "";
+    pageNumber = 1;
+});

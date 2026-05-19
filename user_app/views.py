@@ -5,8 +5,7 @@ from django.contrib.auth import login, logout
 from django.http import HttpRequest, JsonResponse
 from django.urls import reverse
 from django.core.mail import send_mail
-
-from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 import random
 import json
@@ -19,6 +18,7 @@ from django.template.loader import render_to_string
 from .utils import get_users_by_section, friend_request, friend_reject, friend_accept, friend_delete
 
 User = get_user_model()
+
 
 class RegisterPageView(TemplateView):
     template_name = 'user_app/auth.html'
@@ -33,36 +33,24 @@ class RegisterPageView(TemplateView):
 class RegisterView(View):
     def post(self, request: HttpRequest):
         form = RegistrationForm(request.POST)
-
         if form.is_valid():
             form.save()
-
-            return JsonResponse({
-                'message': 'User Created'
-            })
-
-        return JsonResponse({
-            'error': form.errors.get_json_data()
-        })
+            return JsonResponse({'message': 'User Created'})
+        return JsonResponse({'error': form.errors.get_json_data()})
 
 
 class LoginView(View):
     def post(self, request):
         login_form = LoginForm(request.POST)
-
         if login_form.is_valid():
             user = login_form.user
             login(request, user)
-
             return JsonResponse({
                 "message": "Login Success",
                 "redirect_url": reverse("home"),
                 "first_login": not user.username
             })
-
-        return JsonResponse({
-            "error": login_form.errors.get_json_data()
-        })
+        return JsonResponse({"error": login_form.errors.get_json_data()})
 
 
 class LogoutView(View):
@@ -95,24 +83,13 @@ class SendConfirmCodeView(View):
         try:
             data = json.loads(request.body)
             email = data.get('email')
-
             if not email:
                 return JsonResponse({'error': 'Email required'}, status=400)
-
             code = str(random.randint(100000, 999999))
-
             request.session['confirm_code'] = code
             request.session['confirm_email'] = email
-
-            send_mail(
-                'Код підтвердження',
-                f'Ваш код: {code}',
-                None,
-                [email],
-            )
-
+            send_mail('Код підтвердження', f'Ваш код: {code}', None, [email])
             return JsonResponse({'message': 'Code sent'})
-
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
 
@@ -122,18 +99,13 @@ class VerifyCodeView(View):
         try:
             data = json.loads(request.body)
             code = data.get('code')
-
             session_code = request.session.get('confirm_code')
-
             if not session_code:
                 return JsonResponse({'error': 'Session expired'}, status=400)
-
             if code == session_code:
                 request.session.pop('confirm_code', None)
                 return JsonResponse({'message': 'Verified'})
-
             return JsonResponse({'error': 'Invalid code'}, status=400)
-
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
 
@@ -141,36 +113,46 @@ class VerifyCodeView(View):
 class FirstLoginView(View):
     def post(self, request):
         user = request.user
-
         username = request.POST.get("username")
         pseudonym = request.POST.get("pseudonym")
-
         if User.objects.filter(username=username).exists():
             return JsonResponse({"error": "Username already exists"})
-
         user.username = username
         user.first_name = pseudonym
         user.save()
-
         return JsonResponse({"message": "Saved"})
 
 
-class FriendsView(TemplateView):
+class FriendsView(LoginRequiredMixin, TemplateView):
     template_name = 'user_app/friends.html'
+    login_url = '/auth-form/'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        hidden_ids = self.request.session.get('hidden_recommendations', [])
         context['sections'] = {
-            'requests': {'title': 'Запити', 'users': get_users_by_section(self.request.user, 'requests')[:3]},
-            'recommendations': {'title': 'Рекомендації', 'users': get_users_by_section(self.request.user, 'recommendations')[:3]},
-            'friends': {'title': 'Друзі', 'users': get_users_by_section(self.request.user, 'friends')[:3]}
+            'requests': {
+                'title': 'Запити',
+                'users': get_users_by_section(self.request.user, 'requests')[:3]
+            },
+            'recommendations': {
+                'title': 'Рекомендації',
+                'users': get_users_by_section(self.request.user, 'recommendations', hidden_ids=hidden_ids)[:6]
+            },
+            'friends': {
+                'title': 'Друзі',
+                'users': get_users_by_section(self.request.user, 'friends')[:6]
+            },
         }
         return context
 
 
-class FriendsSectionView(View):
+class FriendsSectionView(LoginRequiredMixin, View):
+    login_url = '/auth-form/'
+
     def get(self, request, section):
-        users = get_users_by_section(request.user, section)
+        hidden_ids = request.session.get('hidden_recommendations', [])
+        users = get_users_by_section(request.user, section, hidden_ids=hidden_ids)
         paginate = Paginator(users, 6).get_page(request.GET.get("page", 1))
         html = render_to_string(
             'user_app/particles/friends/friend_cards.html',
@@ -183,17 +165,36 @@ class FriendsSectionView(View):
         })
 
 
-class FriendActionView(View):
+class FriendActionView(LoginRequiredMixin, View):
+    login_url = '/auth-form/'
     actions = {
         'request': friend_request,
-        'reject': friend_reject,
-        'accept': friend_accept,
-        'delete': friend_delete,
+        'reject':  friend_reject,
+        'accept':  friend_accept,
+        'delete':  friend_delete,
     }
 
     def post(self, request, action):
         data = json.loads(request.body)
         other_user = User.objects.get(id=data.get('user_id'))
+
+        if action == 'hide':
+            hidden = request.session.get('hidden_recommendations', [])
+            if other_user.id not in hidden:
+                hidden.append(other_user.id)
+                request.session['hidden_recommendations'] = hidden
+                request.session.modified = True
+            return JsonResponse({'remove': True})
+
+        if action == 'delete':
+            result = friend_delete(request.user, other_user)
+            hidden = request.session.get('hidden_recommendations', [])
+            if other_user.id in hidden:
+                hidden.remove(other_user.id)
+                request.session['hidden_recommendations'] = hidden
+                request.session.modified = True
+            return JsonResponse(result)
+
         fn = self.actions.get(action)
         if not fn:
             return JsonResponse({'error': 'Unknown action'}, status=400)

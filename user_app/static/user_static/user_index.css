@@ -209,8 +209,8 @@ body {
 .friends-layout {
     display: flex;
     flex-direction: row;
-    min-height: 100vh;
-    width: 100vw;
+    min-height: calc(100vh - 10vh);
+    width: 100%;
 }
 
 .friends-sidebar {
@@ -218,21 +218,13 @@ body {
     flex-direction: column;
     gap: 16px;
     width: 254px;
-    min-height: calc(100vh - 10vh);  /* вся высота минус хедер */
+    min-width: 254px;
+    min-height: calc(100vh - 10vh);
     background: #FFFFFF;
     border-right: 1px solid #E9E5EE;
-    padding-top: 24px;      /* было 104px — убираем */
-    padding-left: 32px;     /* было 80px — убираем лишнее */
-    padding-right: 20px;
-    padding-bottom: 24px;
+    padding: 24px 20px 24px 32px;
     box-sizing: border-box;
     flex-shrink: 0;
-}
-
-.friends-sidebar-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #1F1B24;
 }
 
 .friends-nav {
@@ -253,6 +245,7 @@ body {
     padding: 0;
     text-align: left;
     width: 100%;
+    font-family: 'Inter', sans-serif;
 }
 
 .friends-nav button:hover,
@@ -269,6 +262,7 @@ body {
     padding: 24px 5vw 24px 24px;
     box-sizing: border-box;
     min-height: calc(100vh - 10vh);
+    overflow-y: auto;
 }
 
 .friends-block {
@@ -281,6 +275,7 @@ body {
     border: 1px solid #E9E5EE;
     padding: 16px 20px;
     box-sizing: border-box;
+    margin-bottom: 16px;
 }
 
 .friends-block-header {
@@ -294,16 +289,13 @@ body {
     font-size: 16px;
     font-weight: 600;
     color: #1F1B24;
+    font-family: 'Inter', sans-serif;
 }
 
-.friends-block-header button {
-    background: none;
-    border: none;
-    font-size: 13px;
-    font-weight: 500;
-    color: #7A5AF8;
+.friends-block-header img {
     cursor: pointer;
-    padding: 0;
+    height: 18px;
+    width: 93px;
 }
 
 .friends-cards-grid {
@@ -318,31 +310,30 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
-    width: 289px;
-    min-width: 289px;
-    max-width: 289px;
+    gap: 8px;
+    flex: 1 1 180px;
+    max-width: 210px;
+    min-width: 260px;
     background: #FFFFFF;
     border: 1px solid #CDCED2;
     border-radius: 10px;
-    padding: 16px;
+    padding: 20px 16px;
     box-sizing: border-box;
-    flex-shrink: 0;
 }
 
 .friend-card-avatar {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     background-color: #E9E5EE;
     flex-shrink: 0;
 }
 
 .friend-card-name {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: #1F1B24;
     text-align: center;
@@ -350,17 +341,18 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-family: 'Inter', sans-serif;
 }
 
 .friend-card-username {
-    font-size: 13px;
+    font-size: 12px;
     color: #A6A0AE;
     text-align: center;
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-top: -10px;
+    font-family: 'Inter', sans-serif;
 }
 
 .friend-card-actions {
@@ -369,12 +361,21 @@ body {
     gap: 8px;
     width: 100%;
     justify-content: center;
+    flex-wrap: wrap;
+}
+
+.friend-card-actions img {
+    cursor: pointer;
+    height: 36px;
+    width: auto;
+    max-width: 120px;
 }
 
 .friends-empty {
     font-size: 14px;
     color: #A6A0AE;
     padding: 4px 0;
+    font-family: 'Inter', sans-serif;
 }
 
 .friends-section-header {
@@ -382,6 +383,7 @@ body {
     flex-direction: row;
     align-items: center;
     gap: 16px;
+    margin-bottom: 8px;
 }
 
 #friends-back-home {
@@ -394,12 +396,14 @@ body {
     color: #7A5AF8;
     cursor: pointer;
     padding: 0;
+    font-family: 'Inter', sans-serif;
 }
 
 #friends-section-title {
     font-size: 16px;
     font-weight: 600;
     color: #1F1B24;
+    font-family: 'Inter', sans-serif;
 }
 
 #friends-section-list {
@@ -407,6 +411,7 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 16px;
+    align-items: flex-start;
 }
 
 @media (max-width: 640px) {
@@ -415,7 +420,8 @@ body {
     }
 
     .friends-sidebar {
-        width: 100vw;
+        width: 100%;
+        min-width: unset;
         min-height: auto;
         flex-direction: row;
         align-items: center;
@@ -423,11 +429,13 @@ body {
         border-right: none;
         border-bottom: 1px solid #E9E5EE;
         gap: 16px;
+        overflow-x: auto;
     }
 
     .friends-nav {
         flex-direction: row;
         gap: 12px;
+        flex-wrap: nowrap;
     }
 
     .friends-page {
@@ -435,6 +443,7 @@ body {
     }
 
     .friend-card {
-        width: 100%;
+        flex: 1 1 140px;
+        max-width: 100%;
     }
 }
