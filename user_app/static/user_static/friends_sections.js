@@ -21,7 +21,7 @@ friendsHome.style.display = "block";
 
 // Обновляет превью одной секции на главной
 async function refreshHomeSection(section) {
-    const response = await fetch(`/friends/section/${section}/?page=1`, {
+    const response = await fetch(`/friends/section/${section}/?page=1&preview=1`, {
         headers: {"X-Requested-With": "XMLHttpRequest"}
     });
     const data = await response.json();

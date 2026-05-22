@@ -205,32 +205,23 @@ body {
 }
 
 /* ===== FRIENDS PAGE ===== */
-
+/* ── LAYOUT ── */
 .friends-layout {
     display: flex;
-    flex-direction: row;
-    min-height: calc(100vh - 10vh);
     width: 100%;
-}
-
-.friends-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 254px;
-    min-width: 254px;
     min-height: calc(100vh - 10vh);
-    background: #FFFFFF;
-    border-right: 1px solid #E9E5EE;
-    padding: 24px 20px 24px 32px;
-    box-sizing: border-box;
-    flex-shrink: 0;
 }
 
+/* ── NAV ── */
 .friends-nav {
+    width: 13.2vw;
+    height: fit-content;
+    position: absolute;
+    top: 13.5vh;
+    left: 4.2vw;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 2vh;
 }
 
 .friends-nav button {
@@ -238,44 +229,54 @@ body {
     align-items: center;
     background: none;
     border: none;
-    font-size: 14px;
+    font-size: 0.85vw;
     font-weight: 400;
-    color: #1F1B24;
+    color: #070A1C;
     cursor: pointer;
     padding: 0;
     text-align: left;
     width: 100%;
-    font-family: 'Inter', sans-serif;
+    font-family: 'GT Walsheim Pro', 'Inter', sans-serif;
+    line-height: 100%;
+    letter-spacing: -0.01em;
 }
 
-.friends-nav button:hover,
-.friends-nav button.active {
-    color: #6C4A68;
-    font-weight: 600;
+.friends-nav button.active,
+.friends-nav button:hover {
+    color: #543C52;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: #543C52;
 }
 
+/* ── HOME / SECTION PAGE ── */
+.friends-home,
 .friends-page {
+    position: absolute;
+    top: 13.5vh;
+    left: 22.8vw;
+    width: calc(100vw - 22.8vw - 5vw); /* ← растягиваем до правого края с отступом */
+    height: fit-content;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    flex: 1;
-    padding: 24px 5vw 24px 24px;
-    box-sizing: border-box;
-    min-height: calc(100vh - 10vh);
+    gap: 1vh;
     overflow-y: auto;
 }
 
+/* ── BLOCK (Запити / Рекомендації / Всі друзі) ── */
 .friends-block {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
     width: 100%;
     background: #FFFFFF;
     border-radius: 10px;
-    border: 1px solid #E9E5EE;
+    border: 1px solid #CDCED2;
     padding: 16px 20px;
     box-sizing: border-box;
-    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 0.5vh;
 }
 
 .friends-block-header {
@@ -286,19 +287,22 @@ body {
 }
 
 .friends-block-header h2 {
-    font-size: 16px;
+    font-size: 0.9vw;
     font-weight: 600;
-    color: #1F1B24;
+    color: #070A1C;
     font-family: 'Inter', sans-serif;
+    margin: 0;
 }
 
 .friends-block-header img {
     cursor: pointer;
     height: 18px;
-    width: 93px;
+    width: auto;
 }
 
-.friends-cards-grid {
+/* ── CARDS GRID ── */
+.friends-cards-grid,
+#friends-section-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -306,27 +310,25 @@ body {
     align-items: flex-start;
 }
 
+/* ── FRIEND CARD ── */
 .friend-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     flex: 1 1 180px;
-    max-width: 210px;
-    min-width: 260px;
+    max-width: 220px;
+    min-width: 180px;
     background: #FFFFFF;
     border: 1px solid #CDCED2;
     border-radius: 10px;
-    padding: 20px 16px;
+    padding: 24px 16px;
     box-sizing: border-box;
 }
 
 .friend-card-avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     background-color: #E9E5EE;
     flex-shrink: 0;
@@ -335,7 +337,7 @@ body {
 .friend-card-name {
     font-size: 14px;
     font-weight: 600;
-    color: #1F1B24;
+    color: #070A1C;
     text-align: center;
     width: 100%;
     overflow: hidden;
@@ -368,16 +370,9 @@ body {
     cursor: pointer;
     height: 36px;
     width: auto;
-    max-width: 120px;
 }
 
-.friends-empty {
-    font-size: 14px;
-    color: #A6A0AE;
-    padding: 4px 0;
-    font-family: 'Inter', sans-serif;
-}
-
+/* ── SECTION HEADER ── */
 .friends-section-header {
     display: flex;
     flex-direction: row;
@@ -387,8 +382,6 @@ body {
 }
 
 #friends-back-home {
-    display: flex;
-    align-items: center;
     background: none;
     border: none;
     font-size: 13px;
@@ -402,44 +395,32 @@ body {
 #friends-section-title {
     font-size: 16px;
     font-weight: 600;
-    color: #1F1B24;
+    color: #070A1C;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}
+
+.friends-empty {
+    font-size: 14px;
+    color: #A6A0AE;
     font-family: 'Inter', sans-serif;
 }
 
-#friends-section-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 16px;
-    align-items: flex-start;
-}
-
+/* ── MEDIA ── */
 @media (max-width: 640px) {
-    .friends-layout {
-        flex-direction: column;
-    }
-
-    .friends-sidebar {
-        width: 100%;
-        min-width: unset;
-        min-height: auto;
-        flex-direction: row;
-        align-items: center;
-        padding: 12px 16px;
-        border-right: none;
-        border-bottom: 1px solid #E9E5EE;
-        gap: 16px;
-        overflow-x: auto;
-    }
-
     .friends-nav {
+        position: static;
         flex-direction: row;
-        gap: 12px;
         flex-wrap: nowrap;
+        gap: 12px;
+        overflow-x: auto;
+        width: 100%;
     }
 
+    .friends-home,
     .friends-page {
-        padding: 16px;
+        position: static;
+        width: 100%;
     }
 
     .friend-card {

@@ -153,16 +153,24 @@ class FriendsSectionView(LoginRequiredMixin, View):
     def get(self, request, section):
         hidden_ids = request.session.get('hidden_recommendations', [])
         users = get_users_by_section(request.user, section, hidden_ids=hidden_ids)
-        paginate = Paginator(users, 6).get_page(request.GET.get("page", 1))
+        
+        preview = request.GET.get('preview')
+        if preview:
+            paginate = Paginator(users, 6).get_page(1)
+            html = render_to_string(
+                'user_app/particles/friends/friend_cards.html',
+                {'users': paginate.object_list, 'section': section},
+                request=request
+            )
+            return JsonResponse({'html': html, 'has_next': False})
+        
+        paginate = Paginator(users, 100).get_page(request.GET.get("page", 1))
         html = render_to_string(
             'user_app/particles/friends/friend_cards.html',
             {'users': paginate.object_list, 'section': section},
             request=request
         )
-        return JsonResponse({
-            'html': html,
-            'has_next': paginate.has_next()
-        })
+        return JsonResponse({'html': html, 'has_next': paginate.has_next()})
 
 
 class FriendActionView(LoginRequiredMixin, View):
