@@ -21,10 +21,15 @@ class HomeListView(LoginRequiredMixin, ListView):
         if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
             queryset = self.get_queryset()
             paginate = Paginator(queryset, self.paginate_by)
-            page_number = request.GET.get('page')
+            page_number = request.GET.get('page', 1)
             posts = paginate.get_page(page_number)
 
-            if int(page_number) > paginate.num_pages:
+            try:
+                page_number = int(page_number)
+            except (ValueError, TypeError):
+                page_number = 1
+
+            if page_number > paginate.num_pages:
                 return JsonResponse({'success': False})
 
             return JsonResponse({

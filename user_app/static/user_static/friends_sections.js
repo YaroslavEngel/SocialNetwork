@@ -43,6 +43,11 @@ async function loadSectionPage(section, page) {
 }
 
 async function friendAction(action, userId, card) {
+    if (action === 'accept') {
+        window.location.href = `/friends/profile/${userId}/`;
+        return;
+    }
+
     const response = await fetch(`/friends/action/${action}/`, {
         method: 'POST',
         headers: {
@@ -60,28 +65,19 @@ async function friendAction(action, userId, card) {
         card.querySelector('[data-action]').textContent = data.label;
     }
 
-    // Обновляем нужные секции в зависимости от действия
     if (action === 'accept') {
-        // Принял запрос — обновить Запити и Друзі
         await refreshHomeSection('requests');
         await refreshHomeSection('friends');
     } else if (action === 'reject') {
-        // Отклонил запрос — обновить Запити и Рекомендації
         await refreshHomeSection('requests');
         await refreshHomeSection('recommendations');
-    } else if (action === 'request') {
-        // Отправил запрос из рекомендаций — обновить Рекомендації
-        await refreshHomeSection('recommendations');
     } else if (action === 'delete') {
-        // Удалил друга — обновить Друзі и Рекомендації
         await refreshHomeSection('friends');
         await refreshHomeSection('recommendations');
     } else if (action === 'hide') {
-        // Скрыл из рекомендаций — обновить Рекомендації
         await refreshHomeSection('recommendations');
     }
 
-    // Если мы в секции — обновляем и её тоже
     if (currentSection) {
         friendsSectionList.innerHTML = "";
         pageNumber = 1;

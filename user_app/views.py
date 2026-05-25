@@ -15,7 +15,7 @@ from .forms import RegistrationForm, LoginForm
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
-from .utils import get_users_by_section, friend_request, friend_reject, friend_accept, friend_delete
+from .utils import get_users_by_section, friend_request, friend_reject, friend_accept, friend_delete, friend_add_direct
 
 User = get_user_model()
 
@@ -153,18 +153,20 @@ class FriendsSectionView(LoginRequiredMixin, View):
     def get(self, request, section):
         hidden_ids = request.session.get('hidden_recommendations', [])
         users = get_users_by_section(request.user, section, hidden_ids=hidden_ids)
-        
+
         preview = request.GET.get('preview')
         if preview:
-            paginate = Paginator(users, 6).get_page(1)
+            limit = 3 if section == 'requests' else 6
+            paginate = Paginator(users, limit).get_page(1)
             html = render_to_string(
                 'user_app/particles/friends/friend_cards.html',
                 {'users': paginate.object_list, 'section': section},
                 request=request
             )
             return JsonResponse({'html': html, 'has_next': False})
-        
-        paginate = Paginator(users, 100).get_page(request.GET.get("page", 1))
+
+        page_size = 9 if section == 'requests' else 6
+        paginate = Paginator(users, page_size).get_page(request.GET.get("page", 1))
         html = render_to_string(
             'user_app/particles/friends/friend_cards.html',
             {'users': paginate.object_list, 'section': section},
@@ -180,10 +182,15 @@ class FriendActionView(LoginRequiredMixin, View):
         'reject':  friend_reject,
         'accept':  friend_accept,
         'delete':  friend_delete,
+        'add':     friend_add_direct,
     }
 
     def post(self, request, action):
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            data = request.POST
+
         other_user = User.objects.get(id=data.get('user_id'))
 
         if action == 'hide':
@@ -192,6 +199,8 @@ class FriendActionView(LoginRequiredMixin, View):
                 hidden.append(other_user.id)
                 request.session['hidden_recommendations'] = hidden
                 request.session.modified = True
+            if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
+                return redirect('/friends/')
             return JsonResponse({'remove': True})
 
         if action == 'delete':
@@ -201,10 +210,40 @@ class FriendActionView(LoginRequiredMixin, View):
                 hidden.remove(other_user.id)
                 request.session['hidden_recommendations'] = hidden
                 request.session.modified = True
+            if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
+                return redirect('/friends/')
             return JsonResponse(result)
 
         fn = self.actions.get(action)
         if not fn:
             return JsonResponse({'error': 'Unknown action'}, status=400)
         result = fn(request.user, other_user)
+        if request.META.get('HTTP_X_REQUESTED_WITH') != 'XMLHttpRequest':
+            return redirect('/friends/')
         return JsonResponse(result)
+
+
+class UserProfileView(LoginRequiredMixin, View):
+    login_url = '/auth-form/'
+
+    def get(self, request, user_id):
+        profile_user = User.objects.get(id=user_id)
+        posts = profile_user.user.all().order_by('-created_at')
+
+        requests_ids = [u.id for u in get_users_by_section(request.user, 'requests')]
+        friends_ids = [u.id for u in get_users_by_section(request.user, 'friends')]
+
+        if profile_user == request.user:
+            relation = 'self'
+        elif profile_user.id in requests_ids:
+            relation = 'incoming_request'
+        elif profile_user.id in friends_ids:
+            relation = 'friend'
+        else:
+            relation = 'stranger'
+
+        return render(request, 'user_app/user_profile.html', {
+            'profile_user': profile_user,
+            'posts': posts,
+            'relation': relation,
+        })

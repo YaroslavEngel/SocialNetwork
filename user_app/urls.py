@@ -13,6 +13,7 @@ from .views import (
     FriendsView,
     FriendsSectionView,
     FriendActionView,
+    UserProfileView
 )
 
 urlpatterns = [
@@ -33,4 +34,6 @@ urlpatterns = [
     path('', FriendsView.as_view(), name='friends'),
     path('section/<str:section>/', FriendsSectionView.as_view(), name='friends-section'),
     path('action/<str:action>/', FriendActionView.as_view(), name='friend-action'),
+    
+    path('profile/<int:user_id>/', UserProfileView.as_view(), name='user-profile'),
 ]

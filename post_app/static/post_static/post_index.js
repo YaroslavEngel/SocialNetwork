@@ -264,7 +264,8 @@ let currentPage = 1;
 const observer = new IntersectionObserver(async (entry) => {
   if (entry[0].isIntersecting) {
     currentPage++;
-    const result = await fetch(`/post/?page=${currentPage}`, {
+    const url = entryDiv.dataset.url;
+    const result = await fetch(`${url}?page=${currentPage}`, {
       method: "GET",
       headers: {
         "X-Requested-With": "XMLHttpRequest",

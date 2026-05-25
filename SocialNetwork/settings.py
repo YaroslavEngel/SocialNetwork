@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'home_app',
     'post_app',
     'user_app',
+    'chat_app'
     ]
+
+ASGI_APPLICATION = 'messenger.asgi.application'
 
 
 AUTH_USER_MODEL = 'user_app.User'

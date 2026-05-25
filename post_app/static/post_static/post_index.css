@@ -3,19 +3,18 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 
 .post-section {
-    width: 100vw;
-    min-height: auto;
+    width: 100%;
     background: #F6F3F8;
-    padding: 1.9vh 1.3vw 0 calc(clamp(100px, 9.1vw, 200px) + 0.0001vw);
+    padding: 1.9vh 0 0 calc(clamp(220px, 18vw, 350px) + 5vw + 24px);
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
+    box-sizing: border-box;
 }
 
 
-
 .post-create-container{
-    width: 69vw;
+    width: 68.2vw;
     height: 11vh;
     background: #FFFFFF;
     border: 0.05vw solid #DDD6E4;
@@ -473,24 +472,26 @@
 
 /* Posts feed */
 .posts-feed {
-    width: 100vw;
     background: #F6F3F8;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1.5vh;
-    padding: 1.5vh 0 2.2vh calc(clamp(150px, 7vw, 200px) + 1.5vw);
+    align-items: flex-start;
+    gap: 5px;
+    padding: 1.5vh 24px 2.2vh calc(clamp(220px, 18vw, 350px) + 5vw + 24px);
+    box-sizing: border-box;
+    min-width: 100vw;
 }
 
+
 .post-card {
-    width: 71.5vw;
+    width: 70.9vw;
     background: #FFFFFF;
-    border: 0.05vw solid #DDD6E4;
-    border-radius: 12px;
-    padding: 20px 24px;
+    border: 1px solid #CDCED2;
+    border-radius: 10px;
+    padding: 21px ;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -630,4 +631,10 @@
 #id_topic::placeholder,
 #id_content::placeholder {
     font-family: 'GT Walsheim Pro', sans-serif;
+}
+
+#post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }

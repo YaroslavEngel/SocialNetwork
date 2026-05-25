@@ -5,7 +5,6 @@ def friend_request(user, other_user):
     return {"label": "Очікування"}
 
 def friend_reject(user, other_user):
-    # other_user отправил запрос нам — он from_user, мы to_user
     friendship = Friendship.objects.filter(from_user=other_user, to_user=user).first()
     if friendship:
         friendship.status = "dismissed"
@@ -13,12 +12,21 @@ def friend_reject(user, other_user):
     return {"remove": True}
 
 def friend_accept(user, other_user):
-    # other_user отправил запрос нам — он from_user, мы to_user
     friendship = Friendship.objects.filter(from_user=other_user, to_user=user).first()
     if friendship:
         friendship.status = "accepted"
         friendship.save()
     return {"remove": True, "friend": True}
+
+def friend_add_direct(user, other_user):
+    friendship, created = Friendship.objects.get_or_create(
+        from_user=user, to_user=other_user,
+        defaults={"status": "accepted"}
+    )
+    if not created:
+        friendship.status = "accepted"
+        friendship.save()
+    return {"success": True}
 
 def friend_delete(user, other_user):
     friendship = Friendship.objects.filter(from_user=user, to_user=other_user).first()
