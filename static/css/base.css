@@ -120,7 +120,7 @@ button {
 
 /* ── ЛЕВАЯ ПАНЕЛЬ ── */
 .profile-container {
-    position: absolute;
+    position: fixed;
     top: 12vh;
     left: 5vw;
     width: clamp(220px, 18vw, 350px);

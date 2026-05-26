@@ -1,25 +1,21 @@
+{% load static %}
 <!-- Відкриваємо блок особистих повідомлень. -->
-<section class="chat-block">
-    <!-- Показуємо заголовок блоку повідомлень. -->
-    <h2>Повідомлення</h2>
+<section class="chat-messages-block">
+    <!-- Заголовок з кнопкою "Дивитись всі" -->
+    <div class="chat-block-header">
+    <img src="{% static 'chat_app/images/PersonalChat.svg' %}" alt="Повідомлення">
+    <a href="#"><img src="{% static 'images/see_all.svg' %}" alt="Дивитись всі"></a>
+    </div>
     <!-- Перебираємо особисті чати поточного користувача. -->
     {% for chat in personal_chats %}
-        <!-- Перебираємо користувачів конкретного чату. -->
         {% for person in chat.users.all %}
-            <!-- Пропускаємо поточного користувача. -->
             {% if person.id != request.user.id %}
-                <!-- Показуємо кнопку відкриття чату зі співрозмовником. -->
                 <button type="button" class="chat-user-button" data-chat-user="{{ person.id }}" data-chat-username="{{ person.email }}">
-                    <!-- Показуємо username або email співрозмовника. -->
                     {{ person.email }}
                 </button>
             {% endif %}
-            <!-- Закриваємо умову пропуску поточного користувача. -->
         {% endfor %}
-        <!-- Закриваємо цикл користувачів чату. -->
     {% empty %}
-        <!-- Показуємо порожній стан повідомлень. -->
         <p>Чатів поки немає</p>
-    <!-- Закриваємо цикл чатів. -->
     {% endfor %}
 </section>

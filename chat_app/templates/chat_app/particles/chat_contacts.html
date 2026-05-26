@@ -1,11 +1,15 @@
+{% load static %}
 <!-- Відкриваємо ліву колонку контактів. -->
 <aside class="chat-contacts">
     <!-- Показуємо кнопку майбутнього створення групового чату. -->
-    <button type="button">Створити груповий чат</button>
+    <button type="button" class="chat-create-btn">
+    <img src="{% static 'chat_app/images/CreateGroup.svg' %}" alt="Створити груповий чат">
+    </button>
     <!-- Відкриваємо блок списку контактів. -->
     <section class="chat-block">
         <!-- Показуємо заголовок блоку контактів. -->
-        <h2>Контакти</h2>
+        <img src="{% static 'chat_app/images/Contact.svg' %}" alt="Контакти">
+        <input type="text" class="chat-search" placeholder="Пошук">
         <!-- Перебираємо друзів поточного користувача. -->
         {% for friend in friends %}
             <button type="button" class="chat-user-button" data-chat-user="{{ friend.id }}" data-chat-username="{{ friend.email }}">

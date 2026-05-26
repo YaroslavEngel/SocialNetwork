@@ -1,7 +1,11 @@
+{% load static %}
 <!-- Відкриваємо блок групових чатів. -->
-<section class="chat-block">
-    <!-- Показуємо заголовок блоку групових чатів. -->
-    <h2>Групові чати</h2>
+<section class="chat-groups-block">
+    <!-- Заголовок з кнопкою "Дивитись всі" -->
+    <div class="chat-block-header">
+    <image src="{% static 'chat_app/images/GroupChat.svg' %}" alt="Групові чати">
+    <a href="#"><img src="{% static 'images/see_all.svg' %}" alt="Дивитись всі"></a>
+    </div>
     <!-- Показуємо тимчасовий порожній стан. -->
     <p>Порожньо</p>
 </section>

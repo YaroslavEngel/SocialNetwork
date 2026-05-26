@@ -19,7 +19,7 @@ body {
 }
 
 .auth-logo img {
-    width: 10vw;
+    width: clamp(80px, 10vw, 145px);
 }
 
 .auth-main {
@@ -34,7 +34,7 @@ body {
 }
 
 .auth-content {
-    width: 70vw;
+    width: clamp(300px, 70vw, 1000px);
     display: flex;
     position: relative;
     z-index: 2;
@@ -42,7 +42,7 @@ body {
 
 .auth-image {
     position: absolute;
-    right: 4vw;
+    right: clamp(16px, 4vw, 60px);
     top: 50%;
     transform: translateY(-50%);
     z-index: 1;
@@ -50,7 +50,7 @@ body {
 }
 
 .auth-image img {
-    width: 48vw;
+    width: clamp(300px, 48vw, 700px);
     height: auto;
     display: block;
 }
@@ -58,22 +58,22 @@ body {
 .auth-card {
     position: relative;
     z-index: 3;
-    width: 487px;
+    width: clamp(300px, 34vw, 487px);
     background: #ffffff;
     border-radius: 20px;
-    padding: 44px;
+    padding: clamp(24px, 3vw, 44px);
 }
 
 .auth-tabs {
     display: flex;
-    gap: 2vw;
-    margin-bottom: 3vh;
+    gap: clamp(12px, 2vw, 28px);
+    margin-bottom: clamp(16px, 3vh, 28px);
     justify-content: center;
     align-items: center;
 }
 
 .tab {
-    font-size: 1.5vw;
+    font-size: clamp(14px, 1.5vw, 22px);
     font-weight: 600;
     color: #A6A0AE;
     cursor: pointer;
@@ -97,24 +97,24 @@ body {
 
 .auth-title {
     text-align: center;
-    font-size: 1.5vw;
+    font-size: clamp(14px, 1.5vw, 22px);
     font-weight: bold;
-    margin-bottom: 3vh;
+    margin-bottom: clamp(16px, 3vh, 28px);
 }
 
 .auth-form p {
-    margin-bottom: 2vh;
+    margin-bottom: clamp(10px, 2vh, 20px);
 }
 
 .auth-form label {
     display: block;
-    margin-bottom: 0.5vh;
-    font-size: 1vw;
+    margin-bottom: clamp(4px, 0.5vh, 8px);
+    font-size: clamp(12px, 1vw, 16px);
 }
 
 .auth-form input {
     width: 100%;
-    height: 5vh;
+    height: clamp(36px, 5vh, 52px);
     border: 1px solid #D9D4DD;
     border-radius: 8px;
     padding: 0 12px;
@@ -122,13 +122,13 @@ body {
 
 .auth-form button {
     width: 100%;
-    height: 6vh;
-    margin-top: 1vh;
+    height: clamp(40px, 6vh, 56px);
+    margin-top: clamp(6px, 1vh, 12px);
     border: none;
     border-radius: 50px;
     background: #6C4A68;
     color: white;
-    font-size: 1.2vw;
+    font-size: clamp(14px, 1.2vw, 18px);
     cursor: pointer;
 }
 
@@ -137,62 +137,62 @@ body {
 }
 
 .confirm-card {
-    width: 487px;
-    min-height: 421px;
-    padding: 44px 32px;
+    width: clamp(300px, 34vw, 487px);
+    min-height: clamp(300px, 30vh, 421px);
+    padding: clamp(24px, 3vw, 44px) clamp(16px, 2.2vw, 32px);
     border-radius: 20px;
     background: #ffffff;
 }
 
 .confirm-title {
     text-align: center;
-    font-size: 24px;
+    font-size: clamp(18px, 1.7vw, 24px);
     font-weight: 700;
-    margin-bottom: 36px;
+    margin-bottom: clamp(20px, 2.5vh, 36px);
 }
 
 .confirm-text {
     width: 100%;
     text-align: center;
-    font-size: 14px;
+    font-size: clamp(12px, 1vw, 14px);
     font-weight: 500;
     color: #1F1B24;
     line-height: 1.5;
-    margin-bottom: 32px;
+    margin-bottom: clamp(20px, 2.5vh, 32px);
 }
 
 .confirm-label {
     display: block;
-    font-size: 14px;
+    font-size: clamp(12px, 1vw, 14px);
     margin-bottom: 8px;
 }
 
 .confirm-inputs {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 32px;
+    gap: clamp(8px, 0.8vw, 12px);
+    margin-bottom: clamp(20px, 2.5vh, 32px);
 }
 
 .confirm-inputs input {
-    width: 52px;
-    height: 44px;
+    width: clamp(40px, 3.6vw, 52px);
+    height: clamp(36px, 3vh, 44px);
     border: 1px solid #D9D4DD;
     border-radius: 8px;
     text-align: center;
-    font-size: 20px;
+    font-size: clamp(16px, 1.4vw, 20px);
 }
 
 .confirm-btn {
     width: 100%;
-    height: 54px;
+    height: clamp(44px, 3.8vh, 54px);
     border: none;
     border-radius: 28px;
     background: #6C4A68;
     color: #ffffff;
-    font-size: 16px;
+    font-size: clamp(14px, 1.1vw, 16px);
     cursor: pointer;
-    margin-bottom: 18px;
+    margin-bottom: clamp(12px, 1.5vh, 18px);
 }
 
 .back-btn {
@@ -200,28 +200,26 @@ body {
     border: none;
     background: none;
     color: #6C4A68;
-    font-size: 16px;
+    font-size: clamp(14px, 1.1vw, 16px);
     cursor: pointer;
 }
 
 /* ===== FRIENDS PAGE ===== */
-/* ── LAYOUT ── */
 .friends-layout {
     display: flex;
     width: 100%;
     min-height: calc(100vh - 10vh);
 }
 
-/* ── NAV ── */
 .friends-nav {
-    width: 13.2vw;
+    width: clamp(140px, 13.2vw, 190px);
     height: fit-content;
     position: absolute;
-    top: 13.5vh;
-    left: 4.2vw;
+    top: clamp(80px, 13.5vh, 130px);
+    left: clamp(16px, 4.2vw, 60px);
     display: flex;
     flex-direction: column;
-    gap: 2vh;
+    gap: clamp(12px, 2vh, 20px);
 }
 
 .friends-nav button {
@@ -229,17 +227,16 @@ body {
     align-items: center;
     background: none;
     border: none;
-    font-size: 0.85vw;
-    font-weight: 400;
+    font-size: clamp(12px, 0.85vw, 14px);
+    font-weight: 600;
     color: #070A1C;
     cursor: pointer;
     padding: 0;
     text-align: left;
     width: 100%;
-    font-family: 'GT Walsheim Pro', 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
     line-height: 100%;
     letter-spacing: -0.01em;
-    font-weight: 600
 }
 
 .friends-nav button.active,
@@ -252,32 +249,30 @@ body {
     text-decoration-color: #543C52;
 }
 
-/* ── HOME / SECTION PAGE ── */
 .friends-home,
 .friends-page {
     position: absolute;
-    top: 13.5vh;
-    left: 22.8vw;
-    width: calc(100vw - 22.8vw - 5vw); /* ← растягиваем до правого края с отступом */
+    top: clamp(80px, 13.5vh, 130px);
+    left: clamp(180px, 22.8vw, 330px);
+    width: calc(100vw - clamp(180px, 22.8vw, 330px) - clamp(16px, 5vw, 72px));
     height: fit-content;
     display: flex;
     flex-direction: column;
-    gap: 1vh;
+    gap: clamp(8px, 1vh, 12px);
     overflow-y: auto;
 }
 
-/* ── BLOCK (Запити / Рекомендації / Всі друзі) ── */
 .friends-block {
     width: 100%;
     background: #FFFFFF;
     border-radius: 10px;
     border: 1px solid #CDCED2;
-    padding: 16px 20px;
+    padding: clamp(12px, 1.1vw, 16px) clamp(14px, 1.4vw, 20px);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin-bottom: 0.5vh;
+    gap: clamp(12px, 1.1vw, 16px);
+    margin-bottom: clamp(4px, 0.5vh, 8px);
 }
 
 .friends-block-header {
@@ -288,7 +283,7 @@ body {
 }
 
 .friends-block-header h2 {
-    font-size: 0.9vw;
+    font-size: clamp(12px, 0.9vw, 14px);
     font-weight: 600;
     color: #070A1C;
     font-family: 'Inter', sans-serif;
@@ -301,42 +296,40 @@ body {
     width: auto;
 }
 
-/* ── CARDS GRID ── */
 .friends-cards-grid,
 #friends-section-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: clamp(10px, 1.1vw, 16px);
     align-items: flex-start;
 }
 
-/* ── FRIEND CARD ── */
 .friend-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: clamp(8px, 0.7vw, 10px);
     flex: 1 1 180px;
     max-width: 220px;
     min-width: 180px;
     background: #FFFFFF;
     border: 1px solid #CDCED2;
     border-radius: 10px;
-    padding: 24px 16px;
+    padding: clamp(16px, 1.7vw, 24px) clamp(12px, 1.1vw, 16px);
     box-sizing: border-box;
 }
 
 .friend-card-avatar {
-    width: 100px;
-    height: 100px;
+    width: clamp(70px, 7vw, 100px);
+    height: clamp(70px, 7vw, 100px);
     border-radius: 50%;
     background-color: #E9E5EE;
     flex-shrink: 0;
 }
 
 .friend-card-name {
-    font-size: 14px;
+    font-size: clamp(12px, 1vw, 14px);
     font-weight: 600;
     color: #070A1C;
     text-align: center;
@@ -348,7 +341,7 @@ body {
 }
 
 .friend-card-username {
-    font-size: 12px;
+    font-size: clamp(10px, 0.85vw, 12px);
     color: #A6A0AE;
     text-align: center;
     width: 100%;
@@ -361,7 +354,7 @@ body {
 .friend-card-actions {
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: clamp(6px, 0.6vw, 8px);
     width: 100%;
     justify-content: center;
     flex-wrap: wrap;
@@ -369,23 +362,22 @@ body {
 
 .friend-card-actions img {
     cursor: pointer;
-    height: 36px;
+    height: clamp(28px, 2.5vw, 36px);
     width: auto;
 }
 
-/* ── SECTION HEADER ── */
 .friends-section-header {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 8px;
+    gap: clamp(10px, 1.1vw, 16px);
+    margin-bottom: clamp(6px, 0.8vh, 8px);
 }
 
 #friends-back-home {
     background: none;
     border: none;
-    font-size: 13px;
+    font-size: clamp(12px, 0.9vw, 13px);
     font-weight: 500;
     color: #7A5AF8;
     cursor: pointer;
@@ -394,7 +386,7 @@ body {
 }
 
 #friends-section-title {
-    font-size: 16px;
+    font-size: clamp(14px, 1.1vw, 16px);
     font-weight: 600;
     color: #070A1C;
     font-family: 'Inter', sans-serif;
@@ -402,30 +394,111 @@ body {
 }
 
 .friends-empty {
-    font-size: 14px;
+    font-size: clamp(12px, 1vw, 14px);
     color: #A6A0AE;
     font-family: 'Inter', sans-serif;
 }
 
-/* ── MEDIA ── */
-@media (max-width: 640px) {
-    .friends-nav {
-        position: static;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        gap: 12px;
-        overflow-x: auto;
-        width: 100%;
-    }
+/* ===== FRIEND PAGE ===== */
+.profile-page {
+    display: flex;
+    gap: 2vw;
+    padding: 2vh 2vw;
+    align-items: flex-start;
+}
 
-    .friends-home,
-    .friends-page {
-        position: static;
-        width: 100%;
-    }
+.profile-card {
+    width: 330px;
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #C8C3CE;
+    padding: 1.5vh 1.5vw;
+    margin-left: 3vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8vh;
+}
 
-    .friend-card {
-        flex: 1 1 140px;
-        max-width: 100%;
-    }
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #E9E5EE;
+    overflow: hidden;
+    margin-top: 1vh;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #16151C;
+    margin-top: 0.5vh;
+}
+
+.profile-username {
+    font-size: 0.85rem;
+    color: #8D8593;
+}
+
+.profile-stats {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    padding: 1vh 0;
+    margin: 0.5vh 0;
+}
+
+.profile-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3vh;
+}
+
+.profile-stat--bordered {
+    border-left: 1px solid #E9E5EE;
+    border-right: 1px solid #E9E5EE;
+    padding: 0 1vw;
+}
+
+.profile-stat-number {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #16151C;
+}
+
+.profile-stat-label {
+    font-size: 0.75rem;
+    color: #8D8593;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 0.8vw;
+    padding-bottom: 1vh;
+}
+
+.profile-action-btn {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.profile-action-btn img {
+    height: 4vh;
+    width: auto;
+}
+
+.profile-feed {
+    flex: 1;
+    padding: 0;
 }

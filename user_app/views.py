@@ -241,9 +241,13 @@ class UserProfileView(LoginRequiredMixin, View):
             relation = 'friend'
         else:
             relation = 'stranger'
+        posts_count = profile_user.user.count()
+        friends_count = get_users_by_section(profile_user, 'friends').count()
 
         return render(request, 'user_app/user_profile.html', {
             'profile_user': profile_user,
             'posts': posts,
             'relation': relation,
+            'posts_count': posts_count,
+            'friends_count': friends_count,
         })

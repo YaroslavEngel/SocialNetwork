@@ -2,129 +2,133 @@
 {% load static %}
 
 {% block title %}{{ profile_user.username }}{% endblock %}
+
 {% block links %}
 <link rel="stylesheet" href="{% static 'post_static/post_index.css' %}">
+<link rel="stylesheet" href="{% static 'user_static/user_index.css' %}">
 {% endblock %}
 
-{% block frame1 %}
-<div class="frame1" style="flex-direction: column; align-items: center; padding: 1.5vh 1vw; gap: 0.8vh;">
-    
-    <div style="width: 80px; height: 80px; border-radius: 50%; background: #E9E5EE; overflow: hidden; margin-top: 1vh;">
-        {% if profile_user.avatar %}
-            <img src="{{ profile_user.avatar.url }}" style="width: 100%; height: 100%; object-fit: cover;">
-        {% endif %}
-    </div>
-
-    <span style="font-weight: 700; font-size: 1vw; color: #16151C; margin-top: 0.5vh;">{{ profile_user.first_name|default:profile_user.username }}</span>
-    <span style="font-size: 0.8vw; color: #8D8593;">@{{ profile_user.username }}</span>
-
-    <div style="display: flex; width: 100%; justify-content: space-around; padding: 1vh 0; border-top: 1px solid #E9E5EE; border-bottom: 1px solid #E9E5EE; margin: 0.5vh 0;">
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3vh;">
-            <span style="font-weight: 700; font-size: 0.9vw; color: #16151C;">{{ profile_user.user.count }}</span>
-            <img src="{% static 'images/Dopisi.svg' %}" alt="Дописи" style="height: 1.2vh; width: auto;">
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3vh; border-left: 1px solid #E9E5EE; border-right: 1px solid #E9E5EE; padding: 0 1vw;">
-            <span style="font-weight: 700; font-size: 0.9vw; color: #16151C;">12.1K</span>
-            <img src="{% static 'images/Readers.svg' %}" alt="Читачі" style="height: 1.2vh; width: auto;">
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3vh;">
-            <span style="font-weight: 700; font-size: 0.9vw; color: #16151C;">222</span>
-            <img src="{% static 'images/Dryzi.svg' %}" alt="Друзі" style="height: 1.2vh; width: auto;">
-        </div>
-    </div>
-
-    <div style="display: flex; gap: 0.8vw; padding-bottom: 1vh;">
-        {% if relation == 'incoming_request' %}
-            <form method="POST" action="{% url 'friend-action' 'accept' %}">
-                {% csrf_token %}
-                <input type="hidden" name="user_id" value="{{ profile_user.id }}">
-                <button type="submit" style="border: none; background: none; padding: 0; cursor: pointer;">
-                    <img src="{% static 'images/AcceptButton.svg' %}" alt="Підтвердити" style="height: 4vh; width: auto;">
-                </button>
-            </form>
-            <form method="POST" action="{% url 'friend-action' 'reject' %}">
-                {% csrf_token %}
-                <input type="hidden" name="user_id" value="{{ profile_user.id }}">
-                <button type="submit" style="border: none; background: none; padding: 0; cursor: pointer;">
-                    <img src="{% static 'images/DeleteButton.svg' %}" alt="Відхилити" style="height: 4vh; width: auto;">
-                </button>
-            </form>
-        {% elif relation == 'friend' %}
-            <form method="POST" action="{% url 'friend-action' 'delete' %}">
-                {% csrf_token %}
-                <input type="hidden" name="user_id" value="{{ profile_user.id }}">
-                <button type="submit" style="border: none; background: none; padding: 0; cursor: pointer;">
-                    <img src="{% static 'images/DeleteButton.svg' %}" alt="Видалити з друзів" style="height: 4vh; width: auto;">
-                </button>
-            </form>
-        {% elif relation == 'stranger' %}
-            <form method="POST" action="{% url 'friend-action' 'request' %}">
-                {% csrf_token %}
-                <input type="hidden" name="user_id" value="{{ profile_user.id }}">
-                <button type="submit" style="border: none; background: none; padding: 0; cursor: pointer;">
-                    <img src="{% static 'images/AcceptButton.svg' %}" alt="Додати в друзі" style="height: 4vh; width: auto;">
-                </button>
-            </form>
-        {% endif %}
-    </div>
-</div>
-{% endblock %}
-
+{% block frame1 %}{% endblock %}
 {% block frame2 %}{% endblock %}
 {% block frame3 %}{% endblock %}
 
 {% block content %}
-<section class="posts-feed" style="padding-left: calc(clamp(220px, 18vw, 350px) + 5vw);">
-    <div id="post-list">
-        {% for post in posts %}
-        <div class="post-card">
-            <div class="post-card-header">
-                <div class="post-card-author">
-                    <span class="post-author-name">{{ post.author.username }}</span>
-                </div>
-                <span class="post-author-signature">{{ post.author.username }}</span>
+<div class="profile-page">
+
+    <div class="profile-card">
+        <div class="profile-avatar">
+            {% if profile_user.avatar %}
+                <img src="{{ profile_user.avatar.url }}">
+            {% endif %}
+        </div>
+
+        <span class="profile-name">{{ profile_user.first_name|default:profile_user.username }}</span>
+        <span class="profile-username">@{{ profile_user.username }}</span>
+
+        <div class="profile-stats">
+            <div class="profile-stat">
+                <span class="profile-stat-number">{{ posts_count }}</span>
+                <span class="profile-stat-label">Дописи</span>
             </div>
-            <div class="post-card-body">
-                <h2 class="post-card-title">{{ post.title }}</h2>
-                <p class="post-card-content">{{ post.content }}</p>
-                {% if post.tags.all %}
-                    <div class="post-card-tags">
-                        {% for tag in post.tags.all %}
-                            <span class="post-card-tag">#{{ tag.name }}</span>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-                {% if post.urls.all %}
-                    <div class="post-card-links">
-                        {% for link in post.urls.all %}
-                            <a href="{{ link.url }}" class="post-card-link" target="_blank">{{ link.url }}</a>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-                {% if post.images.all %}
-                    <div class="post-card-images images-{{ post.images.count }}">
-                        {% for image in post.images.all %}
-                            <img src="{{ image.compressed_image.url }}" class="post-card-image" alt="">
-                        {% endfor %}
-                    </div>
-                {% endif %}
+            <div class="profile-stat profile-stat--bordered">
+                <span class="profile-stat-number">{{ friends_count }}</span>
+                <span class="profile-stat-label">Читачі</span>
             </div>
-            <div class="post-card-footer">
-                <span class="post-card-stat">
-                    <img src="{% static 'images/Component 5 (2).svg' %}" alt="">
-                    {{ post.likes.count }} Вподобань
-                </span>
-                <span class="post-card-stat">
-                    <img src="{% static 'images/Component 5 (3).svg' %}" alt="">
-                    {{ post.hearts.count }} Вподобань
-                </span>
-                <span class="post-card-stat">
-                    <img src="{% static 'images/eye.svg' %}" alt="">
-                    {{ post.views.count }} Переглядів
-                </span>
+            <div class="profile-stat">
+                <span class="profile-stat-number">{{ friends_count }}</span>
+                <span class="profile-stat-label">Друзі</span>
             </div>
         </div>
-        {% endfor %}
+
+        <div class="profile-actions">
+            {% if relation == 'incoming_request' %}
+                <form method="POST" action="{% url 'friend-action' 'accept' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ profile_user.id }}">
+                    <button type="submit" class="profile-action-btn">
+                        <img src="{% static 'images/AcceptButton.svg' %}" alt="Підтвердити">
+                    </button>
+                </form>
+                <form method="POST" action="{% url 'friend-action' 'reject' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ profile_user.id }}">
+                    <button type="submit" class="profile-action-btn">
+                        <img src="{% static 'images/DeleteButton.svg' %}" alt="Відхилити">
+                    </button>
+                </form>
+            {% elif relation == 'friend' %}
+                <form method="POST" action="{% url 'friend-action' 'delete' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ profile_user.id }}">
+                    <button type="submit" class="profile-action-btn">
+                        <img src="{% static 'images/DeleteButton.svg' %}" alt="Видалити з друзів">
+                    </button>
+                </form>
+            {% elif relation == 'stranger' %}
+                <form method="POST" action="{% url 'friend-action' 'request' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ profile_user.id }}">
+                    <button type="submit" class="profile-action-btn">
+                        <img src="{% static 'images/AcceptButton.svg' %}" alt="Додати в друзі">
+                    </button>
+                </form>
+            {% endif %}
+        </div>
     </div>
-</section>
+
+    <section class="posts-feed profile-feed">
+        <div id="post-list">
+            {% for post in posts %}
+            <div class="post-card">
+                <div class="post-card-header">
+                    <div class="post-card-author">
+                        <span class="post-author-name">{{ post.author.username }}</span>
+                    </div>
+                    <span class="post-author-signature">{{ post.author.username }}</span>
+                </div>
+                <div class="post-card-body">
+                    <h2 class="post-card-title">{{ post.title }}</h2>
+                    <p class="post-card-content">{{ post.content }}</p>
+                    {% if post.tags.all %}
+                        <div class="post-card-tags">
+                            {% for tag in post.tags.all %}
+                                <span class="post-card-tag">#{{ tag.name }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if post.urls.all %}
+                        <div class="post-card-links">
+                            {% for link in post.urls.all %}
+                                <a href="{{ link.url }}" class="post-card-link" target="_blank">{{ link.url }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if post.images.all %}
+                        <div class="post-card-images images-{{ post.images.count }}">
+                            {% for image in post.images.all %}
+                                <img src="{{ image.compressed_image.url }}" class="post-card-image" alt="">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="post-card-footer">
+                    <span class="post-card-stat">
+                        <img src="{% static 'images/Component 5 (2).svg' %}" alt="">
+                        {{ post.likes.count }} Вподобань
+                    </span>
+                    <span class="post-card-stat">
+                        <img src="{% static 'images/Component 5 (3).svg' %}" alt="">
+                        {{ post.hearts.count }} Вподобань
+                    </span>
+                    <span class="post-card-stat">
+                        <img src="{% static 'images/eye.svg' %}" alt="">
+                        {{ post.views.count }} Переглядів
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+</div>
 {% endblock %}
