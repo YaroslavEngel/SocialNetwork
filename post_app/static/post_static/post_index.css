@@ -5,15 +5,14 @@
 .post-section {
     width: 100%;
     background: #F6F3F8;
-    padding: 1.9vh 0 0 calc(clamp(220px, 18vw, 350px) + 5vw + 24px);
+    padding: 1.9vh 0 0 calc(clamp(18vw, 18vw, 25vw) + 5vw + 1.8vw);
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     box-sizing: border-box;
 }
 
-
-.post-create-container{
+.post-create-container {
     width: 68.2vw;
     height: 11vh;
     background: #FFFFFF;
@@ -23,7 +22,7 @@
     position: relative;
 }
 
-.create-post-input{
+.create-post-input {
     width: 100%;
     height: 100%;
     border: none;
@@ -37,11 +36,11 @@
     cursor: text;
 }
 
-.create-post-input::placeholder{
+.create-post-input::placeholder {
     color: #8D8593;
 }
 
-.create-post-footer{
+.create-post-footer {
     position: absolute;
     right: 1vw;
     bottom: 1.5vh;
@@ -51,10 +50,10 @@
 }
 
 .post-emoji-btn {
-    width: 40px;
-    height: 40px;
+    width: 3vw;
+    height: 3vw;
     border-radius: 50%;
-    border: 1px solid #543C52;
+    border: 0.08vw solid #543C52;
     background: transparent;
     display: flex;
     justify-content: center;
@@ -64,12 +63,12 @@
 }
 
 .post-emoji-btn img {
-    width: 40px;
-    height: 40px;
+    width: 3vw;
+    height: 3vw;
     object-fit: contain;
 }
 
-.open-post-modal-btn{
+.open-post-modal-btn {
     width: 11.2vw;
     height: 4vh;
     border: none;
@@ -81,13 +80,13 @@
     justify-content: center;
 }
 
-.open-post-modal-btn img{
+.open-post-modal-btn img {
     width: 11.2vw;
     height: 4vh;
     object-fit: contain;
 }
 
-.modal-overlay{
+.modal-overlay {
     width: 100vw;
     height: 100vh;
     position: fixed;
@@ -100,18 +99,18 @@
 }
 
 .create-post-modal {
-    width: 773px;
+    width: 55vw;
     background: white;
-    border-radius: 20px;
-    padding: 24px 44px 44px 44px;
+    border-radius: 1.5vw;
+    padding: 2.5vh 4vw;
     position: relative;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    box-shadow: 0 0.8vh 4vw rgba(0,0,0,0.18);
     max-height: 90vh;
     overflow-y: auto;
     box-sizing: border-box;
 }
 
-.close-post-modal{
+.close-post-modal {
     position: absolute;
     top: 2.2vh;
     right: 1.3vw;
@@ -120,12 +119,12 @@
     cursor: pointer;
 }
 
-.close-post-modal img{
+.close-post-modal img {
     width: 1vw;
     height: 1vw;
 }
 
-.post-modal-title{
+.post-modal-title {
     width: 30vw;
     font-size: 2.7vw;
     font-weight: 700;
@@ -137,7 +136,7 @@
 .post-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 1.5vh;
 }
 
 .post-inputs-container {
@@ -148,7 +147,7 @@
     font-family: 'DM Sans', sans-serif;
 }
 
-.post-inputs-container label{
+.post-inputs-container label {
     font-size: 0.75vw;
     font-weight: 500;
     color: #16151C;
@@ -181,11 +180,11 @@
     align-items: center;
 }
 
-.tag-label input{
+.tag-label input {
     display: none;
 }
 
-.tag{
+.tag {
     padding: 0.5vh 0.5vw;
     background: #F1EBF3;
     border-radius: 0.4vw;
@@ -200,7 +199,7 @@
     color: #ffffff;
 }
 
-.add-tag-btn{
+.add-tag-btn {
     width: 1.5vw;
     height: 1.5vw;
     border: none;
@@ -208,14 +207,14 @@
     cursor: pointer;
 }
 
-.add-tag-btn img{
+.add-tag-btn img {
     width: 1.2vw;
     height: 1.2vw;
 }
 
 #id_content {
     width: 100%;
-    height: 200px;
+    height: 14vh;
     border: none;
     border-radius: 0.5vw;
     padding: 1vh 1.5vw 1vh 0.8vw;
@@ -237,13 +236,13 @@
     box-sizing: border-box;
 }
 
-.post-link-container{
+.post-link-container {
     display: flex;
     align-items: center;
     gap: 0.5vw;
 }
 
-.post-input{
+.post-input {
     width: 18vw;
     height: 4.2vh;
     border: 0.05vw solid #C8C1CF;
@@ -252,7 +251,7 @@
     outline: none;
 }
 
-.add-link-btn{
+.add-link-btn {
     width: 1.5vw;
     height: 1.5vw;
     border: none;
@@ -260,12 +259,12 @@
     cursor: pointer;
 }
 
-.add-link-btn img{
+.add-link-btn img {
     width: 1.2vw;
     height: 1.2vw;
 }
 
-.image-input-container{
+.image-input-container {
     display: none;
 }
 
@@ -274,20 +273,20 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 12px;
+    gap: 1vw;
 }
 
-.post-footer-icons{
+.post-footer-icons {
     display: flex;
     align-items: center;
     gap: 0.7vw;
 }
 
 .post-footer-icons button {
-    width: 40px;
-    height: 40px;
+    width: 3vw;
+    height: 3vw;
     border-radius: 50%;
-    border: 1px solid #543C52;
+    border: 0.08vw solid #543C52;
     background: transparent;
     cursor: pointer;
     display: flex;
@@ -298,23 +297,23 @@
 }
 
 .post-footer-icons button img {
-    width: 40px;
-    height: 40px;
+    width: 3vw;
+    height: 3vw;
     object-fit: contain;
 }
 
 .publish-post-btn {
-    height: 40px;
-    padding: 10px 16px;
+    height: 4.5vh;
+    padding: 1vh 1.5vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 0.6vw;
     border: none;
-    border-radius: 1234px;
+    border-radius: 99vw;
     background: #543C52;
     color: white;
-    font-size: 14px;
+    font-size: 1vw;
     font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
@@ -333,29 +332,32 @@
 }
 
 .tag-modal {
-    width: 340px;
+    width: 25vw;
     background: #fff;
-    border-radius: 16px;
-    padding: 24px;
+    border-radius: 1.2vw;
+    padding: 2.5vh 2vw;
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 2.5vh;
 }
 
 .close-tag-modal {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 1.5vh;
+    right: 1.2vw;
     border: none;
     background: transparent;
     cursor: pointer;
 }
 
-.close-tag-modal img { width: 20px; height: 20px; }
+.close-tag-modal img {
+    width: 1.4vw;
+    height: 1.4vw;
+}
 
 .tag-modal-title {
-    font-size: 28px;
+    font-size: 2vw;
     font-weight: 700;
     color: #16151C;
     margin: 0;
@@ -364,85 +366,85 @@
 .tag-modal-field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 0.7vh;
 }
 
 .tag-modal-field label {
-    font-size: 14px;
+    font-size: 0.9vw;
     font-weight: 500;
     color: #16151C;
 }
 
 .tag-modal-input {
     width: 100%;
-    height: 44px;
-    border: 1px solid #C8C1CF;
-    border-radius: 10px;
-    padding-left: 16px;
+    height: 5.5vh;
+    border: 0.08vw solid #C8C1CF;
+    border-radius: 0.8vw;
+    padding-left: 1.2vw;
     outline: none;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 0.9vw;
 }
 
 .tag-modal-footer {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
+    gap: 1vw;
 }
 
 .tag-cancel-btn {
-    height: 40px;
-    padding: 0 20px;
-    border: 1px solid #543C52;
-    border-radius: 1234px;
+    height: 4.5vh;
+    padding: 0 1.5vw;
+    border: 0.08vw solid #543C52;
+    border-radius: 99vw;
     background: transparent;
     color: #543C52;
-    font-size: 14px;
+    font-size: 0.9vw;
     cursor: pointer;
 }
 
 .tag-save-btn {
-    height: 40px;
-    padding: 0 20px;
+    height: 4.5vh;
+    padding: 0 1.5vw;
     border: none;
-    border-radius: 1234px;
+    border-radius: 99vw;
     background: #543C52;
     color: #fff;
-    font-size: 14px;
+    font-size: 0.9vw;
     cursor: pointer;
 }
 
 #id_content::-webkit-scrollbar { width: 0.4vw; }
 #id_content::-webkit-scrollbar-track { background: transparent; }
-#id_content::-webkit-scrollbar-thumb { background: #543C52; border-radius: 999vw; }
+#id_content::-webkit-scrollbar-thumb { background: #543C52; border-radius: 99vw; }
 
-.custom-scrollbar{
+.custom-scrollbar {
     width: 0.4vw;
     height: 10vh;
     background: #543C52;
-    border-radius: 999vw;
+    border-radius: 99vw;
     position: absolute;
     top: 0.5vh;
     right: 0.3vw;
 }
 
 .textarea-container::-webkit-scrollbar { width: 0.4vw; }
-.textarea-container::-webkit-scrollbar-track { background: #E8E4EC; border-radius: 999px; }
-.textarea-container::-webkit-scrollbar-thumb { background: #543C52; border-radius: 999px; }
+.textarea-container::-webkit-scrollbar-track { background: #E8E4EC; border-radius: 99vw; }
+.textarea-container::-webkit-scrollbar-thumb { background: #543C52; border-radius: 99vw; }
 
 .image-preview-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    max-height: 200px;
+    gap: 0.6vw;
+    max-height: 20vh;
     overflow-y: auto;
 }
 
 .image-preview-wrapper {
     position: relative;
-    width: 200px;
-    height: 140px;
-    border-radius: 12px;
+    width: 15vw;
+    height: 18vh;
+    border-radius: 0.9vw;
     overflow: hidden;
     flex-shrink: 0;
 }
@@ -455,15 +457,15 @@
 
 .image-preview-remove {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 28px;
-    height: 28px;
+    top: 0.8vh;
+    right: 0.5vw;
+    width: 2vw;
+    height: 2vw;
     border-radius: 50%;
     border: none;
     background: rgba(255,255,255,0.85);
     color: #543C52;
-    font-size: 18px;
+    font-size: 1.2vw;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -476,22 +478,20 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 5px;
-    padding: 1.5vh 24px 2.2vh calc(clamp(220px, 18vw, 350px) + 5vw + 24px);
+    gap: 0.5vh;
+    padding: 1.5vh 1.8vw 2.2vh calc(clamp(18vw, 18vw, 25vw) + 5vw + 1.8vw);
     box-sizing: border-box;
     min-width: 100vw;
 }
 
-
 .post-card {
     width: 70.9vw;
     background: #FFFFFF;
-    border: 1px solid #CDCED2;
-    border-radius: 10px;
-    padding: 21px ;
+    border: 0.07vw solid #CDCED2;
+    border-radius: 0.8vw;
+    padding: 1.8vh 1.6vw;
     display: flex;
     flex-direction: column;
-
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -500,40 +500,35 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 17px;
-    margin-left: -24px;
-    margin-right: -24px;
-    padding-left: 24px;
-    padding-right: 24px;
-    border-bottom: 1px solid #DDD6E4;
+    padding-bottom: 1.5vh;
+    margin-left: -1.6vw;
+    margin-right: -1.6vw;
+    padding-left: 1.6vw;
+    padding-right: 1.6vw;
+    border-bottom: 0.07vw solid #DDD6E4;
 }
 
 .post-card-author {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.8vw;
 }
-
-
-
 
 .post-card-body {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.8vh;
 }
 
-
-
 .post-card-title {
-    font-size: 16px;
+    font-size: 1.1vw;
     font-weight: 700;
     color: #16151C;
     margin: 0;
 }
 
 .post-card-content {
-    font-size: 14px;
+    font-size: 1vw;
     color: #16151C;
     line-height: 1.6;
     margin: 0;
@@ -542,23 +537,23 @@
 .post-card-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 0.3vw;
 }
 
 .post-card-tag {
     color: #543C52;
-    font-size: 13px;
+    font-size: 0.9vw;
 }
 
 .post-card-links {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0.4vh;
 }
 
 .post-card-link {
     color: #543C52;
-    font-size: 13px;
+    font-size: 0.9vw;
     text-decoration: none;
 }
 
@@ -568,7 +563,7 @@
 
 .post-card-images {
     display: flex;
-    gap: 8px;
+    gap: 0.6vw;
     width: 100%;
 }
 
@@ -577,44 +572,45 @@
     min-width: 0;
     aspect-ratio: 4/3;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 0.6vw;
     max-width: 100%;
 }
 
 .post-card-footer {
     display: flex;
-    gap: 24px;
-    padding-top: 12px;
-    border-top: 1px solid #DDD6E4;
+    gap: 2vw;
+    padding-top: 1.2vh;
+    border-top: 0.07vw solid #DDD6E4;
     align-items: center;
 }
 
 .post-card-stat {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
+    gap: 0.5vw;
+    font-size: 0.9vw;
     color: #8D8593;
     cursor: pointer;
 }
 
 .post-card-stat img {
-    width: 18px;
-    height: 18px;
+    width: 1.3vw;
+    height: 1.3vw;
 }
 
 .post-author-signature {
     font-family: 'Sacramento', cursive;
-    font-size: 36px;
+    font-size: 2.8vw;
     color: #16151C;
     opacity: 0.7;
     margin-left: auto;
-    padding-right: 4px;
+    padding-right: 0.3vw;
     line-height: 1;
 }
+
 .post-author-avatar {
-    width: 40px;
-    height: 40px;
+    width: 3vw;
+    height: 3vw;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -622,11 +618,12 @@
 .post-author-name {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
-    letter-spacing: -0.084px;
+    font-size: 1.1vw;
+    line-height: 1.4;
+    letter-spacing: -0.005em;
     color: #16151C;
 }
+
 #id_title::placeholder,
 #id_topic::placeholder,
 #id_content::placeholder {
@@ -636,5 +633,5 @@
 #post-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.6vh;
 }

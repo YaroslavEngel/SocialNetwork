@@ -2,27 +2,27 @@
 .chat-page {
     display: flex;
     flex-direction: row;
-    gap: clamp(8px, 1.2vw, 16px);
-    padding: 16px clamp(16px, 5.5vw, 80px);
+    gap: clamp(0.6vw, 1.2vw, 1.4vw);
+    padding: 1.8vh clamp(1.6vw, 5.5vw, 8vw);
     box-sizing: border-box;
     align-items: flex-start;
-    height: calc(100vh - 88px);
+    height: 89vh;
     overflow: hidden;
 }
 
 /* ── ЛЕВАЯ КОЛОНКА ── */
 .chat-contacts {
-    width: clamp(220px, 24.4vw, 351px);
+    width: clamp(20vw, 24.4vw, 28vw);
     height: 100%;
     flex-shrink: 0;
-    border-radius: 10px;
-    border: 1.5px solid #D4CAEE;
+    border-radius: 0.8vw;
+    border: 0.12vw solid #D4CAEE;
     background: #FFFFFF;
-    padding: 12px;
+    padding: 1.2vh 1vw;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.8vh;
     overflow-y: auto;
 }
 
@@ -38,9 +38,9 @@
 
 .chat-create-btn img {
     width: 100%;
-    height: 40px;
+    height: 5vh;
     object-fit: contain;
-    border-radius: 1234px;
+    border-radius: 99vw;
 }
 
 .chat-create-btn:hover {
@@ -51,32 +51,32 @@
 .chat-block {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0.4vh;
 }
 
 .chat-block h2 {
-    font-size: 14px;
+    font-size: 1vw;
     font-weight: 600;
     color: #1A1A1A;
     margin: 0;
-    padding: 4px 0;
+    padding: 0.4vh 0;
     font-family: 'Inter', sans-serif;
 }
 
 /* ── ПОИСК ── */
 .chat-search {
     width: 100%;
-    height: 42px;
-    border: 1px solid #D4CAEE;
-    border-radius: 8px;
-    font-size: 14px;
+    height: 5.5vh;
+    border: 0.08vw solid #D4CAEE;
+    border-radius: 0.6vw;
+    font-size: 1vw;
     font-family: 'Inter', sans-serif;
     color: #070A1C;
     background: #FAF8FF;
     box-sizing: border-box;
     outline: none;
-    padding-left: 35px;
-    padding-right: 12px;
+    padding-left: 2.5vw;
+    padding-right: 1vw;
 }
 
 .chat-search:focus {
@@ -86,15 +86,15 @@
 /* ── КОНТАКТ ── */
 .chat-user-button {
     width: 100%;
-    height: 44px;
+    height: 5.5vh;
     background: none;
     border: none;
-    border-radius: 8px;
-    padding: 0 8px;
+    border-radius: 0.6vw;
+    padding: 0 0.6vw;
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 14px;
+    gap: 0.8vw;
+    font-size: 1vw;
     font-family: 'Inter', sans-serif;
     color: #1A1A1A;
     cursor: pointer;
@@ -109,8 +109,8 @@
 
 .chat-user-button::before {
     content: "";
-    width: 36px;
-    height: 36px;
+    width: 2.8vw;
+    height: 2.8vw;
     border-radius: 50%;
     background: #D4CAEE;
     flex-shrink: 0;
@@ -121,10 +121,10 @@
 .chat-main {
     flex: 1;
     height: 100%;
-    border-radius: 10px;
-    border: 1px solid #D4CAEE;
+    border-radius: 0.8vw;
+    border: 0.08vw solid #D4CAEE;
     background: #FFFFFF;
-    padding: 16px;
+    padding: 1.8vh 1.5vw;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -135,11 +135,11 @@
 
 /* ── КОНТЕЙНЕР ТЕКСТА ── */
 .chat-main-welcome {
-    width: min(532px, 90%);
+    width: min(40vw, 90%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 2.5vh;
 }
 
 /* ── ЗАГОЛОВОК ── */
@@ -147,7 +147,7 @@
     width: 100%;
     font-family: 'Inter', sans-serif;
     font-weight: 500;
-    font-size: clamp(18px, 1.8vw, 24px);
+    font-size: clamp(1.4vw, 1.8vw, 2vw);
     line-height: 100%;
     letter-spacing: -0.01em;
     text-align: center;
@@ -160,7 +160,7 @@
     width: 100%;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
-    font-size: clamp(13px, 1.2vw, 16px);
+    font-size: clamp(1vw, 1.2vw, 1.4vw);
     line-height: 100%;
     letter-spacing: -0.01em;
     text-align: center;
@@ -170,13 +170,13 @@
 
 /* ── ПРАВАЯ КОЛОНКА ── */
 .chat-side {
-    width: clamp(220px, 24.3vw, 350px);
+    width: clamp(20vw, 24.3vw, 28vw);
     height: 100%;
     flex-shrink: 0;
-    border-radius: 10px;
+    border-radius: 0.8vw;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.8vh;
     overflow-y: auto;
 }
 
@@ -184,14 +184,14 @@
 .chat-messages-block {
     width: 100%;
     flex: 1;
-    border-radius: 10px;
-    border: 1px solid #D4CAEE;
+    border-radius: 0.8vw;
+    border: 0.08vw solid #D4CAEE;
     background: #FFFFFF;
-    padding: 16px;
+    padding: 1.8vh 1.5vw;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.8vh;
     overflow-y: auto;
 }
 
@@ -199,14 +199,14 @@
 .chat-groups-block {
     width: 100%;
     flex: 1;
-    border-radius: 10px;
-    border: 1px solid #D4CAEE;
+    border-radius: 0.8vw;
+    border: 0.08vw solid #D4CAEE;
     background: #FFFFFF;
-    padding: 16px;
+    padding: 1.8vh 1.5vw;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.8vh;
     overflow-y: auto;
 }
 
@@ -223,8 +223,8 @@
 
 /* ── ЗАГОЛОВОК БЛОКА ── */
 .chat-block-header > img {
-    width: 160px;
-    height: 23px;
+    width: 12vw;
+    height: 3vh;
     display: block;
     object-fit: contain;
 }
@@ -236,14 +236,14 @@
     align-items: center;
     text-decoration: none;
     cursor: pointer;
-    width: 93px;
-    height: 18px;
+    width: 7vw;
+    height: 2.5vh;
     overflow: hidden;
 }
 
 .chat-block-header a img {
-    width: 93px;
-    height: 18px;
+    width: 7vw;
+    height: 2.5vh;
     display: block;
     object-fit: contain;
 }
