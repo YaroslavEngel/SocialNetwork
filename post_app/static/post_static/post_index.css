@@ -318,6 +318,11 @@
     cursor: pointer;
     white-space: nowrap;
 }
+.publish-post-btn img {
+    height: 2.15vw;
+    width: auto;
+    display: block;
+}
 
 .tag-modal-overlay {
     width: 100%;

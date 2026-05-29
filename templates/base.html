@@ -8,7 +8,7 @@
     <title>{% block title %}Мой сайт{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    {% block links %}<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">{% endblock %}
+    {% block links %}<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">{% endblock %}
     
 </head>
 <body>
@@ -18,23 +18,23 @@
             <img src="{% static 'images/wia.svg' %}" alt="wia" class="logo">
 
             <div class="navitems">
-                <a href="/">
+                <a href="/" class="{% if request.path == '/' %}active{% endif %}">
                     <img src="{% static 'images/Frame 1000002425.svg' %}" alt="Головна">
                 </a>
 
-                <a href="/post">
+                <a href="/post" class="{% if '/post' in request.path %}active{% endif %}">
                     <img src="{% static 'images/Frame 1000002427.svg' %}" alt="Мої публікації">
                 </a>
 
-                <a href="/friends">
+                <a href="/friends" class="{% if '/friends' in request.path %}active{% endif %}">
                     <img src="{% static 'images/Frame 1000002426.svg' %}" alt="Друзі">
                 </a>
 
-                <a href="/chat/">
+                <a href="/chat/" class="{% if '/chat' in request.path %}active{% endif %}">
                     <img src="{% static 'images/Frame 1000002428.svg' %}" alt="Чати">
                 </a>
 
-                <a href="/">
+                <a href="/" class="{% if '/settings' in request.path %}active{% endif %}">
                     <img src="{% static 'images/Frame 1000002429.svg' %}" alt="Налаштування">
                 </a>
             </div>

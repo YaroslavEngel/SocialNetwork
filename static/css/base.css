@@ -4,6 +4,9 @@ body {
     background-color: #FAF8FF;
     overflow-x: hidden;
 }
+html, body {
+    overflow-x: hidden;
+}
 
 h1, p {
     margin: 0;
@@ -26,7 +29,7 @@ button {
 .container {
     width: 100%;
     min-height: 11vh;
-    padding: 3vh clamp(2.5vw, 5.5vw, 8vw);
+    padding: 3vh clamp(2.5vw, 5.5vw, 8vw) 3vh clamp(2.5vw, 5.5vw, 8vw);
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -39,6 +42,10 @@ button {
     display: block;
     flex-shrink: 0;
 }
+/* ── АКТИВНЫЙ ПУНКТ НАВИГАЦИИ ── */
+.navitems a.active::before {
+    opacity: 1;
+}
 
 /* ── НАВИГАЦИЯ ── */
 .navitems {
@@ -49,7 +56,6 @@ button {
     height: 4.3vh;
     flex-shrink: 0;
     margin-left: auto;
-    margin-right: 2vw;
 }
 
 .navitems a {
@@ -108,7 +114,8 @@ button {
     width: auto;
     display: inline-block;
     padding: 0;
-    margin-left: 0;
+    margin-left: 2vw;
+    margin-right: -1.9vw;
     flex-shrink: 0;
 }
 

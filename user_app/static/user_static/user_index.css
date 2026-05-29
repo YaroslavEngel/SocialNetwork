@@ -42,7 +42,7 @@ body {
 
 .auth-image {
     position: absolute;
-    right: clamp(1.6vw, 4vw, 6vw);
+    right: clamp(0vw, 1vw, 2vw);
     top: 50%;
     transform: translateY(-50%);
     z-index: 1;
@@ -50,7 +50,7 @@ body {
 }
 
 .auth-image img {
-    width: clamp(25vw, 48vw, 58vw);
+    width: clamp(20vw, 38vw, 46vw);
     height: auto;
     display: block;
 }
@@ -214,9 +214,9 @@ body {
 .friends-nav {
     width: clamp(12vw, 13.2vw, 16vw);
     height: fit-content;
-    position: absolute;
+    position: sticky;
     top: clamp(10vh, 13.5vh, 17vh);
-    left: clamp(1.6vw, 4.2vw, 6vw);
+    left: clamp(2.4vw, 5.4vw, 9.4vw); /* чуть левее */
     display: flex;
     flex-direction: column;
     gap: clamp(1.5vh, 2vh, 2.8vh);
@@ -249,11 +249,13 @@ body {
     text-decoration-color: #543C52;
 }
 
+
 .friends-home,
 .friends-page {
     position: absolute;
     top: clamp(10vh, 13.5vh, 17vh);
     left: clamp(18vw, 22.8vw, 30vw);
+    transform: translateX(0.65vw);
     width: calc(100vw - clamp(18vw, 22.8vw, 30vw) - clamp(1.6vw, 5vw, 7.2vw));
     height: fit-content;
     display: flex;

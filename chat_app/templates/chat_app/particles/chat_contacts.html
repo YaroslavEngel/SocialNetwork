@@ -1,26 +1,27 @@
 {% load static %}
-<!-- Відкриваємо ліву колонку контактів. -->
-<aside class="chat-contacts">
-    <!-- Показуємо кнопку майбутнього створення групового чату. -->
+<!-- Обгортка лівої колонки -->
+<div class="chat-contacts-wrap">
+    <!-- Показуємо кнопку створення групового чату. -->
     <button type="button" class="chat-create-btn">
-    <img src="{% static 'chat_app/images/CreateGroup.svg' %}" alt="Створити груповий чат">
+        <img src="{% static 'chat_app/images/CreateGroup.svg' %}" alt="Створити груповий чат">
     </button>
-    <!-- Відкриваємо блок списку контактів. -->
-    <section class="chat-block">
-        <!-- Показуємо заголовок блоку контактів. -->
-        <img src="{% static 'chat_app/images/Contact.svg' %}" alt="Контакти">
-        <input type="text" class="chat-search" placeholder="Пошук">
-        <!-- Перебираємо друзів поточного користувача. -->
-        {% for friend in friends %}
-            <button type="button" class="chat-user-button" data-chat-user="{{ friend.id }}" data-chat-username="{{ friend.email }}">
-                <!-- Показуємо username або email друга. -->
-                {{ friend.email }}
-            </button>
-        <!-- Якщо друзів немає. -->
-        {% empty %}
-            <!-- Показуємо порожній стан контактів. -->
-            <p>Контактів поки немає</p>
-        <!-- Закриваємо цикл друзів. -->
-        {% endfor %}
-    </section>
-</aside>
+    <!-- Відкриваємо ліву колонку контактів. -->
+    <aside class="chat-contacts">
+        <!-- Відкриваємо блок списку контактів. -->
+        <section class="chat-block">
+            <!-- Показуємо заголовок блоку контактів. -->
+            <img src="{% static 'chat_app/images/Contact.svg' %}" alt="Контакти">
+            <div class="chat-search-wrap">
+                <img src="{% static 'chat_app/images/Search.svg' %}" class="chat-search-icon" alt="search">
+                <input type="text" class="chat-search" placeholder="Пошук">
+            </div>
+            {% for friend in friends %}
+                <button type="button" class="chat-user-button" data-chat-user="{{ friend.id }}" data-chat-username="{{ friend.email }}">
+                    {{ friend.email }}
+                </button>
+            {% empty %}
+                <p>Контактів поки немає</p>
+            {% endfor %}
+        </section>
+    </aside>
+</div>

@@ -19,6 +19,9 @@ let isLoading = false;
 friendsSection.style.display = "none";
 friendsHome.style.display = "block";
 
+// Головна активна по умолчанию
+document.querySelector('#friends-nav-home').classList.add("active");
+
 // Обновляет превью одной секции на главной
 async function refreshHomeSection(section) {
     const response = await fetch(`/friends/section/${section}/?page=1&preview=1`, {
@@ -96,6 +99,10 @@ document.querySelectorAll("[data-section-link]").forEach(btn => {
         friendsSection.style.display = "block";
         friendsTitle.textContent = sectionTitles[section];
         loadSectionPage(section, pageNumber);
+
+        // активная кнопка
+        document.querySelectorAll(".friends-nav button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
     });
 });
 
@@ -105,6 +112,18 @@ friendsBackHome.addEventListener("click", () => {
     friendsHome.style.display = "block";
     currentSection = "";
     pageNumber = 1;
+});
+
+// Кнопка "Головна" в nav
+document.querySelector('#friends-nav-home').addEventListener('click', () => {
+    friendsSection.style.display = "none";
+    friendsHome.style.display = "block";
+    currentSection = "";
+    pageNumber = 1;
+
+    // активная кнопка
+    document.querySelectorAll(".friends-nav button").forEach(b => b.classList.remove("active"));
+    document.querySelector('#friends-nav-home').classList.add("active");
 });
 
 // Кнопки действий на карточках
@@ -135,10 +154,3 @@ async function pollAll() {
 }
 
 setInterval(pollAll, 5000);
-
-document.querySelector('#friends-nav-home').addEventListener('click', () => {
-    friendsSection.style.display = "none";
-    friendsHome.style.display = "block";
-    currentSection = "";
-    pageNumber = 1;
-});
