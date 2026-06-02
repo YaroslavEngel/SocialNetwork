@@ -2,32 +2,30 @@
 {% load static %}
 
 {% block meta %}
-    <!-- Передаємо CSRF-токен для fetch-запитів. -->
     <meta name="csrf-token" content="{{ csrf_token }}">
 {% endblock %}
 
 {% block title %}Чати{% endblock %}
 
 {% block links %}
-    <!-- Підключаємо мінімальні стилі сторінки чатів. -->
     <link rel="stylesheet" href="{% static 'chat_app/chat_index.css' %}">
+    <link rel="stylesheet" href="{% static 'chat_app/group_modal.css' %}">
 {% endblock %}
+
 {% block frame1 %}{% endblock %}
 {% block frame2 %}{% endblock %}
 {% block frame3 %}{% endblock %}
+
 {% block content %}
-    <!-- Збираємо головну сторінку чатів з окремих particles. -->
     <main class="chat-page">
-        <!-- Підключаємо лівий блок контактів. -->
         {% include "chat_app/particles/chat_contacts.html" %}
-        <!-- Підключаємо центральний блок активного чату. -->
         {% include "chat_app/particles/chat_main.html" %}
-        <!-- Підключаємо праву колонку з повідомленнями та груповими чатами. -->
         {% include "chat_app/particles/chat_sidebar.html" %}
+        {% include "chat_app/particles/group_modal.html" with contacts=contacts %}
     </main>
 {% endblock %}
 
 {% block scripts %}
-    <!-- Підключаємо frontend-логіку створення чату та WebSocket. -->
     <script src="{% static 'chat_app/chat_index.js' %}"></script>
+    <script src="{% static 'chat_app/group_chat.js' %}"></script>
 {% endblock %}

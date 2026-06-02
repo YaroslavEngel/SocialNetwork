@@ -63,5 +63,5 @@ class CreateGroupView(LoginRequiredMixin, View):
         friends_ids = get_users_by_section(request.user, "friends").filter(id__in = user_ids).values_list("id", flat=True)
         chat = Chat.objects.create(name = name, is_group = True, admin = request.user)
         chat.users.add(request.user)
-        chat.users.add(*User.objects.filter(id__int = friends_ids))
+        chat.users.add(*User.objects.filter(id__in = friends_ids))
         return JsonResponse({"succes": True, "chat_id": chat.id, "name": chat.name})

@@ -22,6 +22,7 @@ class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_messages")
     readers = models.ManyToManyField(User, blank=True, related_name="read_messages")
     created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to="message_images/", blank=True, null=True)
 
     def str(self):
         return self.text[:30]

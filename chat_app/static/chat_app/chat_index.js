@@ -43,14 +43,16 @@ async function openChatById(chatId, title) {
             <div class="chat-active-avatar"></div>
             <span class="chat-active-title">${title}</span>
         </div>
-        <div id="messages-load-sentinel"></div>
-        <div id="messages" class="chat-messages-list"></div>
+        <div id="messages" class="chat-messages-list">
+            <div id="messages-load-sentinel"></div>
+        </div>
         <form id="message-form" class="chat-message-form">
             <input type="text" id="message-input" placeholder="Повідомлення..." autocomplete="off">
+            <input type="file" id="image-input" accept="image/*" style="position:absolute;opacity:0;width:0;height:0">
             <button type="button" class="chat-form-btn">
                 <img src="/static/chat_app/images/Component 4.svg" alt="">
             </button>
-            <button type="button" class="chat-form-btn">
+            <button type="button" class="chat-form-btn" id="image-btn">
                 <img src="/static/chat_app/images/Component 3.svg" alt="">
             </button>
             <button type="submit" class="chat-send-btn">
@@ -72,8 +74,27 @@ async function openChatById(chatId, title) {
             chatSocket.send(JSON.stringify({ message: text }));
             input.value = "";
         } else {
-            console.warn("WebSocket ще не підключено");
+            console.warn("WebSocket not connected");
         }
+    });
+
+    document.querySelector("#image-btn").addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        document.querySelector("#image-input").click();
+    });
+
+    document.querySelector("#image-input").addEventListener("change", function() {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
+                chatSocket.send(JSON.stringify({ image: e.target.result, message: "" }));
+            }
+        };
+        reader.readAsDataURL(file);
+        this.value = "";
     });
 
     await loadMessages();
@@ -84,25 +105,27 @@ async function openChatById(chatId, title) {
 function connectWebSocket(chatId) {
     if (chatSocket) chatSocket.close();
     chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${chatId}/`);
-    
+
     chatSocket.onopen = () => {
-        console.log("WebSocket підключено");
+        console.log("WebSocket connected");
     };
-    
+
     chatSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         const messages = document.querySelector("#messages");
         if (!messages) return;
         messages.appendChild(renderMessage(data));
-        messages.scrollTop = messages.scrollHeight;
+        requestAnimationFrame(() => {
+            messages.scrollTop = messages.scrollHeight;
+        });
     };
 
     chatSocket.onerror = (error) => {
-        console.error("WebSocket помилка:", error);
+        console.error("WebSocket error:", error);
     };
 
     chatSocket.onclose = () => {
-        console.log("WebSocket закрито");
+        console.log("WebSocket closed");
     };
 }
 
@@ -130,7 +153,9 @@ async function loadMessages(prerend = false) {
     if (prerend) {
         messages.scrollTop = messages.scrollHeight - oldHeight;
     } else {
-        messages.scrollTop = messages.scrollHeight;
+        requestAnimationFrame(() => {
+            messages.scrollTop = messages.scrollHeight;
+        });
     }
 }
 
@@ -148,19 +173,25 @@ function startObserver() {
 }
 
 function renderMessage(data) {
-    const currentUser = document.querySelector("meta[name='csrf-token']") ? window.currentUserEmail : null;
     const message = document.createElement('div');
     const isOwn = data.sender === window.currentUserEmail;
     message.className = `message ${isOwn ? 'message-own' : 'message-other'}`;
-    message.textContent = data.text;
+    if (data.image) {
+        const img = document.createElement('img');
+        img.src = data.image;
+        img.style.maxWidth = "200px";
+        img.style.borderRadius = "8px";
+        message.appendChild(img);
+    } else {
+        message.textContent = data.text;
+    }
     return message;
 }
 
 function addToMessagesList(username) {
     const messagesList = document.querySelector(".chat-messages-block");
     if (!messagesList) return;
-    
-    // Перевіряємо чи вже є цей юзер в списку
+
     const existing = [...messagesList.querySelectorAll(".chat-user-button")]
         .find(btn => btn.dataset.chatUsername === username);
     if (existing) return;

@@ -1,11 +1,16 @@
 {% load static %}
-<!-- Відкриваємо блок групових чатів. -->
 <section class="chat-groups-block">
-    <!-- Заголовок з кнопкою "Дивитись всі" -->
     <div class="chat-block-header">
-    <image src="{% static 'chat_app/images/GroupChat.svg' %}" alt="Групові чати">
-    <!-- <a href="#"><img src="{% static 'images/see_all.svg' %}" alt="Дивитись всі"></a> -->
+        <img src="{% static 'chat_app/images/GroupChat.svg' %}" alt="Групові чати">
     </div>
-    <!-- Показуємо тимчасовий порожній стан. -->
-    <p>Порожньо</p>
+
+    <ul id="group-list">
+        {% for chat in group_chats %}
+            <li data-chat-id="{{ chat.id }}" data-chat-name="{{ chat.name }}">
+                {{ chat.name }}
+            </li>
+        {% empty %}
+            <p>Порожньо</p>
+        {% endfor %}
+    </ul>
 </section>
