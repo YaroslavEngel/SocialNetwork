@@ -1,7 +1,11 @@
 from django.urls import path
-from .views import ChatView, ChatCreateView
+
+from .views import ChatView, ChatWithView, CreateGroupView, MessageHistoryView
+
 
 urlpatterns = [
-    path('', ChatView.as_view(), name='chat'),
-    path('chat_with/<int:userId>/', ChatCreateView.as_view(), name='chat_create'),
+    path("", ChatView.as_view(), name="chat"),
+    path("chat_with/<int:user_id>/", ChatWithView.as_view(), name="chat_with"),
+    path("<int:chat_id>/messages/", MessageHistoryView.as_view(), name="message_history"),
+    path("create_group/", CreateGroupView.as_view(), name="create_group"),
 ]

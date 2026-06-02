@@ -1,11 +1,12 @@
-'''
-Файл для налаштування маршрутизації для WebSocket-з'єднання.
-Цей файл є аналогом urls.py, тільки для налаштування маршрутизації для WebSocket-з'єднання.
-'''
-from django.urls import path
-from .consumers import ChatConsumer
+"""
+Маршрути WebSocket.
+"""
 
-# Список з маршрутами
-websockets_urlpatterns = [
-    path('chat/', ChatConsumer.as_asgi()) # "Підв'язка" логіки роботи чату з url "chat/"
+from django.urls import path
+from . import consumers
+from .consumers import ChatConsumer
+from django.urls import re_path
+
+websocket_urlpatterns = [
+    re_path(r"ws/chat/(?P<chat_id>\d+)/$", ChatConsumer.as_asgi()),
 ]

@@ -1,69 +1,70 @@
-'''
-Файл, що відповідає за обробку WebSocket-подій.
-Цей файл є аналогом views.py, тільки для асинхроноого підключення через WebSocket.
-'''
-
 import json
-from channels.generic.websocket import AsyncWebsocketConsumer 
-from .forms import MessageForm
+from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.db import database_sync_to_async
+from .models import Chat, Message
+from user_app.models import User
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
-    '''
-    Клас для обробки WebSocket-подій пов'язаних з логікою чату
-    '''
 
     async def connect(self):
-        '''
-        Метод-подія, що відпрацює при отриманні запиту на встановлення WebSocket-зв'язку від клієнта
-        '''
-        # Властивість, що зберігає ім'я групи (воно може бути будь-яким)
-        self.room_group_name = 'test_group'
-        # Додати клієнта до групи
+        self.chat_id = self.scope["url_route"]["kwargs"]["chat_id"]
+        self.room_group_name = f"chat_{self.chat_id}"
+        self.user = self.scope["user"]
+
+        # Перевіряємо чи юзер є учасником чату
+        if not await self.user_in_chat():
+            await self.close()
+            return
+
         await self.channel_layer.group_add(
             self.room_group_name,
-            self.channel_name 
+            self.channel_name
         )
-        # Прийняти з'єднання
         await self.accept()
-        # Надіслати клієнту повідомлення про успішне з'єднання із сервером
-        await self.send(text_data=json.dumps({
-            'type': 'connection_established',
-            'message': 'connection is successful!'
-        }))
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
+        )
 
     async def receive(self, text_data):
-        '''
-        Метод-подія, що відпрацює при отриманні повідомлення від клієнта
-        '''
-        # Надліслати повідомлення до групи
+        data = json.loads(text_data)
+        message_text = data.get("message", "").strip()
+        if not message_text:
+            return
+
+        # Зберігаємо в БД
+        message = await self.save_message(message_text)
+
+        # Відправляємо всім в групі
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                # Назва методу, що треба викликати
-                'type':'chat_message',
-                # Дані, що передаються у метод
-                'text_data':text_data
+                "type": "chat_message",
+                "text": message_text,
+                "sender": self.user.email,
+                "id": message.id,
             }
         )
 
     async def chat_message(self, event):
-        '''
-        Метод, що містить логіку для відправки 
-        '''
-        # Конвертувати надіслані дані у словник
-        text_data_dict = json.loads(event['text_data'])
-        # Створити об'єкт форми, що заповнена надісланими даними
-        form = MessageForm(text_data_dict)
-        # Якщо надіслані дані є валідними
-        if form.is_valid():
-            # Отримати повідомлення
-            message = form.cleaned_data['message']
-            # Надіслати повідомлення клієнту
-            await self.send(text_data=json.dumps({
-                'type':'chat',
-                'message':message
-            }))
-        else:
-            # Вивести помилку
-            print('Error')
+        await self.send(text_data=json.dumps({
+            "text": event["text"],
+            "sender": event["sender"],
+            "id": event["id"],
+        }))
+
+    @database_sync_to_async
+    def user_in_chat(self):
+        return Chat.objects.filter(id=self.chat_id, users=self.user).exists()
+
+    @database_sync_to_async
+    def save_message(self, text):
+        chat = Chat.objects.get(id=self.chat_id)
+        return Message.objects.create(
+            chat=chat,
+            sender=self.user,
+            text=text
+        )

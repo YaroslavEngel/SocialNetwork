@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +45,8 @@ INSTALLED_APPS = [
     'chat_app'
     ]
 
-ASGI_APPLICATION = 'messenger.asgi.application'
+
+ASGI_APPLICATION = "SocialNetwork.asgi.application"
 
 
 AUTH_USER_MODEL = 'user_app.User'
@@ -139,3 +142,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_URL = '/user/auth-form/'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}

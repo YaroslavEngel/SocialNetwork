@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Sacramento&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 
 .post-section {
     width: 100%;
@@ -130,7 +128,7 @@
     font-weight: 700;
     color: #16151C;
     margin-bottom: 2.2vh;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 .post-form {
@@ -144,14 +142,14 @@
     flex-direction: column;
     gap: 0.5vh;
     width: 100%;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 .post-inputs-container label {
     font-size: 0.75vw;
     font-weight: 500;
     color: #16151C;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 #id_title,
@@ -621,7 +619,7 @@
 }
 
 .post-author-name {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Nunito', sans-serif;
     font-weight: 700;
     font-size: 1.1vw;
     line-height: 1.4;
