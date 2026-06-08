@@ -5,9 +5,22 @@
     </div>
 
     <ul id="group-list">
-        {% for chat in group_chats %}
-            <li data-chat-id="{{ chat.id }}" data-chat-name="{{ chat.name }}">
-                {{ chat.name }}
+        {% for item in group_chats %}
+            <li class="group-chat-item" data-chat-id="{{ item.chat.id }}" data-chat-name="{{ item.chat.name }}">
+                <div class="group-chat-avatar">
+                    {{ item.chat.name|slice:":2"|upper }}
+                </div>
+                <div class="group-chat-info">
+                    <div class="group-chat-top">
+                        <span class="group-chat-name">{{ item.chat.name }}</span>
+                        {% if item.last_message %}
+                            <span class="group-chat-time">{{ item.last_message.created_at|date:"H:i" }}</span>
+                        {% endif %}
+                    </div>
+                    {% if item.last_message %}
+                        <span class="group-chat-preview">{{ item.last_message.text|truncatechars:30 }}</span>
+                    {% endif %}
+                </div>
             </li>
         {% empty %}
             <p>Порожньо</p>

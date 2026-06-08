@@ -226,7 +226,7 @@
 /* buttons */
 .group-modal-btn {
     height: 4.2vh;
-    padding: 0 1.4vw;
+    padding: 0;
     border-radius: 99vw;
     font-family: 'Nunito', sans-serif;
     font-size: clamp(0.8rem, 0.95vw, 1.05rem);
@@ -235,6 +235,7 @@
     border: none;
     transition: opacity 0.15s, background 0.15s;
     white-space: nowrap;
+    background: none;
 }
 .group-modal-btn--cancel {
     background: #EAE6F7;
@@ -255,4 +256,19 @@
 .group-modal-name-input {
     width: 100%;
     height: 5vh;
+    border: 0.08vw solid #D4CAEE;
+    border-radius: 0.6vw;
+    font-size: clamp(0.8rem, 1vw, 1.1rem);
+    font-family: 'Nunito', sans-serif;
+    padding: 0 1vw;
+    outline: none;
+    background: #FAF8FF;
+    box-sizing: border-box;
+}
+.group-modal-name-input:focus { border-color: #6B3FCC; }
+
+.group-modal-btn {
+    padding: 0;
+    background: none;
+    border: none;
 }

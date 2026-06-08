@@ -10,8 +10,8 @@
     {% for chat in personal_chats %}
         {% for person in chat.users.all %}
             {% if person.id != request.user.id %}
-                <button type="button" class="chat-user-button" data-chat-user="{{ person.id }}" data-chat-username="{{ person.email }}">
-                    {{ person.email }}
+                <button type="button" class="chat-user-button" data-chat-user="{{ person.id }}" data-chat-username="{{ person.username|default:person.email }}">
+                    {{ person.username|default:person.email }}
                 </button>
             {% endif %}
         {% endfor %}

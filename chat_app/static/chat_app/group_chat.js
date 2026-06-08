@@ -36,6 +36,7 @@ groupUserCheckboxes.forEach(function(checkbox) {
     checkbox.addEventListener("change", function() {
         const checked = document.querySelectorAll(".group-user-checkbox:checked")
         selectedCount.textContent = checked.length
+        nextGroupStepButton.disabled = checked.length === 0
         selectedUsersList.innerHTML = ""
         checked.forEach(function(cb) {
             const p = document.createElement("p")

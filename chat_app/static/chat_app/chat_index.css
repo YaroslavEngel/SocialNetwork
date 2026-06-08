@@ -2,7 +2,7 @@
 .chat-page {
     display: flex;
     flex-direction: row;
-    margin-right:-1.8vw;
+    margin-right: -1.8vw;
     gap: clamp(0.6vw, 1.2vw, 1.4vw);
     padding: 1.8vh clamp(1.6vw, 5.5vw, 8vw);
     box-sizing: border-box;
@@ -11,6 +11,7 @@
     overflow: hidden;
 }
 
+/* ── ЛІВА КОЛОНКА ── */
 .chat-contacts-wrap {
     display: flex;
     flex-direction: column;
@@ -20,7 +21,6 @@
     flex-shrink: 0;
 }
 
-/* ── ЛЕВАЯ КОЛОНКА ── */
 .chat-contacts {
     width: clamp(20vw, 24.4vw, 28vw);
     height: 100%;
@@ -53,14 +53,13 @@
     height: 6vh;
     object-fit: contain;
     border-radius: 99vw;
-    
 }
 
 .chat-create-btn:hover {
     opacity: 0.85;
 }
 
-/* ── БЛОК КОНТАКТОВ ── */
+/* ── БЛОК КОНТАКТІВ ── */
 .chat-block {
     display: flex;
     flex-direction: column;
@@ -76,7 +75,7 @@
     font-family: 'Nunito', sans-serif;
 }
 
-/* ── ПОИСК ── */
+/* ── ПОШУК ── */
 .chat-search {
     width: 100%;
     height: 5.5vh;
@@ -95,6 +94,7 @@
 .chat-search:focus {
     border-color: #6B3FCC;
 }
+
 .chat-search-wrap {
     position: relative;
     width: 100%;
@@ -144,24 +144,23 @@
     display: block;
 }
 
-/* ── ЦЕНТРАЛЬНАЯ КОЛОНКА ── */
+/* ── ЦЕНТРАЛЬНА КОЛОНКА ── */
 .chat-main {
-    overflow: hidden;
-    min-width: 0;
     flex: 1;
     height: 100%;
     border-radius: 0.8vw;
     border: 0.10vw solid #bab4cc;
     background: #FFFFFF;
-    padding: 1.8vh 1.5vw;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    min-width: 0;
+    padding: 1.8vh 1.5vw;
 }
 
-/* ── КОНТЕЙНЕР ТЕКСТА ── */
 .chat-main-welcome {
     width: min(40vw, 90%);
     display: flex;
@@ -170,7 +169,6 @@
     gap: 2.5vh;
 }
 
-/* ── ЗАГОЛОВОК ── */
 #chat-title {
     width: 100%;
     font-family: 'Nunito', sans-serif;
@@ -183,7 +181,6 @@
     margin: 0;
 }
 
-/* ── ПОДПИСЬ ── */
 #chat-status {
     width: 100%;
     font-family: 'Nunito', sans-serif;
@@ -196,6 +193,7 @@
     margin: 0;
 }
 
+/* ── ПРАВА КОЛОНКА ── */
 .chat-side {
     width: clamp(20vw, 24.4vw, 28vw);
     height: 100%;
@@ -204,10 +202,9 @@
     display: flex;
     flex-direction: column;
     gap: 0.8vh;
-    overflow: hidden; /* ← замени overflow-y: auto на это */
+    overflow: hidden;
 }
 
-/* ── БЛОК ПОВІДОМЛЕНЬ ── */
 .chat-messages-block {
     width: 100%;
     flex: 1;
@@ -222,7 +219,6 @@
     overflow-y: auto;
 }
 
-/* ── БЛОК ГРУПОВИХ ЧАТІВ ── */
 .chat-groups-block {
     width: 100%;
     flex: 1;
@@ -237,7 +233,6 @@
     overflow-y: auto;
 }
 
-/* ── HEADER БЛОКА ── */
 .chat-block-header {
     width: 100%;
     display: flex;
@@ -248,7 +243,6 @@
     box-sizing: border-box;
 }
 
-/* ── ЗАГОЛОВОК БЛОКА ── */
 .chat-block-header > img {
     width: auto;
     height: 3vh;
@@ -283,6 +277,7 @@
     font-family: 'Nunito', sans-serif;
 }
 
+/* ── СПИСОК ПОВІДОМЛЕНЬ ── */
 .chat-messages-list {
     flex: 1;
     display: flex;
@@ -290,23 +285,109 @@
     gap: 0.8vh;
     padding: 1.5vh 1.5vw;
     overflow-y: auto;
-    overflow-x: hidden; /* ← додай це */
+    overflow-x: hidden;
 }
 
+/* ── ПОВІДОМЛЕННЯ ── */
 .message {
-    max-width: 60%;
+    display: flex;
+    margin-bottom: 4px;
+}
+
+.message-own {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-self: flex-end;
+    max-width: 70%;
+}
+
+.message-other {
+    flex-direction: row;
+    align-items: flex-start;
+    align-self: flex-start;
+    max-width: 70%;
+    gap: 0.6vw;
+}
+
+/* ── АВАТАР ── */
+.message-avatar {
+    width: 2.4vw;
+    height: 2.4vw;
+    min-width: 32px;
+    min-height: 32px;
+    border-radius: 50%;
+    background: #D4CAEE;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.75vw;
+    color: #543C52;
+}
+
+/* ── КОНТЕНТ ПОВІДОМЛЕННЯ ── */
+.message-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2vh;
+    min-width: 0;
+}
+
+.message-sender-name {
+    font-size: 0.8vw;
+    font-family: 'Nunito', sans-serif;
+    color: #543C52;
+    font-weight: 600;
+    display: block;
+}
+
+/* ── БУЛЬБАШКА ── */
+.message-bubble {
     padding: 0.8vh 1vw;
-    border-radius: 0.8vw;
+    border-radius: 8px;
     font-size: 0.95vw;
     font-family: 'Nunito', sans-serif;
-    background: #F1EBF3;
     color: #1A1A1A;
-    align-self: flex-start;
-    word-break: break-word; /* ← і це, щоб довгі слова переносились */
-    overflow-wrap: break-word; /* ← і це */
-    white-space: normal; /* ← і це */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
+.message-own .message-bubble {
+    background: rgba(205, 206, 210, 1);
+    border-radius: 8px 8px 0 8px;
+}
+
+.message-other .message-bubble {
+    background: #F1EBF3;
+    border-radius: 8px 8px 8px 0;
+}
+
+.message-text {
+    width: 100%;
+}
+
+.message-time {
+    font-size: 11px;
+    opacity: 0.6;
+    user-select: none;
+    white-space: nowrap;
+    align-self: flex-end;
+}
+
+.message-bubble img {
+    width: 250px;
+    max-width: 100%;
+    border-radius: 8px;
+    display: block;
+}
+
+/* ── ФОРМА ── */
 .chat-message-form {
     display: flex;
     align-items: center;
@@ -370,16 +451,83 @@
     height: 2.5vw;
     object-fit: contain;
 }
-.message-own {
-    align-self: flex-end;
-    background: rgba(205, 206, 210, 1);
-    color: #000000;
-    border-radius: 1vw 1vw 0 1vw;
+
+#group-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4vh;
 }
 
-.message-other {
-    align-self: flex-start;
-    background: #F1EBF3;
+.group-chat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8vw;
+    padding: 0.8vh 0.6vw;
+    border-radius: 0.6vw;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.group-chat-item:hover {
+    background: #EAE6F7;
+}
+
+.group-chat-avatar {
+    width: 2.8vw;
+    height: 2.8vw;
+    min-width: 36px;
+    min-height: 36px;
+    border-radius: 50%;
+    background: #543C52;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.8vw;
+    flex-shrink: 0;
+}
+
+.group-chat-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2vh;
+}
+
+.group-chat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.group-chat-name {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 0.95vw;
     color: #1A1A1A;
-    border-radius: 1vw 1vw 1vw 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.group-chat-time {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75vw;
+    color: #888;
+    flex-shrink: 0;
+}
+
+.group-chat-preview {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.82vw;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

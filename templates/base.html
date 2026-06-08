@@ -4,7 +4,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="current-user" content="{{ request.user.email }}">
+    <meta name="current-user" content="{{ request.user.username|default:request.user.email }}">
     {% block meta %}{% endblock %}
     <title>{% block title %}Мой сайт{% endblock %}</title>
 

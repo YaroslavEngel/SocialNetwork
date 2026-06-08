@@ -14,10 +14,7 @@ const chatMain = document.querySelector(".chat-main");
 
 chatButtons.forEach((button) => {
     button.addEventListener("click", async () => {
-        await openChatWithUser(
-            button.dataset.chatUser,
-            button.dataset.chatUsername,
-        );
+        await openChatWithUser(button.dataset.chatUser, button.dataset.chatUsername);
     });
 });
 
@@ -33,9 +30,10 @@ async function openChatWithUser(userId, username) {
 
 async function openChatById(chatId, title) {
     activeChatId = chatId;
-    addToMessagesList(title);
+    // addToMessagesList(title);
     currentPage = 1;
-    hasNext = false;
+    hasNext = true;
+    isLoading = false;
     if (observer) observer.disconnect();
 
     chatMain.innerHTML = `
@@ -48,7 +46,7 @@ async function openChatById(chatId, title) {
         </div>
         <form id="message-form" class="chat-message-form">
             <input type="text" id="message-input" placeholder="Повідомлення..." autocomplete="off">
-            <input type="file" id="image-input" accept="image/*" style="position:absolute;opacity:0;width:0;height:0">
+            <input type="file" id="image-input" accept="image/*" multiple style="position:absolute;opacity:0;width:0;height:0">
             <button type="button" class="chat-form-btn">
                 <img src="/static/chat_app/images/Component 4.svg" alt="">
             </button>
@@ -68,14 +66,28 @@ async function openChatById(chatId, title) {
     document.querySelector("#message-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         const input = document.querySelector("#message-input");
+        const imageInput = document.querySelector("#image-input");
         const text = input.value.trim();
-        if (!text || !chatSocket) return;
-        if (chatSocket.readyState === WebSocket.OPEN) {
-            chatSocket.send(JSON.stringify({ message: text }));
-            input.value = "";
-        } else {
+        const hasImages = imageInput.files.length > 0;
+
+        if (!text && !hasImages) return;
+        if (!chatSocket || chatSocket.readyState !== WebSocket.OPEN) {
             console.warn("WebSocket not connected");
+            return;
         }
+
+        if (hasImages) {
+            const files = Array.from(imageInput.files);
+            for (const file of files) {
+                await sendImageViaWebSocket(file, text);
+            }
+            imageInput.value = "";
+            input.value = "";
+            return;
+        }
+
+        chatSocket.send(JSON.stringify({ message: text }));
+        input.value = "";
     });
 
     document.querySelector("#image-btn").addEventListener("click", (e) => {
@@ -84,31 +96,30 @@ async function openChatById(chatId, title) {
         document.querySelector("#image-input").click();
     });
 
-    document.querySelector("#image-input").addEventListener("change", function() {
-        const file = this.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
-                chatSocket.send(JSON.stringify({ image: e.target.result, message: "" }));
-            }
-        };
-        reader.readAsDataURL(file);
-        this.value = "";
-    });
-
     await loadMessages();
     connectWebSocket(chatId);
     startObserver();
+}
+
+function sendImageViaWebSocket(file, text = "") {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            chatSocket.send(JSON.stringify({
+                message: text,
+                image: e.target.result,
+            }));
+            resolve();
+        };
+        reader.readAsDataURL(file);
+    });
 }
 
 function connectWebSocket(chatId) {
     if (chatSocket) chatSocket.close();
     chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${chatId}/`);
 
-    chatSocket.onopen = () => {
-        console.log("WebSocket connected");
-    };
+    chatSocket.onopen = () => console.log("WebSocket connected");
 
     chatSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
@@ -120,43 +131,38 @@ function connectWebSocket(chatId) {
         });
     };
 
-    chatSocket.onerror = (error) => {
-        console.error("WebSocket error:", error);
-    };
-
-    chatSocket.onclose = () => {
-        console.log("WebSocket closed");
-    };
+    chatSocket.onerror = (error) => console.error("WebSocket error:", error);
+    chatSocket.onclose = () => console.log("WebSocket closed");
 }
 
-async function loadMessages(prerend = false) {
+async function loadMessages(prepend = false) {
     const messages = document.querySelector("#messages");
-    if (!messages) return;
+    if (!messages || isLoading || !hasNext) return;
+    isLoading = true;
     const oldHeight = messages.scrollHeight;
     const response = await fetch(
-        `/chat/${activeChatId}/messages?page=${currentPage}`,
-        { headers: { "X-Requested-With": "XMLHttpRequest" } },
+        `/chat/${activeChatId}/messages/?page=${currentPage}`,
+        { headers: { "X-Requested-With": "XMLHttpRequest" } }
     );
     const data = await response.json();
     const fragment = document.createDocumentFragment();
-    data.messages.forEach((message) => {
-        fragment.appendChild(renderMessage(message));
-    });
+    data.messages.forEach((msg) => fragment.appendChild(renderMessage(msg)));
     const sentinel = document.querySelector("#messages-load-sentinel");
-    if (prerend) {
+    if (prepend) {
         sentinel.after(fragment);
     } else {
         messages.appendChild(fragment);
     }
     hasNext = data.has_next;
     currentPage++;
-    if (prerend) {
+    if (prepend) {
         messages.scrollTop = messages.scrollHeight - oldHeight;
     } else {
         requestAnimationFrame(() => {
             messages.scrollTop = messages.scrollHeight;
         });
     }
+    isLoading = false;
 }
 
 function startObserver() {
@@ -164,44 +170,101 @@ function startObserver() {
     if (!sentinel) return;
     observer = new IntersectionObserver(async (entries) => {
         if (entries[0].isIntersecting && hasNext && !isLoading) {
-            isLoading = true;
             await loadMessages(true);
-            isLoading = false;
         }
-    });
+    }, { root: document.querySelector("#messages"), rootMargin: "20px" });
     observer.observe(sentinel);
 }
 
+function padNum(n) {
+    return String(n).padStart(2, "0");
+}
+
+function formatTime(isoString) {
+    if (!isoString) return "";
+    const d = new Date(isoString);
+    return `${padNum(d.getHours())}:${padNum(d.getMinutes())}`;
+}
+
 function renderMessage(data) {
-    const message = document.createElement('div');
+    const message = document.createElement("div");
     const isOwn = data.sender === window.currentUserEmail;
-    message.className = `message ${isOwn ? 'message-own' : 'message-other'}`;
-    if (data.image) {
-        const img = document.createElement('img');
-        img.src = data.image;
-        img.style.maxWidth = "200px";
-        img.style.borderRadius = "8px";
-        message.appendChild(img);
-    } else {
-        message.textContent = data.text;
+    message.className = `message ${isOwn ? "message-own" : "message-other"}`;
+
+    if (!isOwn) {
+        const avatar = document.createElement("div");
+        avatar.className = "message-avatar";
+        avatar.textContent = data.sender.slice(0, 2).toUpperCase();
+        message.appendChild(avatar);
     }
+
+    const messageContent = document.createElement("div");
+    messageContent.className = "message-content";
+
+    if (!isOwn) {
+        const senderName = document.createElement("span");
+        senderName.className = "message-sender-name";
+        senderName.textContent = data.sender;
+        messageContent.appendChild(senderName);
+    }
+
+    const bubble = document.createElement("div");
+    bubble.className = "message-bubble";
+
+    if (data.text) {
+        const textSpan = document.createElement("span");
+        textSpan.className = "message-text";
+        textSpan.textContent = data.text;
+        bubble.appendChild(textSpan);
+    }
+
+    if (Array.isArray(data.images) && data.images.length > 0) {
+        data.images.forEach((url) => {
+            const img = document.createElement("img");
+            img.src = url;
+            img.style.maxWidth = "200px";
+            img.style.borderRadius = "8px";
+            img.style.display = "block";
+            bubble.appendChild(img);
+        });
+    }
+
+    if (data.created_at) {
+        const time = document.createElement("span");
+        time.className = "message-time";
+        time.textContent = formatTime(data.created_at);
+        bubble.appendChild(time);
+    }
+
+    messageContent.appendChild(bubble);
+    message.appendChild(messageContent);
     return message;
 }
 
 function addToMessagesList(username) {
     const messagesList = document.querySelector(".chat-messages-block");
     if (!messagesList) return;
-
     const existing = [...messagesList.querySelectorAll(".chat-user-button")]
         .find(btn => btn.dataset.chatUsername === username);
     if (existing) return;
-
     const btn = document.createElement("button");
     btn.className = "chat-user-button";
     btn.dataset.chatUsername = username;
     btn.textContent = username;
     btn.addEventListener("click", async () => {
-        await openChatWithUser(btn.dataset.chatUser, username);
+        await openChatById(null, username);
     });
     messagesList.appendChild(btn);
 }
+
+window.openChatById = openChatById;
+window.bindGroupChatButtons = function () {
+    document.querySelectorAll("[data-chat-id]").forEach((button) => {
+        if (button.dataset.groupBound === "true") return;
+        button.dataset.groupBound = "true";
+        button.addEventListener("click", async () => {
+            await openChatById(button.dataset.chatId, button.dataset.chatName);
+        });
+    });
+};
+window.bindGroupChatButtons();

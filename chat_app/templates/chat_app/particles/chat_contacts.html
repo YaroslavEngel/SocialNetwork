@@ -16,8 +16,8 @@
                 <input type="text" class="chat-search" placeholder="Пошук">
             </div>
             {% for friend in friends %}
-                <button type="button" class="chat-user-button" data-chat-user="{{ friend.id }}" data-chat-username="{{ friend.email }}">
-                    {{ friend.email }}
+                <button type="button" class="chat-user-button" data-chat-user="{{ friend.id }}" data-chat-username="{{ friend.username|default:friend.email }}">
+                    {{ friend.username|default:friend.email }}
                 </button>
             {% empty %}
                 <p>Контактів поки немає</p>
