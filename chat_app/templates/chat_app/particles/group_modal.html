@@ -15,19 +15,22 @@
             <p class="group-modal-count">Вибрано: <span id="selected-count">0</span></p>
 
             <div class="group-users-list">
-                {% for friend in friends %}
-                <label class="group-user-row">
-                    <input class="group-user-checkbox" type="checkbox" value="{{ friend.id }}" data-user-name="{{ friend.username|default:friend.email }}" hidden>
-                    <div class="group-user-avatar">
-                        {% if friend.avatar %}
-                            <img src="{{ friend.avatar.url }}" alt="">
-                        {% else %}
-                            {{ friend.username|slice:":2"|upper }}
-                        {% endif %}
-                    </div>
-                    <span class="group-user-name">{{ friend.username }}</span>
-                    <div class="group-user-check"></div>
-                </label>
+                {% for group in friends_grouped %}
+                    <div class="group-letter-label">{{ group.letter }}</div>
+                    {% for friend in group.friends %}
+                    <label class="group-user-row">
+                        <input class="group-user-checkbox" type="checkbox" value="{{ friend.id }}" data-user-name="{{ friend.username|default:friend.email }}" hidden>
+                        <div class="group-user-avatar">
+                            {% if friend.avatar %}
+                                <img src="{{ friend.avatar.url }}" alt="">
+                            {% else %}
+                                {{ friend.username|default:friend.email|slice:":2"|upper }}
+                            {% endif %}
+                        </div>
+                        <span class="group-user-name">{{ friend.username|default:friend.email }}</span>
+                        <div class="group-user-check"></div>
+                    </label>
+                    {% endfor %}
                 {% endfor %}
             </div>
 

@@ -1,3 +1,4 @@
+from itertools import groupby
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -19,22 +20,22 @@ class ChatView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["friends"] = get_users_by_section(self.request.user, "friends")
+        friends_qs = get_users_by_section(self.request.user, "friends").order_by("username", "email")
+        friends_grouped = []
+        for letter, group in groupby(friends_qs, key=lambda u: (u.username or u.email)[0].upper()):
+            friends_grouped.append({"letter": letter, "friends": list(group)})
+        context["friends"] = friends_qs
+        context["friends_grouped"] = friends_grouped
         context["personal_chats"] = Chat.objects.filter(
             users=self.request.user, is_group=False
         ).order_by("id")
-        
         group_chats = Chat.objects.filter(
             users=self.request.user, is_group=True
         ).order_by("id")
-        
         group_chats_data = []
         for chat in group_chats:
             last_msg = Message.objects.filter(chat=chat).select_related("sender").order_by("-created_at").first()
-            group_chats_data.append({
-                "chat": chat,
-                "last_message": last_msg,
-            })
+            group_chats_data.append({"chat": chat, "last_message": last_msg})
         context["group_chats"] = group_chats_data
         return context
 

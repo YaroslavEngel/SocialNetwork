@@ -211,7 +211,7 @@
     border-radius: 0.8vw;
     border: 0.10vw solid #bab4cc;
     background: #FFFFFF;
-    padding: 1.2vh 0.8vw;
+    padding: 0 0.8vw 1.2vh 0.8vw;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -225,7 +225,7 @@
     border-radius: 0.8vw;
     border: 0.10vw solid #bab4cc;
     background: #FFFFFF;
-    padding: 1.2vh 0.8vw;
+    padding: 0 0.8vw 1.2vh 0.8vw;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -530,4 +530,20 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.chat-messages-block,
+.chat-groups-block {
+    position: relative;
+}
+
+.chat-messages-block .chat-block-header,
+.chat-groups-block .chat-block-header {
+    position: sticky;
+    top: 0;
+    background: #FFFFFF;
+    z-index: 1;
+    padding-top: 1.2vh; /* ← тепер padding зверху тут */
+    padding-bottom: 0.8vh;
+    border-bottom: 0.08vw solid #EAE6F7;
 }
