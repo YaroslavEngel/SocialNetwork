@@ -39,9 +39,25 @@ groupUserCheckboxes.forEach(function(checkbox) {
         nextGroupStepButton.disabled = checked.length === 0
         selectedUsersList.innerHTML = ""
         checked.forEach(function(cb) {
-            const p = document.createElement("p")
-            p.textContent = cb.dataset.userName
-            selectedUsersList.appendChild(p)
+            const row = document.createElement("div")
+            row.className = "group-user-row"
+            row.style.width = "100%"
+            row.innerHTML = `
+                <div class="group-user-avatar" style="background:#543C52;color:#fff;">${cb.dataset.userName.slice(0, 2).toUpperCase()}</div>
+                <span class="group-user-name">${cb.dataset.userName}</span>
+                <button type="button" class="group-remove-btn" data-id="${cb.value}">
+                    <img src="/static/chat_app/images/Deluser.svg" alt="Видалити">
+                </button>
+            `
+            row.querySelector(".group-remove-btn").addEventListener("click", function() {
+                const id = this.dataset.id
+                const originalCb = document.querySelector(`.group-user-checkbox[value="${id}"]`)
+                if (originalCb) {
+                    originalCb.checked = false
+                    originalCb.dispatchEvent(new Event("change"))
+                }
+            })
+            selectedUsersList.appendChild(row)
         })
     })
 })
@@ -56,6 +72,12 @@ nextGroupStepButton.addEventListener("click", function() {
 backGroupStepButton.addEventListener("click", function() {
     groupStepName.setAttribute("hidden", "")
     groupStepUsers.removeAttribute("hidden")
+})
+
+document.querySelector("#group-name").addEventListener("input", function() {
+    const val = this.value.trim()
+    const preview = document.querySelector("#group-avatar-preview")
+    if (preview) preview.textContent = val.slice(0, 2).toUpperCase() || "НГ"
 })
 
 createGroupButton.addEventListener("click", async function() {

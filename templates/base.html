@@ -32,8 +32,9 @@
                     <img src="{% static 'images/Frame 1000002426.svg' %}" alt="Друзі">
                 </a>
 
-                <a href="/chat/" class="{% if '/chat' in request.path %}active{% endif %}">
-                    <img src="{% static 'images/Frame 1000002428.svg' %}" alt="Чати">
+                <a href="/chat/" class="{% if '/chat' in request.path %}active{% endif %} chat-nav-link">
+                    <img src="{% static 'images/Property 1=Default.svg' %}" alt="Чати">
+                    <span>Чати</span>
                 </a>
 
                 <a href="/" class="{% if '/settings' in request.path %}active{% endif %}">

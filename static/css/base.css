@@ -1,5 +1,5 @@
 body {
-    font-family: 'Nunito', sans-serif;  /* ← ось цей */
+    font-family: 'Nunito', sans-serif;
     margin: 0;
     min-height: 100vh;
     background-color: #FAF8FF;
@@ -94,6 +94,37 @@ button {
 
 .navitems a:hover {
     transform: translateY(-0.3vh);
+}
+
+.chat-nav-link {
+    padding: 0;
+    gap: 0.4vw;
+    border-radius: 0.4vw;
+    height: 4.3vh;
+    width: fit-content;
+    box-sizing: border-box;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.chat-nav-link img {
+    width: 1.4vw;
+    height: 1.4vw;
+    flex-shrink: 0;
+}
+
+.chat-nav-link span {
+    font-size: 1vw;
+    font-weight: 800;
+    color: #070A1C;
+    margin: 0;
+    line-height: 100%;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    text-decoration: none;
+    height: auto;
+    display: inline;
 }
 
 /* ── КНОПКА ВЫХОДА ── */

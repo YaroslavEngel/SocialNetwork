@@ -233,12 +233,20 @@
     overflow-y: auto;
 }
 
+.chat-block-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 1.2vw;
+    color: #81818D;
+}
+
 .chat-block-header {
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 0.5vw;
     padding: 0;
     box-sizing: border-box;
 }
@@ -545,5 +553,4 @@
     z-index: 1;
     padding-top: 1.2vh; /* ← тепер padding зверху тут */
     padding-bottom: 0.8vh;
-    border-bottom: 0.08vw solid #EAE6F7;
 }

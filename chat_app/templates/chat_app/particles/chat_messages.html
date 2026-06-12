@@ -3,8 +3,8 @@
 <section class="chat-messages-block">
     <!-- Заголовок з кнопкою "Дивитись всі" -->
     <div class="chat-block-header">
-    <img src="{% static 'chat_app/images/PersonalChat.svg' %}" alt="Повідомлення">
-    <!-- <a href="#"><img src="{% static 'images/see_all.svg' %}" alt="Дивитись всі"></a> -->
+        <img src="{% static 'chat_app/images/PersonalChat.svg' %}" alt="Повідомлення">
+        <span class="chat-block-title">Повідомлення</span>
     </div>
     <!-- Перебираємо особисті чати поточного користувача. -->
     {% for chat in personal_chats %}

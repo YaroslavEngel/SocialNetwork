@@ -49,17 +49,29 @@
             <button id="close-group-name-modal" class="group-modal-close" type="button">×</button>
             <h2 class="group-modal-title">Нова група</h2>
 
-            <input id="group-name" class="group-modal-name-input" type="text" placeholder="Назва групи">
+            <label class="group-modal-name-label">Назва</label>
+            <input id="group-name" class="group-modal-name-input" type="text" placeholder="Введіть назву">
 
-            <p class="group-modal-count">Учасники:</p>
-            <div id="selected-users-list" class="group-users-list"></div>
+            <div class="group-modal-avatar-wrap">
+                <div class="group-modal-avatar" id="group-avatar-preview">НГ</div>
+                <div class="group-modal-avatar-btns">
+                    <button type="button" class="group-avatar-btn">
+                        + Додайте фото
+                    </button>
+                    <button type="button" class="group-avatar-btn">
+                        <img src="{% static 'chat_app/images/Gallery.svg' %}" alt=""> Оберіть фото
+                    </button>
+                </div>
+
+                <p class="group-modal-count">Учасники</p>
+                <div id="selected-users-list" class="group-users-list"></div>
 
             <div class="group-modal-actions">
                 <button id="back-group-step" class="group-modal-btn group-modal-btn--cancel" type="button">
-                    <img src="{% static 'chat_app/images/Stop.svg' %}" alt="Назад">
+                    <img src="{% static '/images/BackButton.svg' %}" alt="Назад">
                 </button>
                 <button id="create-group" class="group-modal-btn group-modal-btn--primary" type="button">
-                    <img src="{% static 'chat_app/images/Continue.svg' %}" alt="Створити">
+                    <img src="{% static '/images/CreateGroup2.svg' %}" alt="Створити групу">
                 </button>
             </div>
         </div>
