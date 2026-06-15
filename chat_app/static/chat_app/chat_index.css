@@ -273,9 +273,19 @@
 .chat-active-avatar {
     width: 3vw;
     height: 3vw;
+    min-width: 42px;
+    min-height: 42px;
     border-radius: 50%;
-    background: #D4CAEE;
+    background: linear-gradient(135deg, #543C52, #8B5E8B);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.85vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
+    overflow: hidden;
 }
 
 .chat-active-title {
@@ -551,6 +561,131 @@
     top: 0;
     background: #FFFFFF;
     z-index: 1;
-    padding-top: 1.2vh; /* ← тепер padding зверху тут */
+    padding-top: 1.2vh;
     padding-bottom: 0.8vh;
+}
+
+/* ── КНОПКА КОНТАКТУ з аватаром і превью ── */
+.chat-user-button--rich {
+    height: auto;
+    min-height: 6vh;
+    padding: 0.6vh 0.6vw;
+    align-items: center;
+    gap: 0.8vw;
+}
+
+.chat-user-button--rich::before {
+    display: none;
+}
+
+.chat-user-avatar {
+    position: relative;
+    width: 2.8vw;
+    height: 2.8vw;
+    min-width: 38px;
+    min-height: 38px;
+    border-radius: 50%;
+    background: #D4CAEE;
+    color: #543C52;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.8vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+.chat-user-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chat-unread-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 99px;
+    background: #E53935;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    line-height: 1;
+    border: 2px solid #fff;
+    z-index: 2;
+}
+
+.chat-user-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15vh;
+    text-align: left;
+}
+
+.chat-user-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.4vw;
+}
+
+.chat-user-name {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 0.9vw;
+    color: #1A1A1A;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-user-time {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.72vw;
+    color: #888;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.chat-user-preview {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.78vw;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-active-header {
+    position: relative;
+}
+
+.chat-menu-item {
+    padding: 14px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    color: #1A1A1A;
+    font-family: 'Nunito', sans-serif;
+    transition: background 0.12s;
+}
+.chat-menu-item:hover { background: #EAE6F7; }
+.chat-menu-item--danger { color: #e05555; }
+.chat-menu-item--danger:hover { background: #fdecea; }
+.chat-menu-divider {
+    height: 1px;
+    background: #EAE6F7;
+    margin: 0 12px;
 }

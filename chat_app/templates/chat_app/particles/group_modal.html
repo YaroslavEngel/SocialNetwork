@@ -2,7 +2,7 @@
 <div id="group-modal" class="group-modal-overlay" hidden>
     <div class="group-modal-box">
 
-        <!-- КРОК 1: вибір друзів -->
+        <!-- КРОК 1 -->
         <div id="group-step-users">
             <button id="close-group-modal" class="group-modal-close" type="button">×</button>
             <h2 class="group-modal-title">Нова група</h2>
@@ -12,7 +12,7 @@
                 <input class="group-modal-search" type="text" id="group-search" placeholder="Пошук">
             </div>
 
-            <p class="group-modal-count">Вибрано: <span id="selected-count">0</span></p>
+            <p class="group-modal-count">Вибрано: <span id="selected-count">0</span> <span id="group-min-hint" class="group-modal-min-hint">— оберіть мінімум 2</span></p>
 
             <div class="group-users-list">
                 {% for group in friends_grouped %}
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <!-- КРОК 2: назва групи -->
+        <!-- КРОК 2 -->
         <div id="group-step-name" hidden>
             <button id="close-group-name-modal" class="group-modal-close" type="button">×</button>
             <h2 class="group-modal-title">Нова група</h2>
@@ -55,23 +55,23 @@
             <div class="group-modal-avatar-wrap">
                 <div class="group-modal-avatar" id="group-avatar-preview">НГ</div>
                 <div class="group-modal-avatar-btns">
-                    <button type="button" class="group-avatar-btn">
-                        + Додайте фото
-                    </button>
-                    <button type="button" class="group-avatar-btn">
+                    <input type="file" id="group-avatar-input" accept="image/*" style="display: none;">
+                    <button type="button" class="group-avatar-btn" id="btn-add-avatar">+ Додайте фото</button>
+                    <button type="button" class="group-avatar-btn" id="btn-choose-avatar">
                         <img src="{% static 'chat_app/images/Gallery.svg' %}" alt=""> Оберіть фото
                     </button>
                 </div>
+            </div>
 
-                <p class="group-modal-count">Учасники</p>
-                <div id="selected-users-list" class="group-users-list"></div>
+            <p class="group-modal-count">Учасники</p>
+            <div id="selected-users-list" class="group-users-list"></div>
 
             <div class="group-modal-actions">
                 <button id="back-group-step" class="group-modal-btn group-modal-btn--cancel" type="button">
-                    <img src="{% static '/images/BackButton.svg' %}" alt="Назад">
+                    <img src="{% static 'images/BackButton.svg' %}" alt="Назад">
                 </button>
                 <button id="create-group" class="group-modal-btn group-modal-btn--primary" type="button">
-                    <img src="{% static '/images/CreateGroup2.svg' %}" alt="Створити групу">
+                    <img src="{% static 'images/CreateGroup2.svg' %}" alt="Створити групу">
                 </button>
             </div>
         </div>

@@ -25,12 +25,28 @@ async function openChatWithUser(userId, username) {
     });
     const data = await response.json();
     if (!data.success) return;
+
+    const btn = document.querySelector(`[data-chat-user="${userId}"]`);
+    if (btn) {
+        const badge = btn.querySelector(".chat-unread-badge");
+        if (badge) badge.remove();
+        moveContactToTop(btn);
+    }
+
     await openChatById(data.chat_id, data.username || username);
 }
 
-async function openChatById(chatId, title) {
+function moveContactToTop(btn) {
+    const parent = btn.parentElement;
+    if (!parent) return;
+    const firstBtn = parent.querySelector(".chat-user-button--rich");
+    if (firstBtn && firstBtn !== btn) {
+        parent.insertBefore(btn, firstBtn);
+    }
+}
+
+async function openChatById(chatId, title, avatarUrl = null) {
     activeChatId = chatId;
-    // addToMessagesList(title);
     currentPage = 1;
     hasNext = true;
     isLoading = false;
@@ -38,8 +54,12 @@ async function openChatById(chatId, title) {
 
     chatMain.innerHTML = `
         <div class="chat-active-header">
-            <div class="chat-active-avatar"></div>
+            <div class="chat-active-avatar" id="chat-active-avatar">
+                ${avatarUrl ? `<img src="${avatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : title.slice(0, 2).toUpperCase()}
+            </div>
             <span class="chat-active-title">${title}</span>
+            <button id="chat-menu-btn" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:22px;color:#543C52;padding:0 8px;">⋮</button>
+            <div id="chat-menu-dropdown" style="display:none;position:absolute;right:16px;top:60px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.15);z-index:100;min-width:200px;overflow:hidden;"></div>
         </div>
         <div id="messages" class="chat-messages-list">
             <div id="messages-load-sentinel"></div>
@@ -62,6 +82,38 @@ async function openChatById(chatId, title) {
     chatMain.style.justifyContent = "flex-start";
     chatMain.style.alignItems = "stretch";
     chatMain.style.padding = "0";
+
+const menuBtn = document.querySelector("#chat-menu-btn")
+const menuDropdown = document.querySelector("#chat-menu-dropdown")
+
+menuBtn.addEventListener("click", async (e) => {
+    e.stopPropagation()
+    if (menuDropdown.style.display === "block") {
+        menuDropdown.style.display = "none"
+        return
+    }
+    const info = await fetch(`/chat/${chatId}/group_info/`).then(r => r.json()).catch(() => null)
+    if (!info || !info.success) {
+        menuDropdown.style.display = "none"
+        return
+    }
+    if (info.is_admin) {
+        menuDropdown.innerHTML = `
+            <div class="chat-menu-item" id="menu-edit">✏️ Редагувати групу</div>
+            <div class="chat-menu-divider"></div>
+            <div class="chat-menu-item chat-menu-item--danger" id="menu-delete">🗑️ Видалити чат</div>
+        `
+    } else {
+        menuDropdown.innerHTML = `
+            <div class="chat-menu-item chat-menu-item--danger" id="menu-leave">↩️ Покинути групу</div>
+        `
+    }
+    menuDropdown.style.display = "block"
+})
+
+document.addEventListener("click", () => {
+    if (menuDropdown) menuDropdown.style.display = "none"
+})
 
     document.querySelector("#message-form").addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -241,29 +293,13 @@ function renderMessage(data) {
     return message;
 }
 
-function addToMessagesList(username) {
-    const messagesList = document.querySelector(".chat-messages-block");
-    if (!messagesList) return;
-    const existing = [...messagesList.querySelectorAll(".chat-user-button")]
-        .find(btn => btn.dataset.chatUsername === username);
-    if (existing) return;
-    const btn = document.createElement("button");
-    btn.className = "chat-user-button";
-    btn.dataset.chatUsername = username;
-    btn.textContent = username;
-    btn.addEventListener("click", async () => {
-        await openChatById(null, username);
-    });
-    messagesList.appendChild(btn);
-}
-
 window.openChatById = openChatById;
 window.bindGroupChatButtons = function () {
     document.querySelectorAll("[data-chat-id]").forEach((button) => {
         if (button.dataset.groupBound === "true") return;
         button.dataset.groupBound = "true";
         button.addEventListener("click", async () => {
-            await openChatById(button.dataset.chatId, button.dataset.chatName);
+            await openChatById(button.dataset.chatId, button.dataset.chatName, button.dataset.avatarUrl || null);
         });
     });
 };

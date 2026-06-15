@@ -6,6 +6,7 @@ from post_app.models import Post
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
+from chat_app.models import Chat, Message
 
 
 class HomeListView(LoginRequiredMixin, ListView):
@@ -45,4 +46,43 @@ class HomeListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['post_form'] = PostForm()
+
+        personal_chats_qs = Chat.objects.filter(
+            users=self.request.user, is_group=False
+        )
+        personal_chats_data = []
+        total_unread = 0
+
+        for chat in personal_chats_qs:
+            other_user = chat.users.exclude(id=self.request.user.id).first()
+            last_msg = (
+                Message.objects.filter(chat=chat)
+                .select_related("sender")
+                .order_by("-created_at")
+                .first()
+            )
+            unread_count = (
+                Message.objects.filter(chat=chat)
+                .exclude(sender=self.request.user)
+                .exclude(readers=self.request.user)
+                .count()
+            )
+            total_unread += unread_count
+            personal_chats_data.append({
+                "chat": chat,
+                "other_user": other_user,
+                "last_message": last_msg,
+                "unread_count": unread_count,
+            })
+
+        personal_chats_data.sort(
+            key=lambda x: (
+                -(x["unread_count"] > 0),
+                -(x["last_message"].created_at.timestamp() if x["last_message"] else 0),
+            )
+        )
+
+        context["personal_chats"] = personal_chats_data[:3]
+        context["total_unread"] = total_unread
+
         return context

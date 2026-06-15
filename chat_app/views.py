@@ -26,16 +26,67 @@ class ChatView(LoginRequiredMixin, TemplateView):
             friends_grouped.append({"letter": letter, "friends": list(group)})
         context["friends"] = friends_qs
         context["friends_grouped"] = friends_grouped
-        context["personal_chats"] = Chat.objects.filter(
+
+        personal_chats_qs = Chat.objects.filter(
             users=self.request.user, is_group=False
-        ).order_by("id")
-        group_chats = Chat.objects.filter(
+        )
+        personal_chats_data = []
+        for chat in personal_chats_qs:
+            other_user = chat.users.exclude(id=self.request.user.id).first()
+            last_msg = (
+                Message.objects.filter(chat=chat)
+                .select_related("sender")
+                .order_by("-created_at")
+                .first()
+            )
+            unread_count = (
+                Message.objects.filter(chat=chat)
+                .exclude(sender=self.request.user)
+                .exclude(readers=self.request.user)
+                .count()
+            )
+            personal_chats_data.append({
+                "chat": chat,
+                "other_user": other_user,
+                "last_message": last_msg,
+                "unread_count": unread_count,
+            })
+        personal_chats_data.sort(
+            key=lambda x: (
+                -(x["unread_count"] > 0),
+                -(x["last_message"].created_at.timestamp() if x["last_message"] else 0),
+            )
+        )
+        context["personal_chats"] = personal_chats_data
+
+        group_chats_qs = Chat.objects.filter(
             users=self.request.user, is_group=True
-        ).order_by("id")
+        )
         group_chats_data = []
-        for chat in group_chats:
-            last_msg = Message.objects.filter(chat=chat).select_related("sender").order_by("-created_at").first()
-            group_chats_data.append({"chat": chat, "last_message": last_msg})
+        for chat in group_chats_qs:
+            last_msg = (
+                Message.objects.filter(chat=chat)
+                .select_related("sender")
+                .order_by("-created_at")
+                .first()
+            )
+            unread_count = (
+                Message.objects.filter(chat=chat)
+                .exclude(sender=self.request.user)
+                .exclude(readers=self.request.user)
+                .count()
+            )
+            group_chats_data.append({
+                "chat": chat,
+                "last_message": last_msg,
+                "unread_count": unread_count,
+            })
+        group_chats_data.sort(
+            key=lambda x: (
+                -(x["unread_count"] > 0),
+                -(x["last_message"].created_at.timestamp() if x["last_message"] else 0),
+            )
+        )
         context["group_chats"] = group_chats_data
         return context
 
@@ -57,6 +108,13 @@ class ChatWithView(LoginRequiredMixin, View):
         if chat is None:
             chat = Chat.objects.create(is_group=False)
             chat.users.add(request.user, other_user)
+
+        unread = Message.objects.filter(chat=chat).exclude(
+            sender=request.user
+        ).exclude(readers=request.user)
+        for msg in unread:
+            msg.readers.add(request.user)
+
         return JsonResponse({
             "success": True,
             "chat_id": chat.id,
@@ -98,7 +156,28 @@ class CreateGroupView(LoginRequiredMixin, View):
         friend_ids = get_users_by_section(request.user, "friends").filter(
             id__in=user_ids
         ).values_list("id", flat=True)
-        chat = Chat.objects.create(name=name, is_group=True, admin=request.user)
+
+        avatar_file = request.FILES.get("avatar")
+
+        chat = Chat.objects.create(
+            name=name,
+            is_group=True,
+            admin=request.user,
+            avatar=avatar_file
+        )
         chat.users.add(request.user)
         chat.users.add(*User.objects.filter(id__in=friend_ids))
-        return JsonResponse({"success": True, "chat_id": chat.id, "name": chat.name})
+        return JsonResponse({"success": True, "chat_id": chat.id, "name": chat.name, "avatar_url": chat.avatar.url if chat.avatar else None})
+   
+class GroupInfoView(LoginRequiredMixin, View):
+    login_url = "auth"
+
+    def get(self, request, chat_id):
+        try:
+            chat = Chat.objects.get(id=chat_id, users=request.user, is_group=True)
+        except Chat.DoesNotExist:
+            return JsonResponse({"success": False}, status=403)
+        return JsonResponse({
+            "success": True,
+            "is_admin": chat.admin == request.user,
+        })

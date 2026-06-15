@@ -9,9 +9,8 @@
     <title>{% block title %}Мой сайт{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-{% block links %}{% endblock %}
-    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    {% block links %}{% endblock %}
 </head>
 <body>
 {% block header %}
@@ -46,7 +45,7 @@
                 <img src="{% static 'images/Button.svg' %}" alt="Вихід">
             </a>
         </div>
-        
+
         <div class="profile-container">
             {% block frame1 %}
             <div class="frame1">
@@ -62,9 +61,9 @@
                         <h1>Запити</h1>
                     </div>
                     <div class="see-all-container">
-                        <img src="{% static 'images/see_all.svg' %}" 
-                        alt="Дивитись всі" 
-                        data-section-link="{{ key }}" 
+                        <img src="{% static 'images/see_all.svg' %}"
+                        alt="Дивитись всі"
+                        data-section-link="{{ key }}"
                         style="cursor:pointer;">
                     </div>
                 </div>
@@ -75,16 +74,58 @@
             <div class="frame3">
                 <div class="alert-container">
                     <div class="alert-icon-container">
-                        <img src="{% static 'images/chat_frame.svg' %}" alt="">
+                        <div class="alert-icon-wrap">
+                            <img src="{% static 'images/chat_frame.svg' %}" alt="">
+                            {% if total_unread > 0 %}
+                                <span class="alert-total-badge">{{ total_unread }}</span>
+                            {% endif %}
+                        </div>
                         <h1>Повідомлення</h1>
                     </div>
                     <div class="see-all-container">
-                        <img src="{% static 'images/see_all.svg' %}" 
-                        alt="Дивитись всі" 
-                        data-section-link="{{ key }}" 
-                        style="cursor:pointer;">
+                        <a href="/chat/">
+                            <img src="{% static 'images/see_all.svg' %}"
+                            alt="Дивитись всі"
+                            style="cursor:pointer;">
+                        </a>
                     </div>
                 </div>
+
+                {% if personal_chats %}
+                <div class="frame3-chats">
+                    {% for item in personal_chats %}
+                    {% with other=item.other_user last=item.last_message unread=item.unread_count %}
+                    <a href="/chat/" class="frame3-chat-item">
+                        <div class="frame3-avatar">
+                            {% if other.avatar %}
+                                <img src="{{ other.avatar.url }}" alt="">
+                            {% else %}
+                                {{ other.username|default:other.email|slice:":2"|upper }}
+                            {% endif %}
+                            {% if unread > 0 %}
+                                <span class="frame3-badge">{{ unread }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="frame3-info">
+                            <div class="frame3-top">
+                                <span class="frame3-name">{{ other.username|default:other.email }}</span>
+                                {% if last %}
+                                    <span class="frame3-time">{{ last.created_at|date:"H:i" }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="frame3-preview">
+                                {% if last %}
+                                    {{ last.text|truncatechars:28 }}
+                                {% else %}
+                                    Немає повідомлень
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                    {% endwith %}
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
             {% endblock %}
         </div>
@@ -99,16 +140,12 @@
 <div id="first-login-modal" style="display:flex; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:1000; align-items:center; justify-content:center;">
   <div class="fl-card">
     <button class="fl-close" id="fl-close-btn" aria-label="Закрити">✕</button>
-
     <h2 class="fl-title">Додай деталі про себе</h2>
-
     <div id="fl-error" class="fl-error" style="display:none;"></div>
-
     <div class="fl-field">
       <label>Псевдонім автора</label>
       <input type="text" id="fl-pseudonym" placeholder="Введіть Псевдонім автора" autocomplete="off"/>
     </div>
-
     <div class="fl-field">
       <label>Ім'я користувача</label>
       <div class="fl-username-wrap">
@@ -116,13 +153,13 @@
         <input type="text" id="fl-username" autocomplete="off"/>
       </div>
     </div>
-
     <div class="fl-footer">
       <button id="fl-save-btn" class="fl-btn">Продовжити</button>
     </div>
   </div>
 </div>
 {% endif %}
+
 <script src="{% static 'js/scripts.js' %}"></script>
 {% block scripts %}{% endblock %}
 </body>

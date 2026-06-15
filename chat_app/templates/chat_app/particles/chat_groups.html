@@ -7,9 +7,9 @@
 
     <ul id="group-list">
         {% for item in group_chats %}
-            <li class="group-chat-item" data-chat-id="{{ item.chat.id }}" data-chat-name="{{ item.chat.name }}">
-                <div class="group-chat-avatar">
-                    {{ item.chat.name|slice:":2"|upper }}
+            <li class="group-chat-item" data-chat-id="{{ item.chat.id }}" data-chat-name="{{ item.chat.name }}" data-avatar-url="{% if item.chat.avatar %}{{ item.chat.avatar.url }}{% endif %}">
+                <div class="group-chat-avatar" {% if item.chat.avatar %}style="background-image:url('{{ item.chat.avatar.url }}');background-size:cover;background-position:center;"{% endif %}>
+                    {% if not item.chat.avatar %}{{ item.chat.name|slice:":2"|upper }}{% endif %}
                 </div>
                 <div class="group-chat-info">
                     <div class="group-chat-top">

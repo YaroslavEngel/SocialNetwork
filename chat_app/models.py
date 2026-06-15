@@ -18,7 +18,7 @@ class Chat(models.Model):
     # Позначаємо, чи є чат груповим.
     is_group = models.BooleanField(default=False)
     # Зберігаємо аватар групового чату, якщо він потрібен.
-    avatar = models.ImageField(upload_to="chat_avatars/", blank=True, null=True)
+    avatar = models.ImageField(upload_to="grou_avatars/", blank=True, null=True)
     # Зберігаємо адміністратора групового чату, якщо він потрібен.
     admin = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
