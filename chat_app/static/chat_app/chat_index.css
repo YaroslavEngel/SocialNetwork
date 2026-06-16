@@ -672,20 +672,36 @@
 .chat-active-header {
     position: relative;
 }
-
-.chat-menu-item {
-    padding: 14px 20px;
-    font-size: 15px;
-    cursor: pointer;
-    color: #1A1A1A;
-    font-family: 'Nunito', sans-serif;
-    transition: background 0.12s;
+#chat-menu-dropdown {
+    background: #D8D3E3;
+    border-radius: 10px;
+    padding: 16px;
+    position: absolute;
+    right: 16px;
+    top: 60px;
+    width: 311px;
+    height: 100px;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    flex-direction: column;
+    gap: 16px;
 }
-.chat-menu-item:hover { background: #EAE6F7; }
-.chat-menu-item--danger { color: #e05555; }
-.chat-menu-item--danger:hover { background: #fdecea; }
+
+.chat-menu-svg {
+    width: 100%;
+    height: 25px;
+    padding: 4px 0;
+    object-fit: contain;
+    object-position: left;
+    cursor: pointer;
+    display: block;
+}
+.chat-menu-svg:hover { opacity: 0.7; }
+
+.chat-menu-icon:hover { opacity: 0.7; }
+
 .chat-menu-divider {
     height: 1px;
-    background: #EAE6F7;
-    margin: 0 12px;
+    background: #C8C3D4;
+    margin: 12px 0;
 }

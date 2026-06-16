@@ -18,6 +18,7 @@
 
 {% block content %}
     <main class="chat-page">
+        {% include "chat_app/particles/edit_group_modal.html" %}
         {% include "chat_app/particles/chat_contacts.html" %}
         {% include "chat_app/particles/chat_main.html" %}
         {% include "chat_app/particles/chat_sidebar.html" %}
@@ -28,4 +29,5 @@
 {% block scripts %}
     <script src="{% static 'chat_app/chat_index.js' %}"></script>
     <script src="{% static 'chat_app/group_chat.js' %}"></script>
+    <script src="{% static 'chat_app/edit_group_modal.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,85 @@
+{% load static %}
+<div id="edit-group-modal" class="group-modal-overlay" hidden>
+    <div class="group-modal-box">
+
+        <!-- КРОК 1: редагування -->
+        <div id="edit-group-step-main">
+            <button id="close-edit-group-modal" class="group-modal-close" type="button">×</button>
+            <h2 class="group-modal-title">Редагування групи</h2>
+
+            <label class="group-modal-name-label">Назва</label>
+            <input id="edit-group-name" class="group-modal-name-input" type="text" placeholder="Введіть назву">
+
+            <div class="group-modal-avatar-wrap">
+                <div class="group-modal-avatar" id="edit-group-avatar-preview">НГ</div>
+                <div class="group-modal-avatar-btns">
+                    <input type="file" id="edit-group-avatar-input" accept="image/*" style="display:none;">
+                    <button type="button" class="group-avatar-btn" id="edit-btn-add-avatar">+ Додайте фото</button>
+                    <button type="button" class="group-avatar-btn" id="edit-btn-choose-avatar">
+                        <img src="{% static 'chat_app/images/Gallery.svg' %}" alt=""> Оберіть фото
+                    </button>
+                </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;min-height:24px;margin-top:16px;">
+                <p class="group-modal-count" style="margin:0;flex:1;">Учасники</p>
+                <button type="button" id="edit-add-member-btn" style="background:none;border:none;cursor:pointer;padding:0;">
+                    <img src="{% static 'chat_app/images/AddUser.svg' %}" alt="Додати учасника" style="height:18px;width:auto;display:block;">
+                </button>
+            </div>
+            <div id="edit-members-list" class="group-users-list" style="margin-top:12px;"></div>
+
+            <div class="group-modal-actions">
+                <button id="cancel-edit-group-modal" class="group-modal-btn group-modal-btn--cancel" type="button">
+                    <img src="{% static 'images/BackButton.svg' %}" alt="Назад">
+                </button>
+                <button id="save-edit-group" class="group-modal-btn group-modal-btn--primary" type="button">
+                    <img src="{% static 'chat_app/images/SaveEdit.svg' %}" alt="Зберегти зміни">
+                </button>
+            </div>
+        </div>
+
+        <!-- КРОК 2: додати учасника -->
+        <div id="edit-group-step-add" hidden>
+            <button id="close-edit-add-step" class="group-modal-close" type="button">×</button>
+            <h2 class="group-modal-title">Додати учасника</h2>
+
+            <div class="group-modal-search-wrap">
+                <img class="group-modal-search-icon" src="{% static 'chat_app/images/search.svg' %}" alt="">
+                <input class="group-modal-search" type="text" id="edit-add-search" placeholder="Пошук">
+            </div>
+
+            <p class="group-modal-count">Вибрано: <span id="edit-add-count">0</span></p>
+
+            <div id="edit-add-users-list" class="group-users-list">
+                {% for group in friends_grouped %}
+                    <div class="group-letter-label">{{ group.letter }}</div>
+                    {% for friend in group.friends %}
+                    <label class="group-user-row" data-user-id="{{ friend.id }}">
+                        <input class="edit-add-checkbox" type="checkbox" value="{{ friend.id }}" data-user-name="{{ friend.username|default:friend.email }}" hidden>
+                        <div class="group-user-avatar">
+                            {% if friend.avatar %}
+                                <img src="{{ friend.avatar.url }}" alt="">
+                            {% else %}
+                                {{ friend.username|default:friend.email|slice:":2"|upper }}
+                            {% endif %}
+                        </div>
+                        <span class="group-user-name">{{ friend.username|default:friend.email }}</span>
+                        <div class="group-user-check"></div>
+                    </label>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+            <div class="group-modal-actions">
+                <button id="back-edit-add-step" class="group-modal-btn group-modal-btn--cancel" type="button">
+                    <img src="{% static 'images/BackButton.svg' %}" alt="Назад">
+                </button>
+                <button id="confirm-edit-add" class="group-modal-btn group-modal-btn--primary" type="button">
+                    <img src="{% static 'chat_app/images/SaveUsers.svg' %}" alt="Зберегти">
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

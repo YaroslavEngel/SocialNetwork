@@ -12,6 +12,75 @@ window.csrfToken = csrfToken;
 const chatButtons = document.querySelectorAll("[data-chat-user]");
 const chatMain = document.querySelector(".chat-main");
 
+// ─── Кастомне модальне вікно підтвердження ───────────────────────────────────
+function showConfirmModal(text, onConfirm) {
+    const existing = document.querySelector("#confirm-modal-overlay")
+    if (existing) existing.remove()
+
+    const overlay = document.createElement("div")
+    overlay.id = "confirm-modal-overlay"
+    overlay.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `
+
+    overlay.innerHTML = `
+        <div style="
+            background: #fff;
+            border-radius: 20px;
+            padding: 36px 32px 28px;
+            min-width: 320px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+            font-family: inherit;
+        ">
+            <h2 style="
+                margin: 0 0 18px;
+                font-size: 20px;
+                font-weight: 700;
+                color: #222;
+            ">Підтвердити дію</h2>
+            <p style="
+                margin: 0 0 28px;
+                font-size: 15px;
+                color: #444;
+                line-height: 1.5;
+            ">${text}</p>
+            <div style="display: flex; gap: 12px; justify-content: center; align-items: center;">
+                <button id="confirm-modal-cancel" style="background:none;border:none;padding:0;cursor:pointer;line-height:0;">
+                    <img src="/static/images/CancelButton.svg" alt="Скасувати" style="height:40px;">
+                </button>
+                <button id="confirm-modal-accept" style="background:none;border:none;padding:0;cursor:pointer;line-height:0;">
+                    <img src="/static/images/AcceptButton.svg" alt="Підтвердити" style="height:40px;">
+                </button>
+            </div>
+        </div>
+    `
+
+    document.body.appendChild(overlay)
+
+    document.querySelector("#confirm-modal-cancel").addEventListener("click", () => {
+        overlay.remove()
+    })
+
+    document.querySelector("#confirm-modal-accept").addEventListener("click", () => {
+        overlay.remove()
+        onConfirm()
+    })
+
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) overlay.remove()
+    })
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 chatButtons.forEach((button) => {
     button.addEventListener("click", async () => {
         await openChatWithUser(button.dataset.chatUser, button.dataset.chatUsername);
@@ -58,8 +127,8 @@ async function openChatById(chatId, title, avatarUrl = null) {
                 ${avatarUrl ? `<img src="${avatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : title.slice(0, 2).toUpperCase()}
             </div>
             <span class="chat-active-title">${title}</span>
-            <button id="chat-menu-btn" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:22px;color:#543C52;padding:0 8px;">⋮</button>
-            <div id="chat-menu-dropdown" style="display:none;position:absolute;right:16px;top:60px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.15);z-index:100;min-width:200px;overflow:hidden;"></div>
+            <button id="chat-menu-btn" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:22px;color:#543C52;padding:0 8px;z-index:101;">⋮</button>
+            <div id="chat-menu-dropdown" style="display:none;position:absolute;right:16px;top:35px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.15);z-index:100;min-width:200px;overflow:hidden;"></div>
         </div>
         <div id="messages" class="chat-messages-list">
             <div id="messages-load-sentinel"></div>
@@ -83,37 +152,103 @@ async function openChatById(chatId, title, avatarUrl = null) {
     chatMain.style.alignItems = "stretch";
     chatMain.style.padding = "0";
 
-const menuBtn = document.querySelector("#chat-menu-btn")
-const menuDropdown = document.querySelector("#chat-menu-dropdown")
+    const menuBtn = document.querySelector("#chat-menu-btn")
+    const menuDropdown = document.querySelector("#chat-menu-dropdown")
 
-menuBtn.addEventListener("click", async (e) => {
-    e.stopPropagation()
-    if (menuDropdown.style.display === "block") {
-        menuDropdown.style.display = "none"
-        return
-    }
-    const info = await fetch(`/chat/${chatId}/group_info/`).then(r => r.json()).catch(() => null)
-    if (!info || !info.success) {
-        menuDropdown.style.display = "none"
-        return
-    }
-    if (info.is_admin) {
-        menuDropdown.innerHTML = `
-            <div class="chat-menu-item" id="menu-edit">✏️ Редагувати групу</div>
-            <div class="chat-menu-divider"></div>
-            <div class="chat-menu-item chat-menu-item--danger" id="menu-delete">🗑️ Видалити чат</div>
-        `
-    } else {
-        menuDropdown.innerHTML = `
-            <div class="chat-menu-item chat-menu-item--danger" id="menu-leave">↩️ Покинути групу</div>
-        `
-    }
-    menuDropdown.style.display = "block"
-})
+    menuBtn.addEventListener("click", async (e) => {
+        e.stopPropagation()
+        if (menuDropdown.style.display === "block") {
+            menuDropdown.style.display = "none"
+            return
+        }
+        const info = await fetch(`/chat/${chatId}/group_info/`).then(r => r.json()).catch(() => null)
+        if (!info || !info.success) {
+            menuDropdown.style.display = "none"
+            return
+        }
 
-document.addEventListener("click", () => {
-    if (menuDropdown) menuDropdown.style.display = "none"
-})
+        if (info.is_admin) {
+            menuDropdown.innerHTML = `
+                <img src="/static/chat_app/images/MediaEdit.svg" class="chat-menu-svg" id="menu-media">
+                <img src="/static/chat_app/images/Editgroup.svg" class="chat-menu-svg" id="menu-edit">
+                <div class="chat-menu-divider"></div>
+                <img src="/static/chat_app/images/Deletechat.svg" class="chat-menu-svg chat-menu-svg--danger" id="menu-delete">
+            `
+            menuDropdown.style.minHeight = "144px"
+
+            menuDropdown.querySelector("#menu-edit").addEventListener("click", (e) => {
+                e.stopPropagation()
+                menuDropdown.style.display = "none"
+                window.openEditGroupModal(chatId)
+            })
+
+            menuDropdown.querySelector("#menu-delete").addEventListener("click", (e) => {
+                e.stopPropagation()
+                menuDropdown.style.display = "none"
+                showConfirmModal("Ви дійсно хочете видалити групу для всіх учасників?", async () => {
+                    const res = await fetch(`/chat/${chatId}/delete_group/`, {
+                        method: "POST",
+                        headers: { "X-CSRFToken": csrfToken },
+                    })
+                    const data = await res.json()
+                    if (data.success) {
+                        const item = document.querySelector(`#group-list [data-chat-id="${chatId}"]`)
+                        if (item) item.remove()
+                        chatMain.innerHTML = `
+                            <div class="chat-main-welcome">
+                                <h1 id="chat-title">Почніть нове спілкування</h1>
+                                <p id="chat-status">Оберіть контакт зі списку ліворуч або створіть групу, щоб почати спілкування</p>
+                            </div>
+                        `
+                        activeChatId = null
+                        if (chatSocket) chatSocket.close()
+                    } else {
+                        alert("Не вдалося видалити групу.")
+                    }
+                })
+            })
+
+        } else {
+            menuDropdown.innerHTML = `
+                <img src="/static/chat_app/images/MediaEdit.svg" class="chat-menu-svg" id="menu-media">
+                <div class="chat-menu-divider"></div>
+                <img src="/static/chat_app/images/Leavechat.svg" class="chat-menu-svg chat-menu-svg--danger" id="menu-leave">
+            `
+            menuDropdown.style.minHeight = "108px"
+
+            menuDropdown.querySelector("#menu-leave").addEventListener("click", (e) => {
+                e.stopPropagation()
+                menuDropdown.style.display = "none"
+                showConfirmModal("Ви дійсно хочете покинути групу?", async () => {
+                    const res = await fetch(`/chat/${chatId}/leave_group/`, {
+                        method: "POST",
+                        headers: { "X-CSRFToken": csrfToken },
+                    })
+                    const data = await res.json()
+                    if (data.success) {
+                        const item = document.querySelector(`#group-list [data-chat-id="${chatId}"]`)
+                        if (item) item.remove()
+                        chatMain.innerHTML = `
+                            <div class="chat-main-welcome">
+                                <h1 id="chat-title">Почніть нове спілкування</h1>
+                                <p id="chat-status">Оберіть контакт зі списку ліворуч або створіть групу, щоб почати спілкування</p>
+                            </div>
+                        `
+                        activeChatId = null
+                        if (chatSocket) chatSocket.close()
+                    } else {
+                        alert("Не вдалося покинути групу.")
+                    }
+                })
+            })
+        }
+
+        menuDropdown.style.display = "block"
+    })
+
+    document.addEventListener("click", () => {
+        if (menuDropdown) menuDropdown.style.display = "none"
+    })
 
     document.querySelector("#message-form").addEventListener("submit", async (e) => {
         e.preventDefault();

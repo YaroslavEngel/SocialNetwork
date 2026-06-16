@@ -32,7 +32,8 @@
     position: relative;
     box-shadow: 0 8px 40px rgba(84, 60, 82, 0.18);
     animation: gmSlideUp 0.2s ease;
-    overflow: hidden;
+    overflow-x: hidden;  /* ← тільки горизонтальний */
+    overflow-y: auto;    /* ← вертикальний скрол */
     box-sizing: border-box;
 }
 @keyframes gmSlideUp {
@@ -402,3 +403,39 @@
     margin-top: -6px;
 }
 .group-name-counter.warn { color: #e05555; }
+
+#edit-group-modal .group-modal-box {
+    width: min(490px, 90vw);
+    max-height: 90vh;
+}
+
+#edit-group-step-main,
+#edit-group-step-add {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-height: 0;
+    overflow-x: visible;
+    overflow-y: auto;
+}
+
+#edit-group-step-main[hidden],
+#edit-group-step-add[hidden] {
+    display: none !important;
+}
+#edit-add-member-btn img {
+    height: 24px;
+    width: auto;
+    display: block;
+}
+
+#edit-add-member-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}

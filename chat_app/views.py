@@ -181,3 +181,85 @@ class GroupInfoView(LoginRequiredMixin, View):
             "success": True,
             "is_admin": chat.admin == request.user,
         })
+    
+
+class LeaveGroupView(LoginRequiredMixin, View):
+    login_url = "auth"
+
+    def post(self, request, chat_id):
+        try:
+            chat = Chat.objects.get(id=chat_id, users=request.user, is_group=True)
+        except Chat.DoesNotExist:
+            return JsonResponse({"success": False}, status=403)
+
+        # Нельзя покинуть группу, если ты админ — должен сначала удалить
+        if chat.admin == request.user:
+            return JsonResponse({"success": False, "error": "admin_cannot_leave"}, status=400)
+
+        chat.users.remove(request.user)
+        return JsonResponse({"success": True})
+
+
+class DeleteGroupView(LoginRequiredMixin, View):
+    login_url = "auth"
+
+    def post(self, request, chat_id):
+        try:
+            chat = Chat.objects.get(id=chat_id, is_group=True)
+        except Chat.DoesNotExist:
+            return JsonResponse({"success": False}, status=404)
+
+        # Только админ может удалить группу
+        if chat.admin != request.user:
+            return JsonResponse({"success": False, "error": "not_admin"}, status=403)
+
+        chat.delete()
+        return JsonResponse({"success": True})
+    
+class EditGroupView(LoginRequiredMixin, View):
+    login_url = "auth"
+
+    def get(self, request, chat_id):
+        try:
+            chat = Chat.objects.get(id=chat_id, users=request.user, is_group=True)
+        except Chat.DoesNotExist:
+            return JsonResponse({"success": False}, status=403)
+        members = [{"id": u.id, "name": display_name(u), "avatar": u.avatar.url if hasattr(u, "avatar") and u.avatar else None} for u in chat.users.all()]
+        return JsonResponse({
+            "success": True,
+            "name": chat.name,
+            "avatar_url": chat.avatar.url if chat.avatar else None,
+            "members": members,
+            "is_admin": chat.admin == request.user,
+        })
+
+    def post(self, request, chat_id):
+        try:
+            chat = Chat.objects.get(id=chat_id, users=request.user, is_group=True)
+        except Chat.DoesNotExist:
+            return JsonResponse({"success": False}, status=403)
+        if chat.admin != request.user:
+            return JsonResponse({"success": False, "error": "not_admin"}, status=403)
+
+        name = request.POST.get("name", "").strip()
+        if name:
+            chat.name = name
+
+        if "avatar" in request.FILES:
+            chat.avatar = request.FILES["avatar"]
+
+        remove_users = request.POST.getlist("remove_users")
+        if remove_users:
+            chat.users.remove(*User.objects.filter(id__in=remove_users).exclude(id=request.user.id))
+
+        add_users = request.POST.getlist("add_users")
+        if add_users:
+            friends = get_users_by_section(request.user, "friends").filter(id__in=add_users)
+            chat.users.add(*friends)
+
+        chat.save()
+        return JsonResponse({
+            "success": True,
+            "name": chat.name,
+            "avatar_url": chat.avatar.url if chat.avatar else None,
+        })
