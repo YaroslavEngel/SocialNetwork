@@ -1,7 +1,12 @@
 {% load static %}
 <section class="chat-messages-block">
     <div class="chat-block-header">
-        <img src="{% static 'chat_app/images/PersonalChat.svg' %}" alt="Повідомлення">
+        <div class="chat-block-icon-wrap">
+            <img src="{% static 'chat_app/images/PersonalChat.svg' %}" alt="Повідомлення">
+            {% if total_unread > 0 %}
+                <span class="chat-block-total-badge">{{ total_unread }}</span>
+            {% endif %}
+        </div>
         <span class="chat-block-title">Повідомлення</span>
     </div>
 

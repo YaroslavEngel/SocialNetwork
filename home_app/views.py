@@ -51,7 +51,6 @@ class HomeListView(LoginRequiredMixin, ListView):
             users=self.request.user, is_group=False
         )
         personal_chats_data = []
-        total_unread = 0
 
         for chat in personal_chats_qs:
             other_user = chat.users.exclude(id=self.request.user.id).first()
@@ -67,7 +66,6 @@ class HomeListView(LoginRequiredMixin, ListView):
                 .exclude(readers=self.request.user)
                 .count()
             )
-            total_unread += unread_count
             personal_chats_data.append({
                 "chat": chat,
                 "other_user": other_user,
@@ -83,6 +81,6 @@ class HomeListView(LoginRequiredMixin, ListView):
         )
 
         context["personal_chats"] = personal_chats_data[:3]
-        context["total_unread"] = total_unread
+        # total_unread теперь приходит из context processor (chat_app.context_processors.unread_messages)
 
         return context

@@ -88,6 +88,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
             )
         )
         context["group_chats"] = group_chats_data
+        context["group_total_unread"] = sum(item["unread_count"] for item in group_chats_data)
         return context
 
 
@@ -120,6 +121,25 @@ class ChatWithView(LoginRequiredMixin, View):
             "chat_id": chat.id,
             "username": display_name(other_user),
         })
+
+
+class MarkChatReadView(LoginRequiredMixin, View):
+    """Marks all unread messages in a chat (personal or group) as read for the current user."""
+    login_url = "auth"
+
+    def post(self, request, chat_id):
+        try:
+            chat = Chat.objects.get(id=chat_id, users=request.user)
+        except Chat.DoesNotExist:
+            return JsonResponse({"success": False}, status=403)
+
+        unread = Message.objects.filter(chat=chat).exclude(
+            sender=request.user
+        ).exclude(readers=request.user)
+        for msg in unread:
+            msg.readers.add(request.user)
+
+        return JsonResponse({"success": True})
 
 
 class MessageHistoryView(LoginRequiredMixin, View):
@@ -167,8 +187,14 @@ class CreateGroupView(LoginRequiredMixin, View):
         )
         chat.users.add(request.user)
         chat.users.add(*User.objects.filter(id__in=friend_ids))
-        return JsonResponse({"success": True, "chat_id": chat.id, "name": chat.name, "avatar_url": chat.avatar.url if chat.avatar else None})
-   
+        return JsonResponse({
+            "success": True,
+            "chat_id": chat.id,
+            "name": chat.name,
+            "avatar_url": chat.avatar.url if chat.avatar else None,
+        })
+
+
 class GroupInfoView(LoginRequiredMixin, View):
     login_url = "auth"
 
@@ -181,7 +207,7 @@ class GroupInfoView(LoginRequiredMixin, View):
             "success": True,
             "is_admin": chat.admin == request.user,
         })
-    
+
 
 class LeaveGroupView(LoginRequiredMixin, View):
     login_url = "auth"
@@ -192,7 +218,6 @@ class LeaveGroupView(LoginRequiredMixin, View):
         except Chat.DoesNotExist:
             return JsonResponse({"success": False}, status=403)
 
-        # Нельзя покинуть группу, если ты админ — должен сначала удалить
         if chat.admin == request.user:
             return JsonResponse({"success": False, "error": "admin_cannot_leave"}, status=400)
 
@@ -209,13 +234,13 @@ class DeleteGroupView(LoginRequiredMixin, View):
         except Chat.DoesNotExist:
             return JsonResponse({"success": False}, status=404)
 
-        # Только админ может удалить группу
         if chat.admin != request.user:
             return JsonResponse({"success": False, "error": "not_admin"}, status=403)
 
         chat.delete()
         return JsonResponse({"success": True})
-    
+
+
 class EditGroupView(LoginRequiredMixin, View):
     login_url = "auth"
 

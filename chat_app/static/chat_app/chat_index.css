@@ -271,16 +271,16 @@
 }
 
 .chat-active-avatar {
-    width: 3vw;
-    height: 3vw;
-    min-width: 42px;
-    min-height: 42px;
+    width: clamp(1.7vw, 3vw, 2.5vw);
+    height: clamp(1.7vw, 3vw, 2.5vw);
+    min-width: unset;
+    min-height: unset;
     border-radius: 50%;
     background: linear-gradient(135deg, #543C52, #8B5E8B);
     color: #fff;
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
-    font-size: 0.85vw;
+    font-size: clamp(0.52vw, 0.85vw, 0.83vw);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -309,7 +309,7 @@
 /* ── ПОВІДОМЛЕННЯ ── */
 .message {
     display: flex;
-    margin-bottom: 4px;
+    margin-bottom: 0.37vh;
 }
 
 .message-own {
@@ -331,8 +331,8 @@
 .message-avatar {
     width: 2.4vw;
     height: 2.4vw;
-    min-width: 32px;
-    min-height: 32px;
+    min-width: 1.7vw;
+    min-height: 1.7vw;
     border-radius: 50%;
     background: #D4CAEE;
     flex-shrink: 0;
@@ -364,26 +364,26 @@
 /* ── БУЛЬБАШКА ── */
 .message-bubble {
     padding: 0.8vh 1vw;
-    border-radius: 8px;
+    border-radius: 0.42vw;
     font-size: 0.95vw;
     font-family: 'Nunito', sans-serif;
     color: #1A1A1A;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 2px;
+    gap: 0.1vh;
     word-break: break-word;
     overflow-wrap: break-word;
 }
 
 .message-own .message-bubble {
     background: rgba(205, 206, 210, 1);
-    border-radius: 8px 8px 0 8px;
+    border-radius: 0.42vw 0.42vw 0 0.42vw;
 }
 
 .message-other .message-bubble {
     background: #F1EBF3;
-    border-radius: 8px 8px 8px 0;
+    border-radius: 0.42vw 0.42vw 0.42vw 0;
 }
 
 .message-text {
@@ -391,7 +391,7 @@
 }
 
 .message-time {
-    font-size: 11px;
+    font-size: 0.57vw;
     opacity: 0.6;
     user-select: none;
     white-space: nowrap;
@@ -399,9 +399,9 @@
 }
 
 .message-bubble img {
-    width: 250px;
+    width: 13vw;
     max-width: 100%;
-    border-radius: 8px;
+    border-radius: 0.42vw;
     display: block;
 }
 
@@ -496,8 +496,8 @@
 .group-chat-avatar {
     width: 2.8vw;
     height: 2.8vw;
-    min-width: 36px;
-    min-height: 36px;
+    min-width: 1.9vw;
+    min-height: 1.9vw;
     border-radius: 50%;
     background: #543C52;
     color: #fff;
@@ -582,8 +582,8 @@
     position: relative;
     width: 2.8vw;
     height: 2.8vw;
-    min-width: 38px;
-    min-height: 38px;
+    min-width: 1.98vw;
+    min-height: 1.98vw;
     border-radius: 50%;
     background: #D4CAEE;
     color: #543C52;
@@ -606,23 +606,23 @@
 
 .chat-unread-badge {
     position: absolute;
-    top: -3px;
-    right: -3px;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 4px;
-    border-radius: 99px;
+    top: -0.28vh;
+    right: -0.16vw;
+    min-width: 0.94vw;
+    height: 1.67vh;
+    padding: 0 0.21vw;
+    border-radius: 99vw;
     background: #E53935;
     color: #fff;
     font-family: 'Nunito', sans-serif;
-    font-size: 11px;
+    font-size: 0.57vw;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
     line-height: 1;
-    border: 2px solid #fff;
+    border: 0.1vw solid #fff;
     z-index: 2;
 }
 
@@ -674,23 +674,22 @@
 }
 #chat-menu-dropdown {
     background: #D8D3E3;
-    border-radius: 10px;
-    padding: 16px;
+    border-radius: 0.6vw;
+    padding: 1.2vh 1vw;
     position: absolute;
-    right: 16px;
-    top: 60px;
-    width: 311px;
-    height: 100px;
+    right: 1vw;
+    top: 4vh;
+    width: 18vw;
     z-index: 100;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 0.4vh 1.5vw rgba(0,0,0,0.12);
     flex-direction: column;
-    gap: 16px;
+    gap: 1vh;
 }
 
 .chat-menu-svg {
     width: 100%;
-    height: 25px;
-    padding: 4px 0;
+    height: 2.5vh;
+    padding: 0.3vh 0;
     object-fit: contain;
     object-position: left;
     cursor: pointer;
@@ -701,7 +700,7 @@
 .chat-menu-icon:hover { opacity: 0.7; }
 
 .chat-menu-divider {
-    height: 1px;
+    height: 0.1vh;
     background: #C8C3D4;
-    margin: 12px 0;
+    margin: 0.8vh 0;
 }

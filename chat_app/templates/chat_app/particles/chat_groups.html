@@ -1,15 +1,25 @@
 {% load static %}
 <section class="chat-groups-block">
     <div class="chat-block-header">
-        <img src="{% static 'chat_app/images/GroupChat.svg' %}" alt="Групові чати">
+        <div class="chat-block-icon-wrap">
+            <img src="{% static 'chat_app/images/GroupChat.svg' %}" alt="Групові чати">
+            {% if group_total_unread > 0 %}
+                <span class="chat-block-total-badge">{{ group_total_unread }}</span>
+            {% endif %}
+        </div>
         <span class="chat-block-title">Групові чати</span>
     </div>
 
     <ul id="group-list">
         {% for item in group_chats %}
             <li class="group-chat-item" data-chat-id="{{ item.chat.id }}" data-chat-name="{{ item.chat.name }}" data-avatar-url="{% if item.chat.avatar %}{{ item.chat.avatar.url }}{% endif %}">
-                <div class="group-chat-avatar" {% if item.chat.avatar %}style="background-image:url('{{ item.chat.avatar.url }}');background-size:cover;background-position:center;"{% endif %}>
-                    {% if not item.chat.avatar %}{{ item.chat.name|slice:":2"|upper }}{% endif %}
+                <div class="group-chat-avatar-wrap">
+                    <div class="group-chat-avatar" {% if item.chat.avatar %}style="background-image:url('{{ item.chat.avatar.url }}');background-size:cover;background-position:center;"{% endif %}>
+                        {% if not item.chat.avatar %}{{ item.chat.name|slice:":2"|upper }}{% endif %}
+                    </div>
+                    {% if item.unread_count > 0 %}
+                        <span class="group-unread-badge">{{ item.unread_count }}</span>
+                    {% endif %}
                 </div>
                 <div class="group-chat-info">
                     <div class="group-chat-top">

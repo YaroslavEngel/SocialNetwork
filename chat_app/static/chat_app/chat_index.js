@@ -114,6 +114,32 @@ function moveContactToTop(btn) {
     }
 }
 
+// Помечает чат прочитанным на сервере и убирает бейджи в сайдбаре (личные и групповые)
+async function markChatRead(chatId) {
+    try {
+        await fetch(`/chat/${chatId}/mark_read/`, {
+            method: "POST",
+            headers: { "X-CSRFToken": csrfToken },
+        });
+    } catch (err) {
+        console.error("Failed to mark chat as read:", err);
+    }
+
+    // Убираем бейдж у личного чата (если это он)
+    const personalBtn = document.querySelector(`.chat-user-button--rich[data-chat-id="${chatId}"]`);
+    if (personalBtn) {
+        const badge = personalBtn.querySelector(".chat-unread-badge");
+        if (badge) badge.remove();
+    }
+
+    // Убираем бейдж у группового чата (если это он)
+    const groupItem = document.querySelector(`#group-list [data-chat-id="${chatId}"]`);
+    if (groupItem) {
+        const badge = groupItem.querySelector(".group-unread-badge");
+        if (badge) badge.remove();
+    }
+}
+
 async function openChatById(chatId, title, avatarUrl = null) {
     activeChatId = chatId;
     currentPage = 1;
@@ -151,6 +177,9 @@ async function openChatById(chatId, title, avatarUrl = null) {
     chatMain.style.justifyContent = "flex-start";
     chatMain.style.alignItems = "stretch";
     chatMain.style.padding = "0";
+
+    // Помечаем чат прочитанным на сервере + убираем бейджи в сайдбаре
+    await markChatRead(chatId);
 
     const menuBtn = document.querySelector("#chat-menu-btn")
     const menuDropdown = document.querySelector("#chat-menu-dropdown")

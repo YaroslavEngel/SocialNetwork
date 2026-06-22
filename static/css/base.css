@@ -3,10 +3,10 @@ body {
     margin: 0;
     min-height: 100vh;
     background-color: #FAF8FF;
-    overflow-x: hidden;
 }
-html, body {
-    overflow-x: hidden;
+html {
+    overflow-x: hidden; 
+    overflow-y: auto;
 }
 
 h1, p {
@@ -21,7 +21,7 @@ button {
     width: 100%;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 9999;
     background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
@@ -107,13 +107,43 @@ button {
     align-items: center;
 }
 
+.chat-nav-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
 .chat-nav-link img {
     width: 1.4vw;
     height: 1.4vw;
     flex-shrink: 0;
 }
 
-.chat-nav-link span {
+.chat-nav-badge {
+    position: absolute;
+    top: -0.6vh;
+    right: -0.7vw;
+    min-width: 1vw;
+    height: 1.8vh;
+    padding: 0 0.2vw;
+    border-radius: 99px;
+    background: #E53935;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.7vw;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 0.2vh solid #fff;
+    z-index: 2;
+    line-height: 1;
+}
+
+.chat-nav-link span:not(.chat-nav-icon-wrap):not(.chat-nav-badge) {
     font-size: 1vw;
     font-weight: 800;
     color: #070A1C;
@@ -281,22 +311,22 @@ button {
 
 .alert-total-badge {
     position: absolute;
-    top: -5px;
-    right: -6px;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 3px;
+    top: -0.6vh;
+    right: -0.4vw;
+    min-width: 1vw;
+    height: 1.8vh;
+    padding: 0 0.2vw;
     border-radius: 99px;
     background: #E53935;
     color: #fff;
     font-family: 'Nunito', sans-serif;
-    font-size: 10px;
+    font-size: 0.7vw;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    border: 2px solid #fff;
+    border: 0.2vh solid #fff;
     z-index: 2;
     line-height: 1;
 }
@@ -519,8 +549,8 @@ button {
     position: relative;
     width: 2.4vw;
     height: 2.4vw;
-    min-width: 36px;
-    min-height: 36px;
+    min-width: 2.2vw;
+    min-height: 2.2vw;
     border-radius: 50%;
     background: #D4CAEE;
     color: #543C52;
@@ -543,22 +573,22 @@ button {
 
 .frame3-badge {
     position: absolute;
-    top: -3px;
-    right: -3px;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 3px;
+    top: -0.3vh;
+    right: -0.2vw;
+    min-width: 1vw;
+    height: 1.8vh;
+    padding: 0 0.2vw;
     border-radius: 99px;
     background: #E53935;
     color: #fff;
     font-family: 'Nunito', sans-serif;
-    font-size: 10px;
+    font-size: 0.7vw;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    border: 2px solid #fff;
+    border: 0.2vh solid #fff;
     z-index: 2;
 }
 
@@ -602,4 +632,35 @@ button {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* ── БЕЙДЖ У ЗАГОЛОВКУ БЛОКУ ПОВІДОМЛЕНЬ (chat.html) ── */
+.chat-block-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.chat-block-total-badge {
+    position: absolute;
+    top: -0.6vh;
+    right: -0.4vw;
+    min-width: 1vw;
+    height: 2vh;
+    padding: 0 0.2vw;
+    border-radius: 99px;
+    background: #E53935;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.7vw;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 0.2vh solid #fff;
+    z-index: 2;
+    line-height: 1;
 }

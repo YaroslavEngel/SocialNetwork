@@ -8,6 +8,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .post-create-container {
@@ -484,7 +485,8 @@
     gap: 0.5vh;
     padding: 1.5vh 1.8vw 2.2vh calc(clamp(18vw, 18vw, 25vw) + 5vw + 1.8vw);
     box-sizing: border-box;
-    min-width: 100vw;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .post-card {

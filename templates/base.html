@@ -32,7 +32,12 @@
                 </a>
 
                 <a href="/chat/" class="{% if '/chat' in request.path %}active{% endif %} chat-nav-link">
-                    <img src="{% static 'images/Property 1=Default.svg' %}" alt="Чати">
+                    <span class="chat-nav-icon-wrap">
+                        <img src="{% static 'images/Property 1=Default.svg' %}" alt="Чати">
+                        {% if total_unread > 0 %}
+                            <span class="chat-nav-badge">{{ total_unread }}</span>
+                        {% endif %}
+                    </span>
                     <span>Чати</span>
                 </a>
 
