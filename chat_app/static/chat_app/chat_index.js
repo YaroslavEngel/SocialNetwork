@@ -102,7 +102,8 @@ async function openChatWithUser(userId, username) {
         moveContactToTop(btn);
     }
 
-    await openChatById(data.chat_id, data.username || username);
+    // Особистий чат — передаємо isGroup = false
+    await openChatById(data.chat_id, data.username || username, null, false);
 }
 
 function moveContactToTop(btn) {
@@ -114,7 +115,6 @@ function moveContactToTop(btn) {
     }
 }
 
-// Помечает чат прочитанным на сервере и убирает бейджи в сайдбаре (личные и групповые)
 async function markChatRead(chatId) {
     try {
         await fetch(`/chat/${chatId}/mark_read/`, {
@@ -125,14 +125,12 @@ async function markChatRead(chatId) {
         console.error("Failed to mark chat as read:", err);
     }
 
-    // Убираем бейдж у личного чата (если это он)
     const personalBtn = document.querySelector(`.chat-user-button--rich[data-chat-id="${chatId}"]`);
     if (personalBtn) {
         const badge = personalBtn.querySelector(".chat-unread-badge");
         if (badge) badge.remove();
     }
 
-    // Убираем бейдж у группового чата (если это он)
     const groupItem = document.querySelector(`#group-list [data-chat-id="${chatId}"]`);
     if (groupItem) {
         const badge = groupItem.querySelector(".group-unread-badge");
@@ -140,7 +138,8 @@ async function markChatRead(chatId) {
     }
 }
 
-async function openChatById(chatId, title, avatarUrl = null) {
+// isGroup = false для особистих чатів, true для групових
+async function openChatById(chatId, title, avatarUrl = null, isGroup = false) {
     activeChatId = chatId;
     currentPage = 1;
     hasNext = true;
@@ -153,8 +152,10 @@ async function openChatById(chatId, title, avatarUrl = null) {
                 ${avatarUrl ? `<img src="${avatarUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : title.slice(0, 2).toUpperCase()}
             </div>
             <span class="chat-active-title">${title}</span>
-            <button id="chat-menu-btn" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:22px;color:#543C52;padding:0 8px;z-index:101;">⋮</button>
-            <div id="chat-menu-dropdown" style="display:none;position:absolute;right:16px;top:35px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.15);z-index:100;min-width:200px;overflow:hidden;"></div>
+            ${isGroup ? `
+                <button id="chat-menu-btn" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:22px;color:#543C52;padding:0 8px;z-index:101;">⋮</button>
+                <div id="chat-menu-dropdown" style="display:none;position:absolute;right:16px;top:35px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.15);z-index:100;min-width:200px;overflow:hidden;"></div>
+            ` : ''}
         </div>
         <div id="messages" class="chat-messages-list">
             <div id="messages-load-sentinel"></div>
@@ -178,106 +179,108 @@ async function openChatById(chatId, title, avatarUrl = null) {
     chatMain.style.alignItems = "stretch";
     chatMain.style.padding = "0";
 
-    // Помечаем чат прочитанным на сервере + убираем бейджи в сайдбаре
     await markChatRead(chatId);
 
-    const menuBtn = document.querySelector("#chat-menu-btn")
-    const menuDropdown = document.querySelector("#chat-menu-dropdown")
+    // Меню з трьома точками — тільки для групових чатів
+    if (isGroup) {
+        const menuBtn = document.querySelector("#chat-menu-btn")
+        const menuDropdown = document.querySelector("#chat-menu-dropdown")
 
-    menuBtn.addEventListener("click", async (e) => {
-        e.stopPropagation()
-        if (menuDropdown.style.display === "block") {
-            menuDropdown.style.display = "none"
-            return
-        }
-        const info = await fetch(`/chat/${chatId}/group_info/`).then(r => r.json()).catch(() => null)
-        if (!info || !info.success) {
-            menuDropdown.style.display = "none"
-            return
-        }
-
-        if (info.is_admin) {
-            menuDropdown.innerHTML = `
-                <img src="/static/chat_app/images/MediaEdit.svg" class="chat-menu-svg" id="menu-media">
-                <img src="/static/chat_app/images/Editgroup.svg" class="chat-menu-svg" id="menu-edit">
-                <div class="chat-menu-divider"></div>
-                <img src="/static/chat_app/images/Deletechat.svg" class="chat-menu-svg chat-menu-svg--danger" id="menu-delete">
-            `
-            menuDropdown.style.minHeight = "144px"
-
-            menuDropdown.querySelector("#menu-edit").addEventListener("click", (e) => {
-                e.stopPropagation()
+        menuBtn.addEventListener("click", async (e) => {
+            e.stopPropagation()
+            if (menuDropdown.style.display === "block") {
                 menuDropdown.style.display = "none"
-                window.openEditGroupModal(chatId)
-            })
-
-            menuDropdown.querySelector("#menu-delete").addEventListener("click", (e) => {
-                e.stopPropagation()
+                return
+            }
+            const info = await fetch(`/chat/${chatId}/group_info/`).then(r => r.json()).catch(() => null)
+            if (!info || !info.success) {
                 menuDropdown.style.display = "none"
-                showConfirmModal("Ви дійсно хочете видалити групу для всіх учасників?", async () => {
-                    const res = await fetch(`/chat/${chatId}/delete_group/`, {
-                        method: "POST",
-                        headers: { "X-CSRFToken": csrfToken },
-                    })
-                    const data = await res.json()
-                    if (data.success) {
-                        const item = document.querySelector(`#group-list [data-chat-id="${chatId}"]`)
-                        if (item) item.remove()
-                        chatMain.innerHTML = `
-                            <div class="chat-main-welcome">
-                                <h1 id="chat-title">Почніть нове спілкування</h1>
-                                <p id="chat-status">Оберіть контакт зі списку ліворуч або створіть групу, щоб почати спілкування</p>
-                            </div>
-                        `
-                        activeChatId = null
-                        if (chatSocket) chatSocket.close()
-                    } else {
-                        alert("Не вдалося видалити групу.")
-                    }
+                return
+            }
+
+            if (info.is_admin) {
+                menuDropdown.innerHTML = `
+                    <img src="/static/chat_app/images/MediaEdit.svg" class="chat-menu-svg" id="menu-media">
+                    <img src="/static/chat_app/images/Editgroup.svg" class="chat-menu-svg" id="menu-edit">
+                    <div class="chat-menu-divider"></div>
+                    <img src="/static/chat_app/images/Deletechat.svg" class="chat-menu-svg chat-menu-svg--danger" id="menu-delete">
+                `
+                menuDropdown.style.minHeight = "144px"
+
+                menuDropdown.querySelector("#menu-edit").addEventListener("click", (e) => {
+                    e.stopPropagation()
+                    menuDropdown.style.display = "none"
+                    window.openEditGroupModal(chatId)
                 })
-            })
 
-        } else {
-            menuDropdown.innerHTML = `
-                <img src="/static/chat_app/images/MediaEdit.svg" class="chat-menu-svg" id="menu-media">
-                <div class="chat-menu-divider"></div>
-                <img src="/static/chat_app/images/Leavechat.svg" class="chat-menu-svg chat-menu-svg--danger" id="menu-leave">
-            `
-            menuDropdown.style.minHeight = "108px"
-
-            menuDropdown.querySelector("#menu-leave").addEventListener("click", (e) => {
-                e.stopPropagation()
-                menuDropdown.style.display = "none"
-                showConfirmModal("Ви дійсно хочете покинути групу?", async () => {
-                    const res = await fetch(`/chat/${chatId}/leave_group/`, {
-                        method: "POST",
-                        headers: { "X-CSRFToken": csrfToken },
+                menuDropdown.querySelector("#menu-delete").addEventListener("click", (e) => {
+                    e.stopPropagation()
+                    menuDropdown.style.display = "none"
+                    showConfirmModal("Ви дійсно хочете видалити групу для всіх учасників?", async () => {
+                        const res = await fetch(`/chat/${chatId}/delete_group/`, {
+                            method: "POST",
+                            headers: { "X-CSRFToken": csrfToken },
+                        })
+                        const data = await res.json()
+                        if (data.success) {
+                            const item = document.querySelector(`#group-list [data-chat-id="${chatId}"]`)
+                            if (item) item.remove()
+                            chatMain.innerHTML = `
+                                <div class="chat-main-welcome">
+                                    <h1 id="chat-title">Почніть нове спілкування</h1>
+                                    <p id="chat-status">Оберіть контакт зі списку ліворуч або створіть групу, щоб почати спілкування</p>
+                                </div>
+                            `
+                            activeChatId = null
+                            if (chatSocket) chatSocket.close()
+                        } else {
+                            alert("Не вдалося видалити групу.")
+                        }
                     })
-                    const data = await res.json()
-                    if (data.success) {
-                        const item = document.querySelector(`#group-list [data-chat-id="${chatId}"]`)
-                        if (item) item.remove()
-                        chatMain.innerHTML = `
-                            <div class="chat-main-welcome">
-                                <h1 id="chat-title">Почніть нове спілкування</h1>
-                                <p id="chat-status">Оберіть контакт зі списку ліворуч або створіть групу, щоб почати спілкування</p>
-                            </div>
-                        `
-                        activeChatId = null
-                        if (chatSocket) chatSocket.close()
-                    } else {
-                        alert("Не вдалося покинути групу.")
-                    }
                 })
-            })
-        }
 
-        menuDropdown.style.display = "block"
-    })
+            } else {
+                menuDropdown.innerHTML = `
+                    <img src="/static/chat_app/images/MediaEdit.svg" class="chat-menu-svg" id="menu-media">
+                    <div class="chat-menu-divider"></div>
+                    <img src="/static/chat_app/images/Leavechat.svg" class="chat-menu-svg chat-menu-svg--danger" id="menu-leave">
+                `
+                menuDropdown.style.minHeight = "108px"
 
-    document.addEventListener("click", () => {
-        if (menuDropdown) menuDropdown.style.display = "none"
-    })
+                menuDropdown.querySelector("#menu-leave").addEventListener("click", (e) => {
+                    e.stopPropagation()
+                    menuDropdown.style.display = "none"
+                    showConfirmModal("Ви дійсно хочете покинути групу?", async () => {
+                        const res = await fetch(`/chat/${chatId}/leave_group/`, {
+                            method: "POST",
+                            headers: { "X-CSRFToken": csrfToken },
+                        })
+                        const data = await res.json()
+                        if (data.success) {
+                            const item = document.querySelector(`#group-list [data-chat-id="${chatId}"]`)
+                            if (item) item.remove()
+                            chatMain.innerHTML = `
+                                <div class="chat-main-welcome">
+                                    <h1 id="chat-title">Почніть нове спілкування</h1>
+                                    <p id="chat-status">Оберіть контакт зі списку ліворуч або створіть групу, щоб почати спілкування</p>
+                                </div>
+                            `
+                            activeChatId = null
+                            if (chatSocket) chatSocket.close()
+                        } else {
+                            alert("Не вдалося покинути групу.")
+                        }
+                    })
+                })
+            }
+
+            menuDropdown.style.display = "block"
+        })
+
+        document.addEventListener("click", () => {
+            if (menuDropdown) menuDropdown.style.display = "none"
+        })
+    }
 
     document.querySelector("#message-form").addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -463,7 +466,13 @@ window.bindGroupChatButtons = function () {
         if (button.dataset.groupBound === "true") return;
         button.dataset.groupBound = "true";
         button.addEventListener("click", async () => {
-            await openChatById(button.dataset.chatId, button.dataset.chatName, button.dataset.avatarUrl || null);
+            // Груповий чат — передаємо isGroup = true
+            await openChatById(
+                button.dataset.chatId,
+                button.dataset.chatName,
+                button.dataset.avatarUrl || null,
+                true
+            );
         });
     });
 };

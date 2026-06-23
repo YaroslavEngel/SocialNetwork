@@ -235,5 +235,5 @@ document.querySelectorAll("#group-list li").forEach(function(li) {
 })
 
 function openGroupChat(chatId, name, avatarUrl) {
-    openChatById(chatId, name, avatarUrl)
+    openChatById(chatId, name, avatarUrl, true)
 }

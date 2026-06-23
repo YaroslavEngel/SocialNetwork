@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
 from chat_app.models import Chat, Message
+from user_app.models import Friendship
 
 
 class HomeListView(LoginRequiredMixin, ListView):
@@ -47,6 +48,15 @@ class HomeListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['post_form'] = PostForm()
 
+        friend_requests = Friendship.objects.filter(
+            to_user=self.request.user,
+            status='pending'
+        ).select_related('from_user').order_by('-created_at')[:3]
+        context['friend_requests'] = friend_requests
+        context['friend_requests_count'] = Friendship.objects.filter(
+            to_user=self.request.user,
+            status='pending'
+        ).count()
         personal_chats_qs = Chat.objects.filter(
             users=self.request.user, is_group=False
         )

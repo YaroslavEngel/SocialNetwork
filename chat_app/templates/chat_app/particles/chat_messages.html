@@ -17,6 +17,7 @@
             class="chat-user-button chat-user-button--rich"
             data-chat-user="{{ other.id }}"
             data-chat-username="{{ other.username|default:other.email }}"
+            data-is-group="false"
         >
             <div class="chat-user-avatar">
                 {% if other.avatar %}

@@ -63,15 +63,42 @@
                 <div class="request-container">
                     <div class="request-icon-container">
                         <img src="{% static 'images/peoples_frame.svg' %}" alt="">
+                        {% if friend_requests_count > 0 %}
+                            <span class="alert-total-badge">{{ friend_requests_count }}</span>
+                        {% endif %}
                         <h1>Запити</h1>
                     </div>
                     <div class="see-all-container">
-                        <img src="{% static 'images/see_all.svg' %}"
-                        alt="Дивитись всі"
-                        data-section-link="{{ key }}"
-                        style="cursor:pointer;">
+                        <a href="/friends/">
+                            <img src="{% static 'images/see_all.svg' %}" alt="Дивитись всі" style="cursor:pointer;">
+                        </a>
                     </div>
                 </div>
+
+                {% if friend_requests %}
+                <div class="frame3-chats">
+                    {% for req in friend_requests %}
+                    <div class="frame3-chat-item">
+                        <div class="frame3-avatar">
+                            {% if req.from_user.avatar %}
+                                <img src="{{ req.from_user.avatar.url }}" alt="">
+                            {% else %}
+                                {{ req.from_user.username|default:req.from_user.email|slice:":2"|upper }}
+                            {% endif %}
+                        </div>
+                        <div class="frame3-info">
+                            <div class="frame3-top">
+                                <span class="frame3-name">{{ req.from_user.username|default:req.from_user.email }}</span>
+                                <span class="frame3-time">{{ req.created_at|date:"H:i" }}</span>
+                            </div>
+                            <div class="frame3-preview">Хоче додати вас у друзі</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                    <p style="font-size:0.8vw;color:#aaa;padding:0.5vh 0.3vw;">Немає нових запитів</p>
+                {% endif %}
             </div>
             {% endblock %}
 

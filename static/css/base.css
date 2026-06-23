@@ -639,8 +639,7 @@ button {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    overflow: visible;
 }
 
 .chat-block-total-badge {
@@ -661,6 +660,6 @@ button {
     justify-content: center;
     box-sizing: border-box;
     border: 0.2vh solid #fff;
-    z-index: 2;
+    z-index: 9;
     line-height: 1;
 }

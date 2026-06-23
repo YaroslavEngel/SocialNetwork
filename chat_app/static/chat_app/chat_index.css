@@ -560,7 +560,7 @@
     position: sticky;
     top: 0;
     background: #FFFFFF;
-    z-index: 1;
+    z-index: 10;
     padding-top: 1.2vh;
     padding-bottom: 0.8vh;
 }
