@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="current-user" content="{{ request.user.username|default:request.user.email }}">
+    <meta name="current-user-id" content="{{ request.user.id }}">
     {% block meta %}{% endblock %}
     <title>{% block title %}Мой сайт{% endblock %}</title>
 
@@ -28,7 +29,12 @@
                 </a>
 
                 <a href="/friends" class="{% if '/friends' in request.path %}active{% endif %}">
-                    <img src="{% static 'images/Frame 1000002426.svg' %}" alt="Друзі">
+                    <span class="chat-nav-icon-wrap">
+                        <img src="{% static 'images/Frame 1000002426.svg' %}" alt="Друзі">
+                        {% if pending_requests_count > 0 %}
+                            <span class="chat-nav-badge">{{ pending_requests_count }}</span>
+                        {% endif %}
+                    </span>
                 </a>
 
                 <a href="/chat/" class="{% if '/chat' in request.path %}active{% endif %} chat-nav-link">

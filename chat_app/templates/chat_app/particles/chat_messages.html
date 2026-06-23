@@ -28,6 +28,13 @@
                 {% if unread > 0 %}
                     <span class="chat-unread-badge">{{ unread }}</span>
                 {% endif %}
+                <img
+                    class="chat-contact-status"
+                    data-status-id="{{ other.id }}"
+                    data-status-size="small"
+                    src="{% if other.is_online %}{% static 'chat_app/images/status_online_small.svg' %}{% else %}{% static 'chat_app/images/status_offline_small.svg' %}{% endif %}"
+                    alt=""
+                >
             </div>
 
             <div class="chat-user-info">

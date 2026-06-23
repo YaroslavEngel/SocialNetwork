@@ -1,7 +1,15 @@
 {% load static %}
 {% for person in users %}
     <article class="friend-card" data-person-id="{{ person.id }}">
-        <div class="friend-card-avatar"></div>
+        <div class="friend-card-avatar">
+            <img
+                class="friend-status-dot"
+                data-status-id="{{ person.id }}"
+                data-status-size="small"
+                src="{% if person.is_online %}{% static 'chat_app/images/status_online_small.svg' %}{% else %}{% static 'chat_app/images/status_offline_small.svg' %}{% endif %}"
+                alt=""
+            >
+        </div>
         <div class="friend-card-name">{% firstof person.username person.email %}</div>
         <div class="friend-card-username">@{{ person.username }}</div>
         <div class="friend-card-actions">

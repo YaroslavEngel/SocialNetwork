@@ -12,7 +12,6 @@ window.csrfToken = csrfToken;
 const chatButtons = document.querySelectorAll("[data-chat-user]");
 const chatMain = document.querySelector(".chat-main");
 
-// ─── Кастомне модальне вікно підтвердження ───────────────────────────────────
 function showConfirmModal(text, onConfirm) {
     const existing = document.querySelector("#confirm-modal-overlay")
     if (existing) existing.remove()
@@ -79,7 +78,6 @@ function showConfirmModal(text, onConfirm) {
         if (e.target === overlay) overlay.remove()
     })
 }
-// ─────────────────────────────────────────────────────────────────────────────
 
 chatButtons.forEach((button) => {
     button.addEventListener("click", async () => {
@@ -102,7 +100,6 @@ async function openChatWithUser(userId, username) {
         moveContactToTop(btn);
     }
 
-    // Особистий чат — передаємо isGroup = false
     await openChatById(data.chat_id, data.username || username, null, false);
 }
 
@@ -138,7 +135,6 @@ async function markChatRead(chatId) {
     }
 }
 
-// isGroup = false для особистих чатів, true для групових
 async function openChatById(chatId, title, avatarUrl = null, isGroup = false) {
     activeChatId = chatId;
     currentPage = 1;
@@ -181,7 +177,6 @@ async function openChatById(chatId, title, avatarUrl = null, isGroup = false) {
 
     await markChatRead(chatId);
 
-    // Меню з трьома точками — тільки для групових чатів
     if (isGroup) {
         const menuBtn = document.querySelector("#chat-menu-btn")
         const menuDropdown = document.querySelector("#chat-menu-dropdown")
@@ -338,10 +333,29 @@ function connectWebSocket(chatId) {
     if (chatSocket) chatSocket.close();
     chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${chatId}/`);
 
+    const currentUserId = document.querySelector("meta[name='current-user-id']").content;
+    if (!window.presenceSocket || window.presenceSocket.readyState !== WebSocket.OPEN) {
+        window.presenceSocket = new WebSocket(
+            `ws://${window.location.host}/ws/presence/${currentUserId}/`
+        );
+        window.presenceSocket.onmessage = (e) => {
+            const data = JSON.parse(e.data);
+            if (data.type === "presence_update") {
+                updateStatusDot(data.user_id, data.is_online);
+            }
+        };
+    }
+
     chatSocket.onopen = () => console.log("WebSocket connected");
 
     chatSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
+
+        if (data.type === "presence_update") {
+            updateStatusDot(data.user_id, data.is_online);
+            return;
+        }
+
         const messages = document.querySelector("#messages");
         if (!messages) return;
         messages.appendChild(renderMessage(data));
@@ -352,6 +366,15 @@ function connectWebSocket(chatId) {
 
     chatSocket.onerror = (error) => console.error("WebSocket error:", error);
     chatSocket.onclose = () => console.log("WebSocket closed");
+}
+
+function updateStatusDot(userId, isOnline) {
+    document.querySelectorAll(`[data-status-id="${userId}"]`).forEach(dot => {
+        const size = dot.dataset.statusSize || "small";
+        dot.src = isOnline
+            ? `/static/chat_app/images/status_online_${size}.svg`
+            : `/static/chat_app/images/status_offline_${size}.svg`;
+    });
 }
 
 async function loadMessages(prepend = false) {
@@ -466,7 +489,6 @@ window.bindGroupChatButtons = function () {
         if (button.dataset.groupBound === "true") return;
         button.dataset.groupBound = "true";
         button.addEventListener("click", async () => {
-            // Груповий чат — передаємо isGroup = true
             await openChatById(
                 button.dataset.chatId,
                 button.dataset.chatName,

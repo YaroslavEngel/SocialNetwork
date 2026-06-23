@@ -1,10 +1,10 @@
 from .models import Chat, Message
+from user_app.models import Friendship
 
 
 def unread_messages(request):
-    """Adds total_unread (personal + group chats) to every template context."""
     if not request.user.is_authenticated:
-        return {"total_unread": 0}
+        return {"total_unread": 0, "pending_requests_count": 0}
 
     chats = Chat.objects.filter(users=request.user)
     total_unread = (
@@ -13,4 +13,12 @@ def unread_messages(request):
         .exclude(readers=request.user)
         .count()
     )
-    return {"total_unread": total_unread}
+    pending_requests_count = Friendship.objects.filter(
+        to_user=request.user,
+        status="pending"
+    ).count()
+
+    return {
+        "total_unread": total_unread,
+        "pending_requests_count": pending_requests_count,
+    }

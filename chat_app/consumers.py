@@ -55,6 +55,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "images": event.get("images", []),
         }))
 
+    async def presence_update(self, event):
+        await self.send(text_data=json.dumps({
+            "type": "presence_update",
+            "user_id": event["user_id"],
+            "is_online": event["is_online"],
+        }))
+
     @database_sync_to_async
     def user_in_chat(self):
         return Chat.objects.filter(id=self.chat_id, users=self.user).exists()
@@ -74,3 +81,57 @@ class ChatConsumer(AsyncWebsocketConsumer):
             msg_image = MessageImage.objects.create(message=message, image=image_file)
             image_url = msg_image.image.url
         return message, image_url
+
+
+class PresenceConsumer(AsyncWebsocketConsumer):
+
+    async def connect(self):
+        self.user = self.scope["user"]
+        if not self.user.is_authenticated:
+            await self.close()
+            return
+
+        self.group_name = f"presence_{self.user.id}"
+        await self.channel_layer.group_add(self.group_name, self.channel_name)
+        await self.accept()
+
+        # Ставим онлайн и уведомляем друзей
+        await self.set_online(True)
+        await self.notify_friends_status(True)
+
+    async def disconnect(self, close_code):
+        if hasattr(self, "group_name"):
+            # Ставим оффлайн и уведомляем друзей
+            await self.set_online(False)
+            await self.notify_friends_status(False)
+            await self.channel_layer.group_discard(self.group_name, self.channel_name)
+
+    async def presence_update(self, event):
+        await self.send(text_data=json.dumps({
+            "type": "presence_update",
+            "user_id": event["user_id"],
+            "is_online": event["is_online"],
+        }))
+
+    @database_sync_to_async
+    def set_online(self, status: bool):
+        User.objects.filter(id=self.user.id).update(is_online=status)
+
+    @database_sync_to_async
+    def get_friend_ids(self):
+        from user_app.utils.friend_queries import get_users_by_section
+        return list(
+            get_users_by_section(self.user, "friends").values_list("id", flat=True)
+        )
+
+    async def notify_friends_status(self, is_online: bool):
+        friend_ids = await self.get_friend_ids()
+        for friend_id in friend_ids:
+            await self.channel_layer.group_send(
+                f"presence_{friend_id}",
+                {
+                    "type": "presence_update",
+                    "user_id": self.user.id,
+                    "is_online": is_online,
+                }
+            )

@@ -597,7 +597,7 @@
     overflow: visible;
 }
 
-.chat-user-avatar img {
+.chat-user-avatar img:not(.chat-contact-status) {
     width: 100%;
     height: 100%;
     border-radius: 50%;
@@ -672,6 +672,7 @@
 .chat-active-header {
     position: relative;
 }
+
 #chat-menu-dropdown {
     background: #D8D3E3;
     border-radius: 0.6vw;
@@ -695,6 +696,7 @@
     cursor: pointer;
     display: block;
 }
+
 .chat-menu-svg:hover { opacity: 0.7; }
 
 .chat-menu-icon:hover { opacity: 0.7; }
@@ -703,4 +705,15 @@
     height: 0.1vh;
     background: #C8C3D4;
     margin: 0.8vh 0;
+}
+
+/* ── СТАТУС ОНЛАЙН ── */
+.chat-contact-status {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 32%;
+    height: 32%;
+    pointer-events: none;
+    z-index: 3;
 }

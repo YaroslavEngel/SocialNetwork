@@ -183,3 +183,28 @@ $(document).on("submit", ".confirm-form", function(e) {
 
     });
 });
+
+// ==== Presence WebSocket для сторінки Друзі ====
+(function () {
+    const userIdMeta = document.querySelector("meta[name='current-user-id']");
+    if (!userIdMeta) return;
+    const currentUserId = userIdMeta.content;
+
+    const presenceSocket = new WebSocket(
+        `ws://${window.location.host}/ws/presence/${currentUserId}/`
+    );
+
+    presenceSocket.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        if (data.type === "presence_update") {
+            document.querySelectorAll(`[data-status-id="${data.user_id}"]`).forEach(dot => {
+                const size = dot.dataset.statusSize || "small";
+                dot.src = data.is_online
+                    ? `/static/chat_app/images/status_online_${size}.svg`
+                    : `/static/chat_app/images/status_offline_${size}.svg`;
+            });
+        }
+    };
+
+    presenceSocket.onerror = (e) => console.error("Presence WS error:", e);
+})();

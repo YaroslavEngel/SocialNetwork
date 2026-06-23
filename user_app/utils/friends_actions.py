@@ -40,14 +40,19 @@ def friend_delete(user, other_user):
     Friendship.objects.filter(from_user=user, to_user=other_user).delete()
     Friendship.objects.filter(from_user=other_user, to_user=user).delete()
 
-    # Видаляємо приватний чат між цими двома користувачами
-    private_chat = Chat.objects.filter(
+    # Спочатку знаходимо id чатів, де є ОБИДВА користувачі
+    candidate_chat_ids = Chat.objects.filter(
         is_group=False,
         users=user
     ).filter(
         users=other_user
+    ).values_list("id", flat=True)
+
+    # Потім окремим запитом перевіряємо, що учасників у чаті рівно двоє
+    private_chat = Chat.objects.filter(
+        id__in=list(candidate_chat_ids)
     ).annotate(
-        user_count=Count('users')
+        user_count=Count("users")
     ).filter(
         user_count=2
     ).first()
